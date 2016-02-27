@@ -1,0 +1,187 @@
+
+
+.login-container {
+    display: -webkit-flex;
+    -webkit-flex-direction: column;
+    height: 100%;
+    /*background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,black), color-stop(100%,darkgray));
+    background: -webkit-linear-gradient(top, black 0%,darkgray 100%);*/
+}
+
+.logo{
+    width: 128px;
+    height: 128px;
+    border-radius: 10px;
+}
+
+
+.coral-gradient {
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,coral), color-stop(100%,lightcoral));
+    background: -webkit-linear-gradient(top, coral 0%,lightcoral 100%);
+}
+
+.login-container > .button-row img {
+    max-width: 80%;
+}
+
+.login-container > .header {
+    -webkit-flex: 4;
+    padding-top: 80px;
+}
+
+.landing-bg {
+    background-image: url("../img/black_poly2.jpg");
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+}
+.header-bg {
+    background-image: url("../img/header_red_bg2.jpg");
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.26);
+}
+.body-bg {
+    background-image: url("../img/body_bg2.jpg");
+    /*background-image: url("../img/3d_hexa_2.jpg");*/
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+}
+.item-bg-new {
+    background-image: url("../img/item-bg.jpg");
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+}
+
+/*.item-bg-new p, h2, h4 { color: white;}
+.sidepanel p, h2, a, .s_item{	color: #D7E7E9;} */
+.sidepanel  .s_item {	color: #D7E7E9;} 
+
+.padding-10{
+    padding: 10px;
+}
+
+.padding-0{
+    padding: 0px;
+}
+
+.margin-r-20{
+  margin-right: 20px;
+}
+
+.dark-grey-subtitle{
+    margin-right: 16px;
+    color: black;
+}
+
+.row-col-pad-0 .row{
+    padding: 0px;
+}
+.row-col-pad-0 .col{
+    padding: 0px;
+}
+
+.font-22{
+    font-size: 16px;
+    
+}
+
+.sidepanel .s_item{
+	border-color: #4D5859;
+}
+
+#followupBtn{
+    left:40px; bottom:27px; height:30px;border-radius: 25px; padding: 0px 16px 0px 40px;
+}
+
+.add_box{
+    padding: 5px;
+}
+
+.ico-text{
+    position:absolute;
+    bottom:30px;
+    text-align: center;
+    color: white;
+}
+
+.v-tab-item{
+    line-height: 20px;
+    text-align: center;
+    font-weight: bold;
+    color: white;
+    font-size: 12px;
+}
+
+.v-tab-item button{    
+    /*background-color: #4D5859;*/
+    animation-duration: 2s;
+}
+
+.filterPage button  {
+    line-height: 35px;
+    min-height: 15px;
+}
+
+.date-col{
+    padding: 0px 5px 0 10px;
+}
+
+.r-border{    
+    border-right: 1px solid rgb(177, 175, 175);
+}
+
+
+
+.popup-head {
+    background-color: rgba(255, 45, 0, 0.74);
+}
+
+.popup-title {
+    color: white;
+    font-weight: bold;
+}
+
+.popup-container .popup {
+    background-color: white;
+}
+
+.input_icon_right{
+    position: absolute;
+top: 10px;
+right: 15px;
+}
+
+.height-60{
+    height: 60px;
+}
+
+.popu .tab-item .icon{
+    font-size: 48px;
+}
+
+.popu .tabs .tab-item{
+    line-height: 35px;
+}
+
+
+.select-center-100 {
+    width: 100%;
+    text-align: center;
+}
+
+.menu_gear_icon{
+    position: absolute;
+top: 10px;
+right: 10px;
+}
+/*
+.landing-bg {
+    background: url("img/bg_new.png") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+}*/

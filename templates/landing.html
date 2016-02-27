@@ -1,0 +1,30 @@
+<ion-view cache-view="false" hide-nav-bar="true" class="landing-bg" ng-cloak>
+    <ion-content scroll="false" ng-controller="landingCtrl" ng-init="init()">
+        <section class="login-container">
+            <div class="col header text-center">
+                <img src="./img/app_logo.png" class="logo" />
+            </div>
+
+            <form ng-submit="doLogin()">
+                <div class="list list-inset animated fadeInUp" style="background: transparent;" ng-if="!x.IsloggedIn ">
+                    <label class="item item-input">
+                        <i class="icon ion-person placeholder-icon"></i>
+                        <input type="email" ng-model="session_variables.username" placeholder="User Name">
+                    </label>
+                    <label class="item item-input">
+                        <i class="icon ion-lock-combination placeholder-icon"></i>
+                        <input type="password" ng-model="session_variables.password" placeholder="Password">
+                    </label>
+
+                    <!--ng-click="doLogin()"-->
+                    <button class="button button-block button-positive">
+                        Sign In
+                    </button>
+                </div>
+            </form>
+            <div class="col text-center light">
+                Don't have an account? <strong><a href = "#" ng-click="openRegisterModal()">Sign up now!</a></strong>
+            </div>
+        </section>
+    </ion-content>
+</ion-view>

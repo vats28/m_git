@@ -1,0 +1,13 @@
+<?php
+//$mysqli = new mysqli("localhost", "user", "password", "database ");
+
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST');  
+$connection = new mysqli("localhost", "root", "vats45678", "db_school_students") or die(mysqli_error());
+// Check connection
+if (mysqli_connect_error()) {
+	echo "Database connection failed: ";
+    die("Database connection failed: " . mysqli_connect_error());
+}else{
+echo "Connected successfully"; 
+}

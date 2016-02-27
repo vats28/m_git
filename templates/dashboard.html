@@ -1,0 +1,39 @@
+<ion-view view-title="{{ app_data.title }}" >
+  <ion-content class="page-bg-color" ng-controller="dashboardCtrl" ng-init="init()" >
+
+     <!-- header section start here -->
+    <div class="item item-avatar">
+      <img src="img/hritik.jpg">
+      <h2>Ravi</h2>
+      <p>Age <span>24</span>, Sex <span>Male</span></p>
+      <p>1MedKey</p>
+
+      <!--<p>
+        <a href="#" class="subdued">Health Status Update</a>
+      </p>-->
+    </div>
+
+    <div class="item tabs tabs-secondary  stable-bg tabs-icon-top">
+      <a class="tab-item" href="#">
+        <i class="icon ion-calendar" ng-click="jumpTo('app.calendar_events')"></i>
+        Calender
+      </a>
+      <a class="tab-item" ng-click="jumpTo('app.list_loved_ones')">
+        <i class="icon ion-heart"></i>
+        Loved ones
+      </a>
+      <a class="tab-item" href="#">
+        <i class="icon ion-android-playstore"></i>
+        Store
+      </a>
+      <a class="tab-item" href="#">
+        <i class="icon ion-cash"></i>
+        Bills
+      </a>
+    </div>
+
+      <!-- header section end here -->
+
+
+  </ion-content>
+</ion-view>

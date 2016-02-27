@@ -1,0 +1,85 @@
+<ion-view cache-view="false" hide-nav-bar="true" ng-cloak ng-controller="profilePageCtrl">
+
+    <ion-header-bar class='header-bg'>
+        <div class="button button-clear button-light" ng-click="doProfileUpdate()"><b>Save</b></div>
+        <h1 class="title light">User Detail</h1>
+        <div class="buttons">
+            <button class="button button-clear button-light" ng-click="goBackScreen()"><b>Close</b></button>
+        </div>
+    </ion-header-bar>
+
+    <button target-id="" class="animated fadeInDownBig fab-button-new r-20 t-106 size-56 positive-bg" ng-click="takePicture()"
+    ng-if="userData.IsShowCamButton">
+        <i class="icon ion ion-camera light "></i>
+    </button>
+    <button target-id="" class="animated fadeInDownBig fab-button-new r-20 size-56 calm-bg" style="top:170px;" ng-click="openGallery()"
+    ng-if="userData.IsShowCamButton">
+        <i class="icon ion ion-aperture light"></i>
+    </button>
+
+    <ion-content ng-init="init()">
+        <div id="content">
+
+            <div id="profile-info">
+                <img id='profile-image' ng-src="{{userData.profFilePath}}"  ng-click="showCameraOption()" ng-if="userData.profFilePath" style="height: 120px; width: 120px">
+                <img id='profile-image' src="img/profile-empty.jpg" ng-click="showCameraOption()" ng-if="!userData.profFilePath" style="height: 120px; width: 120px">
+
+
+            </div>
+
+        </div>
+
+        <div class="card list">
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Name</span>
+                <input ng-disabled="true" ng-model="userData.name" type="text" placeholder="Enter your name">
+            </label>
+
+
+            <div class="item padding-0">
+                <div class="row">
+                    <div class="col r-border date-col" style="padding-top: 10px;">
+
+                        <h2 class="dark">DOB</h2>
+                        <p style="line-height:2;" ng-bind=" getDateWithMonthName(userData.dob)">23 oct, 2015</p>
+                        <p style="line-height:2;" ng-if="!userData.dob">--Select--</p>
+
+                    </div>
+                    <div class="col date-col">
+                        <label class="item item-input item-stacked-label">
+                            <span class="input-label">Mobile</span>
+                            <input ng-disabled="true" maxlength="10" ng-model="userData.mobile" type="tel" placeholder="your mobile no.">
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item ">
+                <div class="button-bar">
+                    <button ng-disabled="true" ng-class="{'button button-small button-assertive' : userData.gender == 1,
+                            'button button-small button-assertive button-outline' : userData.gender != 1}" ng-click="setGender(1)">Male</button>
+                    <button ng-disabled="true" ng-class="{'button button-small button-assertive' : userData.gender == 2,
+                            'button button-small button-assertive button-outline' : userData.gender != 2}" ng-click="setGender(2)">Female</button>
+                    <button ng-disabled="true" ng-class="{'button button-small button-assertive' : userData.gender == 3,
+                            'button button-small button-assertive button-outline' : userData.gender != 3}" ng-click="setGender(3)">Transgender</button>
+                </div>
+            </div>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Email</span>
+                <input ng-disabled="true" ng-model="userData.email" type="email" placeholder="Enter your email">
+            </label>
+            <!--<label class="item item-input item-stacked-label">
+                <span class="input-label">Password</span>
+                <input ng-disabled="true" ng-model="userData.pass" type="password" placeholder="Enter password">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Verify Password</span>
+                <input ng-disabled="true" ng-model="userData.cfm_pass" type="password" placeholder="Enter password">
+            </label>-->
+        </div>
+        <br/>
+        <br/>
+        <br/>
+    </ion-content>
+
+    </ion-modal-view>

@@ -1,0 +1,86 @@
+<ion-modal-view ng-cloak>
+    <ion-header-bar class='header-bg'>
+        <div class="button button-clear button-light" ng-click="doRegistration()"><b>Save</b></div>
+        <h1 class="title light">Registration</h1>
+        <div class="buttons">
+            <button class="button button-clear button-light" ng-click="closeRegisterModal()"><b>Close</b></button>
+        </div>
+    </ion-header-bar>
+
+    <button target-id="" class="animated fadeInDownBig fab-button-new r-20 t-106 size-56 positive-bg" 
+    ng-click="takePicture()"
+    ng-if="reg.IsShowCamButton">
+        <i class="icon ion ion-camera light "></i>
+    </button>
+    <button target-id="" class="animated fadeInDownBig fab-button-new r-20 size-56 calm-bg" 
+    style="top:170px;" ng-click="openGallery()"
+    ng-if="reg.IsShowCamButton">
+        <i class="icon ion ion-aperture light"></i>
+    </button>
+
+    <ion-content>
+        <div id="content">
+
+            <div id="profile-info">
+                <img id='profile-image' src="{{reg.profilePic}}" ng-click="showCameraOption()" ng-if="reg.profilePic" style="height: 120px; width: 120px">
+                <img id='profile-image' src="img/profile-empty.jpg" ng-click="showCameraOption()" ng-if="!reg.profilePic" style="height: 120px; width: 120px">
+
+
+            </div>
+
+        </div>
+
+        <div class="card list">
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Name</span>
+                <input ng-model="reg.name" type="text" placeholder="Enter your name">
+            </label>
+
+
+            <div class="item padding-0">
+                <div class="row">
+                    <div class="col r-border date-col" ng-click="pickDob()" style="padding-top: 10px;">
+
+                        <h2 class="dark">DOB</h2>
+                        <p style="line-height:2;" ng-bind=" getDateWithMonthName(reg.dob)">23 oct, 2015</p>
+                        <p style="line-height:2;" ng-if="!reg.dob">--Select--</p>
+
+                    </div>
+                    <div class="col date-col">
+                        <label class="item item-input item-stacked-label">
+                            <span class="input-label">Mobile</span>
+                            <input ng-model="reg.mobile" maxlength="10" type="tel" placeholder="your mobile no.">
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item ">
+                <div class="button-bar">
+                    <button ng-class="{'button button-small button-assertive' : reg.gender == 1,
+                            'button button-small button-assertive button-outline' : reg.gender != 1}" ng-click="setGender(1)">Male</button>
+                    <button ng-class="{'button button-small button-assertive' : reg.gender == 2,
+                            'button button-small button-assertive button-outline' : reg.gender != 2}" ng-click="setGender(2)">Female</button>
+                    <button ng-class="{'button button-small button-assertive' : reg.gender == 3,
+                            'button button-small button-assertive button-outline' : reg.gender != 3}" ng-click="setGender(3)">Transgender</button>
+                </div>
+            </div>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Email</span>
+                <input ng-model="reg.email" type="email" placeholder="Enter your email">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Password</span>
+                <input ng-model="reg.pass" type="password" placeholder="Enter password">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Verify Password</span>
+                <input ng-model="reg.cfm_pass" type="password" placeholder="Enter password">
+            </label>
+        </div>
+        <br/>
+        <br/>
+        <br/>
+    </ion-content>
+
+</ion-modal-view>

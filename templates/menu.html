@@ -1,0 +1,47 @@
+<ion-side-menus enable-menu-with-back-views="true">
+
+
+    <ion-side-menu-content>
+
+        <ion-nav-bar class="header-bg light">
+            <ion-nav-back-button class="button-light">
+            </ion-nav-back-button>
+
+            <ion-nav-buttons side="left">
+                <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+                </button>
+            </ion-nav-buttons>
+            <ion-nav-buttons side="right">
+                <!--<a ng-if="headerButton.showAddEnquiry" href="#/app/createEnquiry" class="button button-clear icon-right ion-ios-plus button-light animated zoomInUp"></a>-->
+            </ion-nav-buttons>
+
+        </ion-nav-bar>
+        <ion-nav-view name="menuContent">
+            <button ng-if="headerButton.showFilter" ng-click="openModal()" ng-controller="searchEnquiryListCtrl" class="animated fadeInUpBig fab-button-new t-20 r-20 size-48 light-bg ">
+                <i class="icon ion ion-funnel"></i></button>
+        </ion-nav-view>
+
+    </ion-side-menu-content>
+
+    <ion-side-menu side="left">
+        <ion-content class="dark-bg ">
+            <ion-list class="dark-bg sidepanel">
+                <a class="item item-avatar dark-bg">
+                    <img ng-src="{{userData.profFilePath}}" ng-if="userData.profFilePath" ng-click="openImagesPopup(userData.profFilePath)">
+                    <img src="img/profile-empty.jpg" ng-if="!userData.profFilePath">
+                    <h2 ng-bind="session_variables.name" class="light">Ravi</h2>
+                    <p style="color: #D7E7E9">24</span> / <span ng-bind="session_variables.gender">Male</span></p>
+                    <button menu-close  ng-click="jumpTo('app.profile_page')"
+                    class="button button-icon button-small button-clear button-light icon ion-gear-a menu_gear_icon"></button>
+                </a>
+                <ion-item menu-close ng-click="jumpTo(item.target)" class="s_item dark-bg item-icon-left" ng-repeat="item in menu.list" item="item">
+                    <i class="icon {{item.icon}}"></i> {{item.name}}
+                </ion-item>
+                <ion-item menu-close ng-click="doLogout()" class="s_item dark-bg item-icon-left">
+                    <i class="icon ion-log-out"></i> Logout
+                </ion-item>
+
+            </ion-list>
+        </ion-content>
+    </ion-side-menu>
+</ion-side-menus>
