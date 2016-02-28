@@ -182,6 +182,10 @@ right: 10px;
 .v-select{
     border: 0px none;
 }
+
+.item.active_acc{
+    background-color: #8C8C8C;
+}
 /*
 .landing-bg {
     background: url("img/bg_new.png") no-repeat center center fixed;
