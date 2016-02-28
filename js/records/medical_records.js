@@ -1,9 +1,9 @@
 angular.module('starter.mediRec', [])
 
     .controller('mediRecCtrl', function ($scope, $timeout, $ionicModal, $cordovaMedia, $ionicLoading,
-                                         $ionicPopup, generic_http_post_service,
-                                         date_picker, form_validator, fileTransfer, audio_service, generic_camera_service,
-                                         native_play_audio) {
+        $ionicPopup, generic_http_post_service,
+        date_picker, form_validator, fileTransfer, audio_service, generic_camera_service,
+        native_play_audio) {
 
 
         $scope.recNatureIcons = Object.freeze({
@@ -13,6 +13,7 @@ angular.module('starter.mediRec', [])
         });
 
 
+        $scope.plusIconClicked = false;
         $scope.array_list = {};
 
 
@@ -81,7 +82,12 @@ angular.module('starter.mediRec', [])
          * else, select the given group
          */
         $scope.toggleGroup = function (group) {
-            group.show = !group.show;
+            if (!$scope.plusIconClicked) {
+                alert('1');
+                group.show = !group.show;
+            } else {
+                $scope.plusIconClicked = false;
+            }
         };
         $scope.isGroupShown = function (group) {
             if (group)
@@ -182,11 +188,11 @@ angular.module('starter.mediRec', [])
             //alert(JSON.stringify(data));
             var filePath = data[0].fullPath;
             var fileType = filePath.substr(filePath.lastIndexOf('.') + 1);
-            if(!fileType)
+            if (!fileType)
                 fileType = "mp4";
             var options = new FileUploadOptions();
             options.fileKey = "file";
-            options.fileName = 'temp.'+fileType;//$scope.reg.profilePic.substr($scope.reg.profilePic.lastIndexOf('/') + 1);
+            options.fileName = 'temp.' + fileType;//$scope.reg.profilePic.substr($scope.reg.profilePic.lastIndexOf('/') + 1);
             options.mimeType = "video/" + fileType;
             options.chunkedMode = true;
             alert(filePath);
@@ -219,8 +225,8 @@ angular.module('starter.mediRec', [])
         $scope.session_variables.my_rec_nature = "";
 
 
-
         $scope.GetMedicalRecordNature = function () {
+            $scope.plusIconClicked = true;
             $scope.showLoader("Fetching data...");
             $scope.requestData = {};
             generic_http_post_service.getDetails_httpget(generic_http_post_service.getServices().GET_MEDICAL_RECORD_NATURE,
@@ -250,7 +256,7 @@ angular.module('starter.mediRec', [])
                 '</option>' +
                 '</select>' +
                 '</div>' +
-                    // '</div>' +
+                // '</div>' +
                 '<div class=" list popu" >' +
 
                 '<div class="item tabs tabs-secondary  stable-bg tabs-icon-top height-60">' +
@@ -399,6 +405,7 @@ angular.module('starter.mediRec', [])
 
 
         $scope.GetRelation_showPopup = function () {
+            $scope.plusIconClicked = true;
             $scope.getRelation($scope.GetRelation_showPopup_callback);
         }
 
@@ -469,7 +476,7 @@ angular.module('starter.mediRec', [])
                 '</label>' +
                 '<label class="item item-input">' +
                 '<input type="tel" maxlength="10" data-ng-model="medRec_temp.mycontacts.additional"  placeholder="Additional Contact">' +
-                    // '<i class="{{ validationClass.ERROR }} input_icon_right" ng-if ="!medRec_temp.mycontacts.additional"></i>' +
+                // '<i class="{{ validationClass.ERROR }} input_icon_right" ng-if ="!medRec_temp.mycontacts.additional"></i>' +
                 '</label>' +
                 '</form>' +
                 '</div>',
@@ -524,6 +531,7 @@ angular.module('starter.mediRec', [])
         $scope.medRec_temp.myallergy = {};
 
         $scope.GetAllergyType = function () {
+            $scope.plusIconClicked = true;
             $scope.showLoader("Fetching data...");
             $scope.requestData = {};
             $scope.requestData.UserRoleID = '' + $scope.session_variables.login_data.userroleid;
@@ -621,10 +629,10 @@ angular.module('starter.mediRec', [])
                 '</div>' +
 
                 '<div class="list" >' +
-                    // '<label class="item item-input item-icon-right">' +
-                    // '<i class="ion icon icon-right ion-calendar"></i>' +
-                    // '<input type="date"  placeholder="Exist From" data-ng-model="medRec_temp.myallergy.exist_from"  >' +
-                    // '</label>' +
+                // '<label class="item item-input item-icon-right">' +
+                // '<i class="ion icon icon-right ion-calendar"></i>' +
+                // '<input type="date"  placeholder="Exist From" data-ng-model="medRec_temp.myallergy.exist_from"  >' +
+                // '</label>' +
                 '<div class="item item-icon-left" ng-click="pickDate(dateScopes.allergy)" >' +
                 '<i class="ion icon icon-right ion-calendar"></i>' +
                 '<h2 style="line-height:2;" ng-bind=" getDateWithMonthName(medRec_temp.myallergy.exist_from)" >23 oct, 2015</h2>' +
@@ -671,6 +679,7 @@ angular.module('starter.mediRec', [])
         $scope.medRec_temp.myHealthCondition = {};
         // $scope.medRec_temp.myHealthCondition.exist_from = '2016-02-29';
         $scope.fetchHealthConditions = function () {
+            $scope.plusIconClicked = true;
             $scope.GetHealthConditionType();
             $scope.GetHealthHConditions();
         }
@@ -772,10 +781,10 @@ angular.module('starter.mediRec', [])
 
 
                 '<div class="list" >' +
-                    // '<label class="item item-input item-icon-right">' +
-                    // '<i class="ion icon icon-right ion-calendar"></i>' +
-                    // '<input type="date"  placeholder="Exist From" data-ng-model="medRec_temp.myHealthCondition.exist_from"  >' +
-                    // '</label>' +
+                // '<label class="item item-input item-icon-right">' +
+                // '<i class="ion icon icon-right ion-calendar"></i>' +
+                // '<input type="date"  placeholder="Exist From" data-ng-model="medRec_temp.myHealthCondition.exist_from"  >' +
+                // '</label>' +
                 '<div class="item item-icon-left" ng-click="pickDate(dateScopes.health)" >' +
                 '<i class="ion icon icon-right ion-calendar"></i>' +
                 '<h2 style="line-height:2;" ng-bind=" getDateWithMonthName(medRec_temp.myHealthCondition.exist_from)" >23 oct, 2015</h2>' +
@@ -885,7 +894,7 @@ angular.module('starter.mediRec', [])
 
 
         $scope.showHistoryPopup = function () {
-
+$scope.plusIconClicked = true;
 
             $ionicPopup.show({
                 template: '<div class="card list" >' +
@@ -900,8 +909,8 @@ angular.module('starter.mediRec', [])
                 '<label class="item item-input " >' +
                 ' <textarea rows="5"' +
                 'placeholder="eg: Anything about medical history or related problems" data-ng-model="medRec_temp.myhistory.history" ></textarea>' +
-                    //'<input type="text"  data-ng-model="medRec_temp.myhistory.history"  placeholder="Name">' +
-                    //'<i class="icon icon-right {{ validationClass.ERROR }}" ng-if ="!medRec_temp.myhistory.history"></i>' +
+                //'<input type="text"  data-ng-model="medRec_temp.myhistory.history"  placeholder="Name">' +
+                //'<i class="icon icon-right {{ validationClass.ERROR }}" ng-if ="!medRec_temp.myhistory.history"></i>' +
                 '</label>' +
                 '</form>' +
                 '</div>',
@@ -1034,7 +1043,7 @@ angular.module('starter.mediRec', [])
                     //   alert(JSON.stringify($scope.allImages));
                     $scope.showImages(0);
                 } else if (fileType.toLowerCase() == 'mov' || fileType.toLowerCase() == 'mp4'
-                    || fileType.toLowerCase() == 'wmv'|| fileType.toLowerCase() == '3gp') {
+                    || fileType.toLowerCase() == 'wmv' || fileType.toLowerCase() == '3gp') {
                     alert(filePath);
                     $scope.session_variables.clipSrc = filePath;
                     $scope.playVideo();

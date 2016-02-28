@@ -37,15 +37,16 @@
 
 
         <div class="card list">
-            <div class="item item-divider item-icon-left item-icon-right"
+            <div class="item item-divider item-icon-left item-icon-right dark-bg light"
+            ng-click="toggleGroup(array_list.PatMedRecords) "
                  ng-class="{active_acc: isGroupShown(array_list.PatMedRecords)}">
                 <i ng-click="toggleGroup(array_list.PatMedRecords)" class="icon icon-left "
                    ng-class="isGroupShown(array_list.PatMedRecords) ? 'ion-ios-arrow-down' : 'ion-ios-arrow-up'"></i>
 
 
                 <!--ng-if="array_list.med_rec_can_add==1 "-->
-                <span ng-click="toggleGroup(array_list.PatMedRecords) ">Medical Records</span>
-                <i class="icon ion-plus " ng-click="GetMedicalRecordNature() "></i>
+                <span >Medical Records</span>
+                <i class="icon ion-plus " data-ng-click="GetMedicalRecordNature() "></i>
             </div>
             <a class="item item-icon-left item-icon-right item-text-wrap item-accordion "
                ng-show="isGroupShown(array_list.PatMedRecords) "
@@ -63,14 +64,15 @@
         </div>
 
         <div class="card list">
-            <div class="item item-divider item-icon-left item-icon-right"
+            <div class="item item-divider item-icon-left item-icon-right dark-bg light"
+            ng-click="toggleGroup(array_list.PatMedHistory) "
                  ng-class="{active_acc: isGroupShown(array_list.PatMedHistory)}">
                 <i ng-click="toggleGroup(array_list.PatMedHistory)" class="icon icon-left "
                    ng-class="isGroupShown(array_list.PatMedHistory) ? 'ion-ios-arrow-down' : 'ion-ios-arrow-up'"></i>
 
                 <!--ng-if="array_list.med_rec_can_add==1 " -->
 
-                <span ng-click="toggleGroup(array_list.PatMedHistory) ">History</span>
+                <span >History</span>
                 <i class="icon ion-plus " ng-click="showHistoryPopup() "></i>
             </div>
             <a class="item item-icon-left item-text-wrap item-accordion " ng-show="isGroupShown(array_list.PatMedHistory)
@@ -88,14 +90,15 @@
         </div>
 
         <div class="card list ">
-            <div class="item item-divider item-icon-left item-icon-right "
+            <div class="item item-divider item-icon-left item-icon-right dark-bg light " 
+            ng-click="toggleGroup(array_list.PatAllergy) "
                  ng-class="{active_acc: isGroupShown(array_list.PatAllergy)} ">
                 <i ng-click="toggleGroup(array_list.PatAllergy)" class="icon icon-left "
                    ng-class="isGroupShown(array_list.PatAllergy) ? 'ion-ios-arrow-down' : 'ion-ios-arrow-up'"></i>
 
                 <!--ng-if="array_list.med_rec_can_add == 1" -->
 
-                <span ng-click="toggleGroup(array_list.PatAllergy) ">Allergy</span>
+                <span >Allergy</span>
                 <i class="icon ion-plus" ng-click="GetAllergyType()"></i>
             </div>
             <a class="item  item-text-wrap item-accordion" ng-show="isGroupShown(array_list.PatAllergy)"
@@ -109,14 +112,15 @@
         </div>
 
         <div class="card list">
-            <div class="item item-divider item-icon-left item-icon-right"
+            <div class="item item-divider item-icon-left item-icon-right dark-bg light"
+            ng-click="toggleGroup(array_list.HealthCondition) "
                  ng-class="{active_acc: isGroupShown(array_list.HealthCondition)}">
                 <i ng-click="toggleGroup(array_list.HealthCondition)" class="icon icon-left "
                    ng-class="isGroupShown(array_list.HealthCondition) ? 'ion-ios-arrow-down' : 'ion-ios-arrow-up'"></i>
 
                 <!--ng-if="array_list.med_rec_can_add == 1" -->
 
-                <span ng-click="toggleGroup(array_list.HealthCondition) ">Health Condition</span>
+                <span >Health Condition</span>
                 <i class="icon ion-plus" ng-click="fetchHealthConditions()"></i>
             </div>
             <a class="item  item-text-wrap item-accordion" ng-show="isGroupShown(array_list.HealthCondition)"
@@ -136,14 +140,15 @@
         </div>
 
         <div class="card list">
-            <div class="item item-divider item-icon-left item-icon-right"
+            <div class="item item-divider item-icon-left item-icon-right dark-bg light"
+            ng-click="toggleGroup(array_list.EmergencyContact) "
                  ng-class="{active_acc: isGroupShown(array_list.EmergencyContact)}">
                 <i ng-click="toggleGroup(array_list.EmergencyContact)" class="icon icon-left "
                    ng-class="isGroupShown(array_list.EmergencyContact) ? 'ion-ios-arrow-down' : 'ion-ios-arrow-up'"></i>
 
                 <!--ng-if="array_list.med_rec_can_add == 1" -->
 
-                <span ng-click="toggleGroup(array_list.EmergencyContact) ">Emergency Contact</span>
+                <span >Emergency Contact</span>
                 <i class="icon ion-plus" ng-click="GetRelation_showPopup()"></i>
             </div>
             <a class="item  item-text-wrap item-accordion" ng-show="isGroupShown(array_list.EmergencyContact)"
@@ -161,14 +166,15 @@
 
 
         <div class="card list">
-            <div class="item item-divider item-icon-left item-icon-right"
+            <div class="item item-divider item-icon-left item-icon-right dark-bg light"
+            ng-click="toggleGroup(array_list.PatMedication) "
                  ng-class="{active_acc: isGroupShown(array_list.PatMedication)}">
                 <i ng-click="toggleGroup(array_list.PatMedication)" class="icon icon-left "
                    ng-class="isGroupShown(array_list.PatMedication) ? 'ion-ios-arrow-down' : 'ion-ios-arrow-up'"></i>
 
                 <!--ng-if="array_list.med_rec_can_add == 1"-->
 
-                <span ng-click="toggleGroup(array_list.PatMedication) ">Medication</span>
+                <span >Medication</span>
                 <i class="icon ion-plus"></i>
             </div>
             <a class="item  item-text-wrap item-accordion" ng-show="isGroupShown(array_list.PatMedication)"
