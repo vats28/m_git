@@ -13,10 +13,10 @@ angular.module('utils.date_picker', [])
         function _getDate(dateOrTime, callback, allowOld, allowFuture) {
             try {
                 var _maxDate, _minDate = undefined;
-                if(!allowOld){
+                if (!allowOld) {
                     _minDate = new Date() - 0;
                 }
-                if(!allowFuture){
+                if (!allowFuture) {
                     _maxDate = new Date() - 0;
                 }
                 var options = {
@@ -35,7 +35,7 @@ angular.module('utils.date_picker', [])
                 $cordovaDatePicker.show(options).then(function (date) {
                     date = convertDate(date);
                     //alert(date.currDate);
-                    
+
                     callback(date);
                 });
 
@@ -78,7 +78,7 @@ angular.module('utils.date_picker', [])
             "Oct", "Nov", "Dec");
 
         function formatDate_with_month_name(datestring) { //from 1928-10-25 to  may 21, 1988
-              //  alert(datestring);
+            //  alert(datestring);
             var result = "";
             if (!datestring || datestring == "")
                 return result;
@@ -86,18 +86,18 @@ angular.module('utils.date_picker', [])
             //var datArr = datestring.split('/');
             //var curr_date = new Date(datArr[2], datArr[1], datArr[0]); // new Date(y,m,d);
             var datArr = datestring.split('-');
-            var curr_date = new Date( datArr[0],(datArr[1]-1), datArr[2]); // new Date(y,m,d);
+            var curr_date = new Date(datArr[0], (datArr[1] - 1), datArr[2]); // new Date(y,m,d);
             result = month_names[curr_date.getMonth()] + ' ' + curr_date.getDate() + ', ' + curr_date.getFullYear();
 
             return result;
         }//end formatDate_with_month_name
 
-        function ConvertDateToString (date, format) {
+        function ConvertDateToString(date, format) {
             var result = "";
             var datArr = result.split('-');
             if (format == "dd/mm/yyyy") {
                 result = curr_date.getDate() + '/' + curr_date.getMonth() + '/' + curr_date.getFullYear();
-            }else if(format == "yyyy-mm-dd"){
+            } else if (format == "yyyy-mm-dd") {
                 result = data.getFullYear() + "-" + padLeftZero(data.getMonth() + 1) + "-" + padLeftZero(data.getDate());
             }
 
@@ -113,11 +113,17 @@ angular.module('utils.date_picker', [])
             if (format == "dd/mm/yyyy") {
                 var curr_date = new Date(datArr[0], datArr[1], datArr[2]); // new Date(y,m,d);
                 result = curr_date.getDate() + '/' + curr_date.getMonth() + '/' + curr_date.getFullYear();
+            } else if (format == "mm/dd/yyyy") {
+                var curr_date = new Date(datArr[0], datArr[1], datArr[2]); // new Date(y,m,d);
+                result = curr_date.getMonth() + '/' + curr_date.getDate() + '/' + curr_date.getFullYear();
+            } else if (format == "yyyy/mm/dd") {
+                var curr_date = new Date(datArr[0], datArr[1], datArr[2]); // new Date(y,m,d);
+                result = curr_date.getFullYear() + '/' + curr_date.getMonth() + '/' + curr_date.getDate();
             }
 
             return result;
         }//ned formattedDate
-        
+
         function _getAge(date, month, year) {
             var birthdate = new Date(year, month, date);// new Date(y,m,d);
             var cur = new Date();
@@ -133,13 +139,13 @@ angular.module('utils.date_picker', [])
             getDateWithMonthName: function (dateString) {
                 return formatDate_with_month_name(dateString);
             },
-            getDateInFormat: function(dateString, format) {
+            getDateInFormat: function (dateString, format) {
                 return formattedDate(dateString, format);
             },
-            getAge: function(date, month, year) {
+            getAge: function (date, month, year) {
                 return _getAge(date, month, year);
             },
-            convertDateToString: function(date, format){ // new date(), yyyy-mm-dd
+            convertDateToString: function (date, format) { // new date(), yyyy-mm-dd
                 return ConvertDateToString(date, format);
             }
         }

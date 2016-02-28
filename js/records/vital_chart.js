@@ -1,6 +1,6 @@
-angular.module('starter.mediRec', [])
+angular.module('starter.vital', [])
 
-    .controller('mediRecCtrl', function ($scope, $timeout, $ionicModal, $cordovaMedia, $ionicLoading,
+    .controller('vitalCtrl', function ($scope, $timeout, $ionicModal, $cordovaMedia, $ionicLoading,
                                          $ionicPopup, generic_http_post_service,
                                          date_picker, form_validator, fileTransfer, audio_service, generic_camera_service,
                                          native_play_audio) {

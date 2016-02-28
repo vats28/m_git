@@ -110,16 +110,16 @@ angular.module('starter.landing', [])
             // alert(JSON.stringify(value));
             $scope.reg.gender = value;
         }
-        $scope.getAge = function (dateString) {
-            var retval = 'Invalid';
-            try {
-                var dateArr = dateString.split('/');
-                retval = date_picker.getAge()
-            } catch (error) {
-
-            }
-            return
-        }
+        //$scope.getAge = function (dateString) {
+        //    var retval = 'Invalid';
+        //    try {
+        //        var dateArr = dateString.split('/');
+        //        retval = date_picker.getAge()
+        //    } catch (error) {
+        //
+        //    }
+        //    return
+        //}
 
 
         $scope.doRegistration = function () {
@@ -189,12 +189,13 @@ angular.module('starter.landing', [])
 
         $scope.doRegistration_callback = function (data) {
             $scope.hideLoader();
-            //alert(JSON.stringify(data));
+           // alert(JSON.stringify(data));
             try {
                 $scope.session_variables.login_data = {};
                 if (data.success == 1) {
 
                     $scope.session_variables.login_data.userid = data.userId;
+                    $scope.session_variables.login_data.userroleid = data.userroleid;
 
                     //store login credentials
                     //$scope.SaveLoginCredential(JSON.stringify(data));

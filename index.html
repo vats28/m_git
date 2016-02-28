@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src *; script-src 'self' 'unsafe-inline' 'unsafe-eval' *; style-src  'self' 'unsafe-inline' *">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
     <title></title>
 
@@ -13,7 +14,7 @@
     <link href="css/vats-fab-button.css" rel="stylesheet">
     <link href="css/account_profile.css" rel="stylesheet">
     <link href="css/image_viewer.css" rel="stylesheet">
-    
+
 
     <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
     <link href="css/ionic.app.css" rel="stylesheet">
@@ -24,7 +25,7 @@
 
     <script src="lib/ngCordova/dist/ng-cordova.min.js"></script>
     <script src="lib/ng-cordova-oauth/dist/ng-cordova-oauth.min.js"></script>
-    
+
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
 
@@ -37,14 +38,18 @@
     <script src="js/dashboard.js"></script>
     <script src="js/profile_page.js"></script>
     <script src="js/records/medical_records.js"></script>
+    <script src="js/records/vital_chart.js"></script>
     <script src="js/utils/date_picker.js"></script>
-    <!--<script src="js/utils/ion-fabButton.js"></script>-->
+    <script src="js/utils/ion-fabButton.js"></script>
     <script src="js/utils/http.js"></script>
     <script src="js/utils/camera.js"></script>
+    <script src="js/utils/global_methods.js"></script>
     <script src="js/utils/form_validation.js"></script>
     <script src="js/utils/fileTransfer.js"></script>
     <script src="js/utils/record_audio.js"></script>
     <script src="js/utils/native_audio_play.js"></script>
+    <script src="js/loved_ones/add_loved_ones.js"></script>
+    <script src="js/loved_ones/list_loved_ones.js"></script>
     <!--<script src="js/enquiry/createEnquiry/createEnquiry.js"></script>
     <script src="js/enquiry/createEnquiry/createNewEnquiry.js"></script>
     <script src="js/enquiry/createEnquiry/add_vehicle_info.js"></script>
@@ -62,7 +67,7 @@
     <ion-nav-view></ion-nav-view>
 
 
-   
+
 </body>
 
 </html>

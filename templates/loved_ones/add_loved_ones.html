@@ -1,0 +1,129 @@
+<ion-view  ng-cloak ng-controller="addLovedCtrl">
+
+
+    <fab-button target-id="" class="animated zoomInDown b-20 r-20" ng-click="addLovedOnes()" >
+        <i class="icon ion ion-plus "></i>
+    </fab-button>
+    <ion-content class="page-bg-color" ng-init="init()">
+
+        <!-- header section start here -->
+        <!--<div class="item item-avatar">-->
+            <!--<img ng-src="{{userData.profFilePath}}" ng-if="userData.profFilePath" ng-click="openImagesPopup(userData.profFilePath)">-->
+            <!--<img src="img/profile-empty.jpg" ng-if="!userData.profFilePath">-->
+
+            <!--<h2 ng-bind="array_list.name">Ravi</h2>-->
+            <!--<h2> <span ng-bind="getAge(userData.dob)">24</span> / <span ng-bind="array_list.gender">Male</span></h2>-->
+            <!--<p ng-bind="array_list.email">1MedKey</p>-->
+
+        <!--</div>-->
+
+
+        <div class="item tabs tabs-secondary  stable-bg tabs-icon-top">
+            <a class="tab-item" href="#">
+                <i class="icon ion-calendar" ng-click="jumpTo('app.calendar_events')"></i>
+                Calender
+            </a>
+            <a class="tab-item" ng-click="jumpTo('app.list_loved_ones')">
+                <i class="icon ion-heart"></i>
+                Loved ones
+            </a>
+            <a class="tab-item" href="#">
+                <i class="icon ion-android-playstore"></i>
+                Store
+            </a>
+            <a class="tab-item" href="#">
+                <i class="icon ion-cash"></i>
+                Bills
+            </a>
+        </div>
+
+        <!-- header section end here -->
+
+        <div class="card list">
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Name</span>
+                <input type="text" ng-model="temp.name" placeholder="Enter name">
+            </label>
+            <label class="item item-input item-stacked-label" ng-click="pickDob()">
+                <span class="input-label">DOB</span>
+                <p style="line-height:2;" ng-bind=" getDateWithMonthName(temp.dob)">23 oct, 2015</p>
+                <p style="line-height:2;" ng-if="!temp.dob">--Select--</p>
+            </label>
+            <div class="item ">
+                <div class="button-bar">
+                    <button ng-class="{'button button-small button-assertive' : temp.gender == 1,
+                            'button button-small button-assertive button-outline' : temp.gender != 1}" ng-click="setGender(1)">Male</button>
+                    <button ng-class="{'button button-small button-assertive' : temp.gender == 2,
+                            'button button-small button-assertive button-outline' : temp.gender != 2}" ng-click="setGender(2)">Female</button>
+                    <button ng-class="{'button button-small button-assertive' : temp.gender == 3,
+                            'button button-small button-assertive button-outline' : temp.gender != 3}" ng-click="setGender(3)">Transgender</button>
+                </div>
+            </div>
+
+            <div class="item padding-0">
+                <div class="row">
+                    <div class="col r-border date-col" style="padding-top: 10px;">
+
+                        <h2 class="dark">Relationship</h2>
+                        <select ng-model="temp.relation_id"   ng-model="temp.relation">
+                            <option value="">--select--</option>
+                            <option ng-repeat="item in temp.relation_list" value="{{item.Relationship_id}}">{{item.Name}}</option>
+                        </select>
+
+                    </div>
+                    <div class="col date-col">
+                        <li class="item item-checkbox checkbox-balanced">
+                            <label class="checkbox">
+                                <input ng-model="temp.dependent" type="checkbox">
+                            </label>
+                            Dependant
+                        </li>
+                    </div>
+                </div>
+            </div>
+
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Email</span>
+                <input type="email" ng-model="temp.email" placeholder="Enter email">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Mobile/Phone</span>
+                <input type="tel" ng-model="temp.mobile" maxlength="10" placeholder="Enter mobile/phone">
+            </label>
+
+            <div class="item item-divider">
+                Access Authentication
+            </div>
+            <li class="item item-checkbox checkbox-balanced">
+                <label class="checkbox">
+                    <input ng-model="temp.access.one" type="checkbox" value="1">
+                </label>
+                Read/Monitor clinical information
+            </li>
+
+            <li class="item item-checkbox checkbox-balanced">
+                <label class="checkbox">
+                    <input ng-model="temp.access.two" type="checkbox" value="2">
+                </label>
+                Get reminders, alerts
+            </li>
+
+            <li class="item item-checkbox checkbox-balanced">
+                <label class="checkbox">
+                    <input ng-model="temp.access.three" type="checkbox" value="3">
+                </label>
+                Share/Update medical information
+            </li>
+
+            <li class="item item-checkbox checkbox-balanced">
+                <label class="checkbox">
+                    <input ng-model="temp.access.four" type="checkbox" value="4">
+                </label>
+                Bill payment
+            </li>
+
+        </div>
+        <div class="list"></div>
+    </ion-content>
+
+</ion-view>

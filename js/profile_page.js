@@ -84,16 +84,16 @@ angular.module('starter.profilePage', [])
             // alert(JSON.stringify(value));
             $scope.userData.gender = value;
         }
-        $scope.getAge = function (dateString) {
-            var retval = 'Invalid';
-            try {
-                var dateArr = dateString.split('/');
-                retval = date_picker.getAge()
-            } catch (error) {
-
-            }
-            return
-        }
+        //$scope.getAge = function (dateString) {
+        //    var retval = 'Invalid';
+        //    try {
+        //        var dateArr = dateString.split('/');
+        //        retval = date_picker.getAge()
+        //    } catch (error) {
+        //
+        //    }
+        //    return
+        //}
 
 
         $scope.doProfileUpdate = function () {

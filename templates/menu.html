@@ -17,8 +17,11 @@
 
         </ion-nav-bar>
         <ion-nav-view name="menuContent">
-            <button ng-if="headerButton.showFilter" ng-click="openModal()" ng-controller="searchEnquiryListCtrl" class="animated fadeInUpBig fab-button-new t-20 r-20 size-48 light-bg ">
-                <i class="icon ion ion-funnel"></i></button>
+
+            <button ng-if="headerButton.showVitalChart" class="animated zoomInDown fab-button-new size-48 t-20 r-20  energized"
+                    ng-click="jumpTo('app.vital_chart')">
+                <i class="icon ion ion-stats-bars"></i>
+            </button>
         </ion-nav-view>
 
     </ion-side-menu-content>
@@ -27,14 +30,18 @@
         <ion-content class="dark-bg ">
             <ion-list class="dark-bg sidepanel">
                 <a class="item item-avatar dark-bg">
-                    <img ng-src="{{userData.profFilePath}}" ng-if="userData.profFilePath" ng-click="openImagesPopup(userData.profFilePath)">
+                    <img ng-src="{{userData.profFilePath}}" ng-if="userData.profFilePath"
+                         ng-click="openImagesPopup(userData.profFilePath)">
                     <img src="img/profile-empty.jpg" ng-if="!userData.profFilePath">
+
                     <h2 ng-bind="session_variables.name" class="light">Ravi</h2>
+
                     <p style="color: #D7E7E9">24</span> / <span ng-bind="session_variables.gender">Male</span></p>
-                    <button menu-close  ng-click="jumpTo('app.profile_page')"
-                    class="button button-icon button-small button-clear button-light icon ion-gear-a menu_gear_icon"></button>
+                    <button menu-close ng-click="jumpTo('app.profile_page')"
+                            class="button button-icon button-small button-clear button-light icon ion-gear-a menu_gear_icon"></button>
                 </a>
-                <ion-item menu-close ng-click="jumpTo(item.target)" class="s_item dark-bg item-icon-left" ng-repeat="item in menu.list" item="item">
+                <ion-item menu-close ng-click="jumpTo(item.target)" class="s_item dark-bg item-icon-left"
+                          ng-repeat="item in menu.list" item="item">
                     <i class="icon {{item.icon}}"></i> {{item.name}}
                 </ion-item>
                 <ion-item menu-close ng-click="doLogout()" class="s_item dark-bg item-icon-left">

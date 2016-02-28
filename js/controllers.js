@@ -1,22 +1,22 @@
 angular.module('starter.controllers', [])
 
     .controller('AppCtrl', function ($scope, $state, $ionicModal, $ionicPopup,
-        $ionicHistory, $ionicScrollDelegate, $ionicLoading, $ionicSideMenuDelegate, $timeout) {
+        $ionicHistory, $ionicScrollDelegate, $ionicLoading, $ionicSideMenuDelegate,generic_http_post_service, $timeout, date_picker) {
 
         // With the new view caching in Ionic, Controllers are only called
         // when they are recreated or on app start, instead of every page change.
         // To listen for when this page is active (for example, to refresh data),
         // listen for the $ionicView.enter event:
-        // $scope.headerButton = {};
-        // $scope.$on('$ionicView.enter', function (e) {
-        //     var stateId = $ionicHistory.currentView().stateId;
-            
-        //     if (stateId == "app.searchEnquiryList") {
-        //         $scope.headerButton.showFilter = true;
-        //     } else {
-        //         $scope.headerButton.showFilter = false;
-        //     }
-        // });
+         $scope.headerButton = {};
+         $scope.$on('$ionicView.enter', function (e) {
+             var stateId = $ionicHistory.currentView().stateId;
+
+             if (stateId == "app.medical_records") {
+                 $scope.headerButton.showVitalChart = true;
+             } else {
+                 $scope.headerButton.showVitalChart = false;
+             }
+         });
 
         // Form data for the login modal
         $scope.loginData = {};
@@ -35,6 +35,9 @@ angular.module('starter.controllers', [])
             LIGHT: 'opacity: 0.5;',
         };
 
+        $scope.localStorageKeys = Object.freeze({
+            RELATION_LIST:'mcura_relation',
+        });
 
 
         $scope.menu = {};
@@ -73,8 +76,8 @@ angular.module('starter.controllers', [])
                 //this.close();
             });
         }//end
-        
-        
+
+
         // An alert dialog
         var alertPopup;
         $scope.templateUrl = function (_title, _templateUrl, _scope) {
@@ -138,7 +141,7 @@ angular.module('starter.controllers', [])
                 disableBack: true
             });
             /* $ionicViewService.nextViewOptions({
-        
+
              });*/
         }// end
 
@@ -148,7 +151,7 @@ angular.module('starter.controllers', [])
                 disableBack: false
             });
             /* $ionicViewService.nextViewOptions({
-        
+
              });*/
         }// end
 
@@ -216,6 +219,24 @@ angular.module('starter.controllers', [])
             });
         };
 
+        // A confirm dialog
+        $scope.showConfirm = function(title, template, data, callback) {
+            $ionicPopup.confirm({
+                title: title,
+                template: '<div align="center">' + template + '</div>',
+                okType: 'button-assertive',
+                cancelType: 'button-dark'
+            }).then(function(res) {
+                if(res) {
+                    console.log('You are sure');
+                    if(callback) {
+                        callback(data);
+                    }
+                } else {
+                    console.log('You are not sure');
+                }
+            });
+        };//end
 
         $scope.SaveInLocalStorage = function (key, value) {
             window.localStorage.setItem(key, value);
@@ -238,10 +259,10 @@ angular.module('starter.controllers', [])
                 alert(err);
             }
         }//end func
-        
-        
-        
-        
+
+
+
+
 
         $scope.menu.list = [
             /*{
@@ -344,4 +365,26 @@ angular.module('starter.controllers', [])
             $scope.modal.hide();
             $scope.modal.remove()
         };
+
+
+        $scope.getRelation = function(callback){
+            $scope.showLoader("Fetching data...");
+            $scope.requestData = {};
+            $scope.requestData.UserRoleID = '' + $scope.session_variables.login_data.userroleid;
+            //alert(generic_http_post_service.getServices().GET_HEALTH_CONDITION_TYPE);
+            generic_http_post_service.getDetails_httpget(generic_http_post_service.getServices().GET_RELATIONSHIP_MASTER,
+                $scope.requestData, callback);
+        }//end
+
+        $scope.getAge = function (dateString) {
+            if (!dateString)
+                return;
+            try {
+                dateString = dateString.split(' ')[0];
+                var arr = dateString.substring(0, 10).split('/');
+                return date_picker.getAge(arr[1], arr[0], arr[2]);//d, m, y
+            } catch (error) {
+                alert(error);
+            }
+        }//end getAge
     });
