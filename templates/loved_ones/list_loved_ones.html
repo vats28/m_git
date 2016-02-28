@@ -1,0 +1,101 @@
+<ion-view cache-view="false" view-title="Loved ones" ng-controller="listLovedCtrl">
+    <fab-button target-id="" class="animated zoomInDown b-20 r-20" ng-click="jumpTo('app.add_loved_ones')" >
+        <i class="icon ion ion-plus "></i>
+    </fab-button>
+    <ion-content class="page-bg-color"  ng-init="init()">
+        <!-- header section start here -->
+        <div class="item item-avatar">
+            <img ng-src="{{userData.profFilePath}}" ng-if="userData.profFilePath" ng-click="openImagesPopup(userData.profFilePath)">
+            <img src="img/profile-empty.jpg" ng-if="!userData.profFilePath">
+
+            <h2 ng-bind="userData.name">Ravi</h2>
+            <h2> <span ng-bind="getAge(userData.dob)">24</span> / <span ng-bind="userData.gender_str">Male</span></h2>
+            <p ng-bind="userData.email">1MedKey</p>
+        </div>
+
+        <div class="item tabs tabs-secondary  stable-bg tabs-icon-top">
+            <a class="tab-item" href="#">
+                <i class="icon ion-calendar" ng-click="jumpTo('app.calendar_events')"></i>
+                Calender
+            </a>
+            <a class="tab-item" ng-click="jumpTo('app.list_loved_ones')">
+                <i class="icon ion-heart"></i>
+                Loved ones
+            </a>
+            <a class="tab-item" href="#">
+                <i class="icon ion-android-playstore"></i>
+                Store
+            </a>
+            <a class="tab-item" href="#">
+                <i class="icon ion-cash"></i>
+                Bills
+            </a>
+        </div>
+
+        <!-- header section end here -->
+
+
+
+
+        <!--<div class="row" style=" border-bottom: solid #A4A4A4 2px;  ">-->
+            <!--<div class="col">-->
+                <!--<a class="button button-small button-block icon-left ion-plus button-dark" ng-click="jumpTo('app.add_loved_ones')">-->
+                    <!--Add Profile-->
+                <!--</a>-->
+            <!--</div>-->
+            <!--<div class="col">-->
+            <!--<a class="button button-small button-block icon-left ion-pull-request">-->
+            <!--Request Pending-->
+            <!--</a>-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <div class="card" ng-if="temp.lovedone_list==null " >
+           <div class="item">
+               <h2 class="assertive">No loved one has been added</h2>
+               <p>You can add one by pressing plus icon button below</p>
+           </div>
+
+        </div>
+
+        <div class="card" ng-repeat="item in temp.lovedone_list " item="item">
+            <div class="item item-avatar item-text-wrap">
+
+
+
+
+                <img  ng-src="{{item.profilePic}}" ng-if="item.profilePic" style="height: 120px; width: 120px">
+                <img  src="img/profile-empty.jpg" ng-if="!item.profilePic" style="height: 120px; width: 120px">
+
+                <h2 ng-bind="item.Lovedones_Name">Aish Gupta</h2>
+                <p><span ng-bind="getAge(item.DOB)">24</span>/<span ng-bind="item.Gender">F</span> | <span ng-bind="item.Relationship">Uncle</span></p>
+
+                <button  class="fab-button-new dark-bg light absolute_round_button" ng-click="call(item.LovedonesMobile)" style="bottom:5px; right:5px;">
+                    <i class="icon ion ion-android-call"></i></button>
+                <button  class="fab-button-new light absolute_round_button" ng-click="email(item.LovedonesEmail)" style="bottom:5px; right:46px; background-color: #a2a2a2">
+                    <i class="icon ion ion-email"></i></button>
+
+
+            </div>
+
+
+            <div class="item  item-text-wrap  stable-bg tabs-icon-top">
+
+
+                <div style="float: left" >
+                    <button   ng-click="showMedicalChart()" class=" fab-button-new btn_med_chart energized-bg ">
+                        <i class="icon ion ion-ios-paper light"></i>
+                    </button>
+                </div>
+                <div class="" style="padding-left:50px;">
+                    <span >BP-1/7-90/100 | BG-1/5-145</span>
+
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="list"></div>
+    </ion-content>
+</ion-view>

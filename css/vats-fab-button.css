@@ -22,45 +22,62 @@
 .fab-button-new .icon {
     font-size: 24px;
 }
- .r-20{    
+.r-20{
     right: 20px;
 }
- .r-106{    
+.r-106{
     right: 106px;
 }
- .r-126{    
+.r-126{
     right: 126px;
 }
 
-.b-20{    
+.b-20{
     bottom: 20px;
 }
-.b-106{    
+.b-106{
     bottom: 106px;
 }
-.b-126{    
+.b-126{
     bottom: 126px;
 }
 
-.t-20{    
+.t-20{
     top: 20px;
 }
-.t-106{    
+.t-106{
     top: 106px;
 }
-.t-126{    
+.t-126{
     top: 170px;
 }
 
-.size-48{    
+.size-48{
     width: 48px;
     height: 48px;
 }
-.size-56{    
+.size-56{
     width: 56px;
     height: 56px;
 }
-.size-30{    
+.size-30{
     width: 30px;
     height: 30px;
 }
+
+
+.absolute_round_button{
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    position: absolute;
+}
+
+.btn_med_chart{
+    position: absolute;
+    animation-duration: 20s;
+    height: 36px;
+    width: 36px;
+    top: 7px;
+}
+

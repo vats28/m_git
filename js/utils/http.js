@@ -32,6 +32,9 @@ angular.module('utils.http_post', [])
             PAT_MED_RECORD_INSERT: server_host + server_api_path + 'PatMedRecordsInsert',
             UPLOAD_PAT_IMAGE: server_host + server_api_path + 'UploadPatImage',
             UPDATE_PAT_IMAGE: server_host + server_api_path + 'UpdatePatImage',
+            REGISTER_LOVEDONE: server_host + server_api_path + 'Register_Lovedone',
+            GET_LOVEDONE: server_host + server_api_path + 'GetLovedones',
+
             //http://test.tn.mcura.com/ConsumerService.svc/json/FileUploadImage
         });
 
@@ -66,8 +69,8 @@ angular.module('utils.http_post', [])
                         callback(data);
                     }).
                     error(function (data, status, headers, config) {
-                       // alert("data" + JSON.stringify(data));
-                         alert("status : " + JSON.stringify(status));
+                        // alert("data" + JSON.stringify(data));
+                        alert("status : " + JSON.stringify(status));
                         //  alert("headers" + JSON.stringify(headers));
                         //  alert("config" + JSON.stringify(config));
                         // window.analytics.trackEvent('webservice', API, 'fail', 'http_post');
@@ -88,7 +91,7 @@ angular.module('utils.http_post', [])
                 angular.forEach(requestData, function (value, key) {
                     API += key + '=' + value + '&';
                 });
-                
+
                 //alert(API);
                 $http.get(API).
                     success(function (data, status, headers, config) {

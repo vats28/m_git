@@ -5,8 +5,9 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'ngCordova', 'ngCordovaOauth', 'starter.controllers', 'starter.landing',
-    'starter.dashboard', 'starter.mediRec', 'starter.profilePage',
-    'utils.date_picker', 'utils.http_post', 'utils.validations', 
+    'starter.dashboard', 'starter.mediRec', 'starter.profilePage', 'starter.addLoved', 'starter.listLoved',
+    'starter.vital',
+    'utils.date_picker', 'utils.http_post', 'utils.validations', 'ion-fab-button',
     'utils.camera', 'utils.fileTransfer', 'utils.audio', 'utils.native_play_audio'])
 
     .run(function ($ionicPlatform) {
@@ -31,7 +32,6 @@ angular.module('starter', ['ionic', 'ngCordova', 'ngCordovaOauth', 'starter.cont
         });
 
     })
-
 
 
     .config(function ($stateProvider, $urlRouterProvider) {
@@ -78,16 +78,43 @@ angular.module('starter', ['ionic', 'ngCordova', 'ngCordovaOauth', 'starter.cont
                         templateUrl: 'templates/records/medical_records.html'
                     }
                 }
+            })
+
+            .state('app.add_loved_ones', {
+                url: '/add_loved_ones',
+                views: {
+                    'menuContent': {
+                        templateUrl: 'templates/loved_ones/add_loved_ones.html'
+                    }
+                }
+            })
+
+            .state('app.list_loved_ones', {
+                url: '/list_loved_ones',
+                views: {
+                    'menuContent': {
+                        templateUrl: 'templates/loved_ones/list_loved_ones.html'
+                    }
+                }
+            })
+
+            .state('app.vital_chart', {
+                url: '/vital_chart',
+                views: {
+                    'menuContent': {
+                        templateUrl: 'templates/records/vital_chart.html'
+                    }
+                }
             });
         // if none of the above states are matched, use this as the fallback
         $urlRouterProvider.otherwise('/app/landing');
     });
 
 
-// $('.quiz-qa h3').click(function(e) {      
+// $('.quiz-qa h3').click(function(e) {
 //   if ($(this).hasClass("deleted")) {
 //     e.stopImmediatePropagation();
-//     return false;      
-//    }   
-// });    
+//     return false;
+//    }
+// });
 // $('.quiz-qa').accordion();

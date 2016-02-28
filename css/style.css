@@ -58,7 +58,7 @@
 
 /*.item-bg-new p, h2, h4 { color: white;}
 .sidepanel p, h2, a, .s_item{	color: #D7E7E9;} */
-.sidepanel  .s_item {	color: #D7E7E9;} 
+.sidepanel  .s_item {	color: #D7E7E9;}
 
 .padding-10{
     padding: 10px;
@@ -86,7 +86,7 @@
 
 .font-22{
     font-size: 16px;
-    
+
 }
 
 .sidepanel .s_item{
@@ -116,7 +116,7 @@
     font-size: 12px;
 }
 
-.v-tab-item button{    
+.v-tab-item button{
     /*background-color: #4D5859;*/
     animation-duration: 2s;
 }
@@ -130,7 +130,7 @@
     padding: 0px 5px 0 10px;
 }
 
-.r-border{    
+.r-border{
     border-right: 1px solid rgb(177, 175, 175);
 }
 
@@ -177,6 +177,14 @@ right: 15px;
     position: absolute;
 top: 10px;
 right: 10px;
+}
+
+.v-select{
+    border: 0px none;
+}
+
+.item.active_acc{
+    background-color: #8C8C8C;
 }
 /*
 .landing-bg {
