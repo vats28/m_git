@@ -6,7 +6,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'ngCordova', 'ngCordovaOauth', 'starter.controllers', 'starter.landing',
     'starter.dashboard', 'starter.mediRec', 'starter.profilePage', 'starter.addLoved', 'starter.listLoved',
-    'starter.vital',
+    'starter.vital', 'starter.mediRecLovedOne',
     'utils.date_picker', 'utils.http_post', 'utils.validations', 'ion-fab-button',
     'utils.camera', 'utils.fileTransfer', 'utils.audio', 'utils.native_play_audio'])
 
@@ -80,6 +80,15 @@ angular.module('starter', ['ionic', 'ngCordova', 'ngCordovaOauth', 'starter.cont
                 }
             })
 
+            .state('app.medical_records_loved_one', {
+                url: '/medical_records_loved_one',
+                views: {
+                    'menuContent': {
+                        templateUrl: 'templates/records/medical_records_loved_one.html'
+                    }
+                }
+            })
+
             .state('app.add_loved_ones', {
                 url: '/add_loved_ones',
                 views: {
@@ -103,6 +112,15 @@ angular.module('starter', ['ionic', 'ngCordova', 'ngCordovaOauth', 'starter.cont
                 views: {
                     'menuContent': {
                         templateUrl: 'templates/records/vital_chart.html'
+                    }
+                }
+            })
+
+            .state('app.logout', {
+                url: '/logout',
+                views: {
+                    'menuContent': {
+                        templateUrl: 'templates/logout.html'
                     }
                 }
             });

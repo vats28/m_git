@@ -65,7 +65,7 @@ angular.module('starter.addLoved', [])
                     $scope.showAlertWindow_Titled('Error', 'Please select relation');
                     return;
                 }
-                if (!$scope.temp.access.one && !$scope.temp.access.two && !$scope.temp.access.three && !$scope.temp.access.four) {
+                if (!$scope.temp.access_type_id) {
                     $scope.showAlertWindow_Titled('Error', 'Please select access authentication');
                     return;
                 }
@@ -83,7 +83,7 @@ angular.module('starter.addLoved', [])
                 $scope.requestData.RelationshipID = '' + $scope.temp.relation_id;
                 $scope.requestData.LovedoneEmail = '' + $scope.temp.email;
                 $scope.requestData.LovedoneMobile = '' + $scope.temp.mobile;
-                $scope.requestData.LovedAccessTypeid = '1';
+                $scope.requestData.LovedAccessTypeid = $scope.temp.access_type_id;
                 //'' + $scope.convertBoolToNum($scope.temp.access.one)+','
                 //+ $scope.convertBoolToNum($scope.temp.access.two)+','
                 //+ $scope.convertBoolToNum($scope.temp.access.three)+','

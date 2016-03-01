@@ -156,7 +156,7 @@ right: 15px;
 }
 
 .height-60{
-    height: 60px;
+    height: 65px !important;
 }
 
 .popu .tab-item .icon{
@@ -185,6 +185,16 @@ right: 10px;
 
 .item.active_acc{
     background-color: #8C8C8C;
+}
+
+.tabs{
+    height: 56px;
+}
+
+
+
+.item.tabs{
+    padding-top: 5px;    
 }
 /*
 .landing-bg {

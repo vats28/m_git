@@ -1,22 +1,24 @@
 angular.module('starter.controllers', [])
 
     .controller('AppCtrl', function ($scope, $state, $ionicModal, $ionicPopup,
-        $ionicHistory, $ionicScrollDelegate, $ionicLoading, $ionicSideMenuDelegate,generic_http_post_service, $timeout, date_picker) {
+        $ionicHistory, $ionicScrollDelegate, $ionicLoading, $ionicSideMenuDelegate, generic_http_post_service, $timeout, date_picker) {
 
         // With the new view caching in Ionic, Controllers are only called
         // when they are recreated or on app start, instead of every page change.
         // To listen for when this page is active (for example, to refresh data),
         // listen for the $ionicView.enter event:
-         $scope.headerButton = {};
-         $scope.$on('$ionicView.enter', function (e) {
-             var stateId = $ionicHistory.currentView().stateId;
+        $scope.headerButton = {};
+        $scope.$on('$ionicView.enter', function (e) {
+            var stateId = $ionicHistory.currentView().stateId;
 
-             if (stateId == "app.medical_records") {
-                 $scope.headerButton.showVitalChart = true;
-             } else {
-                 $scope.headerButton.showVitalChart = false;
-             }
-         });
+            if (stateId == "app.medical_records") {
+                $scope.headerButton.showVitalChart = true;
+            } else if (stateId == "app.landing") {
+                $ionicHistory.clearCache()   
+            } else {
+                $scope.headerButton.showVitalChart = false;
+            }
+        });
 
         // Form data for the login modal
         $scope.loginData = {};
@@ -36,7 +38,7 @@ angular.module('starter.controllers', [])
         };
 
         $scope.localStorageKeys = Object.freeze({
-            RELATION_LIST:'mcura_relation',
+            RELATION_LIST: 'mcura_relation',
         });
 
 
@@ -47,6 +49,7 @@ angular.module('starter.controllers', [])
             $scope.session_variables = {};
             $scope.session_variables.isLoggedIn = false;
             $scope.RemoveInLocalStorage($scope.LOGIN_STORE_KEY);
+            $scope.jumpTo('app.logout');
             $scope.disableBack();
             $scope.clearHistory();
             $scope.jumpTo('app.landing');
@@ -220,16 +223,16 @@ angular.module('starter.controllers', [])
         };
 
         // A confirm dialog
-        $scope.showConfirm = function(title, template, data, callback) {
+        $scope.showConfirm = function (title, template, data, callback) {
             $ionicPopup.confirm({
                 title: title,
                 template: '<div align="center">' + template + '</div>',
                 okType: 'button-assertive',
                 cancelType: 'button-dark'
-            }).then(function(res) {
-                if(res) {
+            }).then(function (res) {
+                if (res) {
                     console.log('You are sure');
-                    if(callback) {
+                    if (callback) {
                         callback(data);
                     }
                 } else {
@@ -348,7 +351,7 @@ angular.module('starter.controllers', [])
 
 
         $scope.showModal = function (templateUrl) {
-           // $ionicBackdrop.retain();
+            // $ionicBackdrop.retain();
 
             $ionicModal.fromTemplateUrl(templateUrl, {
                 scope: $scope,
@@ -361,13 +364,13 @@ angular.module('starter.controllers', [])
 
         // Close the modal
         $scope.closeModal = function () {
-           // $ionicBackdrop.release();
+            // $ionicBackdrop.release();
             $scope.modal.hide();
             $scope.modal.remove()
         };
 
 
-        $scope.getRelation = function(callback){
+        $scope.getRelation = function (callback) {
             $scope.showLoader("Fetching data...");
             $scope.requestData = {};
             $scope.requestData.UserRoleID = '' + $scope.session_variables.login_data.userroleid;

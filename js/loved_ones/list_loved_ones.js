@@ -2,71 +2,15 @@ angular.module('starter.listLoved', [])
 
     .controller('listLovedCtrl', function($scope, generic_http_post_service, date_picker) {
 
-        $scope.array_list_lovedones = [
-            {
-                id: 1,
-                name: "Aish Gupta",
-                age: "24",
-                sex: "F",
-                relation: "Daughter",
-                last: "01/04/15 - Dr.Mala",
-                next: "10/04/15 - ECG",
-                drug: "BP-1/7-90/100 | BG-1/5-145",
-                image: "img/aish.jpg",
-                email: "aish@a.com",
-                phone: "978989990",
-
-            },
-            {
-                id: 2,
-                name: "Amit Jain",
-                age: "36",
-                sex: "M",
-                relation: "Brother",
-                last: "05/05/15 - Dr.Vishwas",
-                next: "10/05/15 - ECG",
-                drug: "BP-1/7-80/100 | BG-1/5-145",
-                image: "img/akshay.jpg",
-                email: "aish@a.com",
-                phone: "978989990",
-
-            },
-            {
-                id: 3,
-                name: "Ritesh Agrawal",
-                age: "43",
-                sex: "M",
-                relation: "Cousin",
-                last: "01/04/15 - Dr.Bharti",
-                next: "10/04/15 - ECG",
-                drug: "BP-1/7-90/100 | BG-1/5-145",
-                image: "img/salman.jpg",
-                email: "aish@a.com",
-                phone: "978989990",
-
-            },
-            {
-                id: 4,
-                name: "Nisha Sharma",
-                age: "21",
-                sex: "F",
-                relation: "Daughter",
-                last: "01/04/15 - Dr.Sunitha",
-                next: "10/04/15 - ECG",
-                drug: "BP-1/7-90/100 | BG-1/5-145",
-                image: "img/dipika.jpg",
-                email: "aish@a.com",
-                phone: "978989990",
-
-            },
-        ];
-
         $scope.temp= {};
         $scope.init = function(){
             $scope.getLovedOneList();
         }//edn
+        
+        
 
         $scope.getLovedOneList = function() {
+             $scope.temp.lovedone_list = [];
             $scope.showLoader("Fetching data...");
             try {
                 $scope.requestData = {};
@@ -101,8 +45,7 @@ angular.module('starter.listLoved', [])
         //    }
         //    return retval;
         //}
-
-
+        
         $scope.call = function(number){
             $scope.showConfirm('Are you sure?','Call this number<br/>'+ number, number,  $scope.call_callback);
         }
@@ -122,4 +65,9 @@ angular.module('starter.listLoved', [])
         $scope.showMedicalChart = function(){
             $scope.showAlertWindow_Titled('Sorry','No medical chart found for this one');
         }
+        
+        $scope.openMedicalRecord = function(item){
+            $scope.session_variables.selected_lovedone = item;
+            $scope.jumpTo('app.medical_records_loved_one');
+        }//ned 
     });

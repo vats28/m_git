@@ -72,7 +72,7 @@
 
                     </div>
                     <div class="col date-col">
-                        <li class="item item-checkbox checkbox-balanced">
+                        <li class="item item-checkbox checkbox-positive">
                             <label class="checkbox">
                                 <input ng-model="temp.dependent" type="checkbox">
                             </label>
@@ -94,32 +94,42 @@
             <div class="item item-divider">
                 Access Authentication
             </div>
-            <li class="item item-checkbox checkbox-balanced">
+            <li class="item item-checkbox checkbox-positive">
                 <label class="checkbox">
-                    <input ng-model="temp.access.one" type="checkbox" value="1">
+                    <input ng-model="temp.access_type_id" type="radio" value="1">
                 </label>
-                Read/Monitor clinical information
+                Level 1
+                <p>Read/Monitor clinical information</p>
             </li>
 
-            <li class="item item-checkbox checkbox-balanced">
+            <li class="item item-checkbox checkbox-positive">
                 <label class="checkbox">
-                    <input ng-model="temp.access.two" type="checkbox" value="2">
+                    <input ng-model="temp.access_type_id" type="radio" value="2">
                 </label>
-                Get reminders, alerts
+                Level 2
+                <p>Read/Monitor clinical information</p>
+                <p>Get reminders, alerts</p>
             </li>
 
-            <li class="item item-checkbox checkbox-balanced">
+            <li class="item item-checkbox checkbox-positive">
                 <label class="checkbox">
-                    <input ng-model="temp.access.three" type="checkbox" value="3">
-                </label>
-                Share/Update medical information
+                    <input ng-model="temp.access_type_id" type="radio" value="3">
+                </label>                
+                Level 3
+                <p>Read/Monitor clinical information</p>
+                <p>Get reminders, alerts</p>
+                <p>Share/Update medical information</p>
             </li>
 
-            <li class="item item-checkbox checkbox-balanced">
+            <li class="item item-checkbox checkbox-positive">
                 <label class="checkbox">
-                    <input ng-model="temp.access.four" type="checkbox" value="4">
-                </label>
-                Bill payment
+                    <input ng-model="temp.access_type_id" type="radio" value="4">
+                </label>                
+                Level 4
+                <p>Read/Monitor clinical information</p>
+                <p>Get reminders, alerts</p>
+                <p>Share/Update medical information</p>
+                <p>Bill payment</p>
             </li>
 
         </div>

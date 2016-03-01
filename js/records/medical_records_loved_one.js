@@ -1,6 +1,6 @@
-angular.module('starter.mediRec', [])
+angular.module('starter.mediRecLovedOne', [])
 
-    .controller('mediRecCtrl', function ($scope, $timeout, $ionicModal, $cordovaMedia, $ionicLoading,
+    .controller('mediRecLovedOneCtrl', function ($scope, $timeout, $ionicModal, $cordovaMedia, $ionicLoading,
         $ionicPopup, generic_http_post_service,
         date_picker, form_validator, fileTransfer, audio_service, generic_camera_service,
         native_play_audio) {
@@ -27,7 +27,7 @@ angular.module('starter.mediRec', [])
             $scope.showLoader("Fetching details...");
             // alert(JSON.stringify($scope.session_variables.login_data));
             $scope.requestData = {};
-            $scope.requestData.userId = $scope.session_variables.login_data.userid;
+            $scope.requestData.userId = $scope.session_variables.selected_lovedone.User_Id;
             generic_http_post_service.getDetails_httpget(generic_http_post_service.getServices().GET_PAT_DETAILS,
                 $scope.requestData, $scope.getUserData_callback);
         }
@@ -37,39 +37,20 @@ angular.module('starter.mediRec', [])
             //alert(JSON.stringify(data));
             if (data.success == 1) {
                 $scope.array_list = data;
-                $scope.session_variables.profFilePath = data.profFilePath;
-                $scope.session_variables.name = data.name;
-                $scope.session_variables.gender = data.gender;
-                $scope.session_variables.login_data.mrno = data.mrno;
-                $scope.session_variables.login_data.patdemoid = data.patdemoid;
-
-                //for profileupdate page
-                $scope.userData.name = data.name;
+                $scope.session_variables.selected_lovedone.name = data.name;
+                $scope.session_variables.selected_lovedone.mrno = data.mrno;
+                $scope.session_variables.selected_lovedone.patdemoid = data.patdemoid;
+                $scope.session_variables.selected_lovedone.dob = data.DOB;
 
                 if (data.profFilePath) {//getHost
                     if (data.profFilePath.indexOf('http:') == -1) {// means string doesn't contain urlhost
-                        $scope.userData.profFilePath = generic_http_post_service.getHost() + data.profFilePath;
+                        $scope.session_variables.selected_lovedone.profFilePath = generic_http_post_service.getHost() + data.profFilePath;
                     } else {
-                        $scope.userData.profFilePath = data.profFilePath;
+                        $scope.session_variables.selected_lovedone.profFilePath = data.profFilePath;
                     }
                     //console.log($scope.userData.profFilePath);
                 }
 
-                $scope.userData.gender = data.gender;
-                $scope.userData.mrno = data.mrno;
-                $scope.userData.dob = data.DOB;
-                $scope.userData.mobile = data.ContactDetails.mobile;
-                $scope.userData.email = data.ContactDetails.email;
-                //userData.email
-                if (data.gender.toLowerCase() == "male") {
-                    $scope.userData.gender = 1;
-                } else if (data.gender.toLowerCase() == "female") {
-                    $scope.userData.gender = 2;
-                } else {
-                    $scope.userData.gender = 3;
-                }
-
-                $scope.userData.gender_str = data.gender;
 
             } else {
                 $scope.showAlertWindow_Titled("Error", data.msg, null, null);
@@ -83,7 +64,6 @@ angular.module('starter.mediRec', [])
          */
         $scope.toggleGroup = function (group) {
             if (!$scope.plusIconClicked) {
-               // alert('1');
                 group.show = !group.show;
             } else {
                 $scope.plusIconClicked = false;
@@ -428,7 +408,7 @@ angular.module('starter.mediRec', [])
             $scope.requestData.Name = '' + $scope.medRec_temp.mycontacts.name;
             $scope.requestData.ContactNo = '' + $scope.medRec_temp.mycontacts.contact;
             $scope.requestData.ContactNo2 = '' + $scope.medRec_temp.mycontacts.additional;
-            $scope.requestData.UserRoleID = '' + $scope.session_variables.login_data.userroleid;
+            $scope.requestData.UserRoleID = '' + $scope.session_variables.selected_lovedone.Lovedones_mcura_id;
             $scope.requestData.RelationshipID = '' + $scope.medRec_temp.mycontacts.relation_id;
             alert(JSON.stringify($scope.requestData));
             generic_http_post_service.getDetails(generic_http_post_service.getServices().POST_EMERGENCY_CONTACT,
@@ -534,7 +514,7 @@ angular.module('starter.mediRec', [])
             $scope.plusIconClicked = true;
             $scope.showLoader("Fetching data...");
             $scope.requestData = {};
-            $scope.requestData.UserRoleID = '' + $scope.session_variables.login_data.userroleid;
+            $scope.requestData.UserRoleID = '' + $scope.session_variables.selected_lovedone.Lovedones_mcura_id;
             generic_http_post_service.getDetails_httpget(generic_http_post_service.getServices().GET_ALLERGY_TYPE,
                 $scope.requestData, $scope.GetAllergyType_callback);
         }
@@ -554,7 +534,7 @@ angular.module('starter.mediRec', [])
         $scope.GetAllergy = function () {
             $scope.showLoader("Fetching data...");
             $scope.requestData = {};
-            $scope.requestData.UserRoleID = '' + $scope.session_variables.login_data.userroleid;
+            $scope.requestData.UserRoleID = '' + $scope.session_variables.selected_lovedone.Lovedones_mcura_id;
             $scope.requestData.AllergyType = '' + $scope.medRec_temp.myallergy.allergyType_id;
             // alert(JSON.stringify($scope.requestData));
             generic_http_post_service.getDetails_httpget(generic_http_post_service.getServices().GET_ALLERGY,
@@ -581,7 +561,7 @@ angular.module('starter.mediRec', [])
             $scope.requestData.MRNO = '' + $scope.session_variables.login_data.mrno;
             $scope.requestData.AllergyId = '' + $scope.medRec_temp.myallergy.allergy_id;
             $scope.requestData.ExistsFrom = '' + $scope.medRec_temp.myallergy.exist_from;
-            $scope.requestData.UserRoleID = '' + $scope.session_variables.login_data.userroleid;
+            $scope.requestData.UserRoleID = '' + $scope.session_variables.selected_lovedone.Lovedones_mcura_id;
             alert(JSON.stringify($scope.requestData));
             generic_http_post_service.getDetails(generic_http_post_service.getServices().POST_ALLERGY, $scope.requestData, $scope.saveAllergy_Callback);
 
@@ -687,7 +667,7 @@ angular.module('starter.mediRec', [])
         $scope.GetHealthConditionType = function () {
             $scope.showLoader("Fetching data...");
             $scope.requestData = {};
-            $scope.requestData.UserRoleID = '' + $scope.session_variables.login_data.userroleid;
+            $scope.requestData.UserRoleID = '' + $scope.session_variables.selected_lovedone.Lovedones_mcura_id;
             //alert(generic_http_post_service.getServices().GET_HEALTH_CONDITION_TYPE);
             generic_http_post_service.getDetails_httpget(generic_http_post_service.getServices().GET_HEALTH_CONDITION_TYPE,
                 $scope.requestData, $scope.GetHealthConditionType_callback);
@@ -707,7 +687,7 @@ angular.module('starter.mediRec', [])
         $scope.GetHealthHConditions = function () {
             $scope.showLoader("Fetching data...");
             $scope.requestData = {};
-            $scope.requestData.UserRoleID = '' + $scope.session_variables.login_data.userroleid;
+            $scope.requestData.UserRoleID = '' + $scope.session_variables.selected_lovedone.Lovedones_mcura_id;
             //alert(JSON.stringify($scope.requestData));
             generic_http_post_service.getDetails_httpget(generic_http_post_service.getServices().GET_HEALTH_CONDITIONS,
                 $scope.requestData, $scope.GetHealthHConditions_callback);
@@ -732,7 +712,7 @@ angular.module('starter.mediRec', [])
             $scope.requestData.MRNO = '' + $scope.session_variables.login_data.mrno;
             $scope.requestData.HealthConditionTypeID = '' + $scope.medRec_temp.myHealthCondition.type_id;
             $scope.requestData.ExistsFrom = '' + $scope.medRec_temp.myHealthCondition.exist_from;
-            $scope.requestData.UserRoleID = '' + $scope.session_variables.login_data.userroleid;
+            $scope.requestData.UserRoleID = '' + $scope.session_variables.selected_lovedone.Lovedones_mcura_id;
             $scope.requestData.HealthConditionID = '' + $scope.medRec_temp.myHealthCondition.id;
             // alert(JSON.stringify($scope.requestData));
             generic_http_post_service.getDetails(generic_http_post_service.getServices().POST_HEALTH_CONDITION,
@@ -872,7 +852,7 @@ angular.module('starter.mediRec', [])
             $scope.requestData = {};
             $scope.requestData.MRNO = '' + $scope.session_variables.login_data.mrno;
             $scope.requestData.Date = '' + $scope.medRec_temp.myhistory.date;
-            $scope.requestData.UserRoleID = '' + $scope.session_variables.login_data.userroleid;
+            $scope.requestData.UserRoleID = '' + $scope.session_variables.selected_lovedone.Lovedones_mcura_id;
             $scope.requestData.Text = '' + $scope.medRec_temp.myhistory.history;
             //alert(JSON.stringify($scope.requestData));
             generic_http_post_service.getDetails(generic_http_post_service.getServices().PAT_MED_HISTORY_INSERT, $scope.requestData, $scope.saveMedicalHistory_Callback);
@@ -994,7 +974,7 @@ $scope.plusIconClicked = true;
             $scope.requestData = {};
             $scope.requestData.MRNO = '' + $scope.session_variables.login_data.mrno;
             $scope.requestData.Date = '' + date_picker.convertDateToString(data.date);
-            $scope.requestData.UserRoleID = '' + $scope.session_variables.login_data.userroleid;
+            $scope.requestData.UserRoleID = '' + $scope.session_variables.selected_lovedone.Lovedones_mcura_id;
             $scope.requestData.Text = '' + data.history;
             //alert(JSON.stringify($scope.requestData));
             generic_http_post_service.getDetails(generic_http_post_service.getServices().PAT_MED_HISTORY_INSERT, $scope.requestData, $scope.saveMedication_Callback);
@@ -1179,7 +1159,7 @@ $scope.plusIconClicked = true;
         $scope.afterSuccessfullUpload = function (filepath) {
             $scope.showLoader("Uploading records");
             $scope.requestData = {};
-            $scope.requestData.UserRoleID = '' + $scope.session_variables.login_data.userroleid;
+            $scope.requestData.UserRoleID = '' + $scope.session_variables.selected_lovedone.Lovedones_mcura_id;
             $scope.requestData.RecNatureId = '' + $scope.session_variables.my_rec_nature;
             $scope.requestData.FilePath = '' + filepath;
             alert(JSON.stringify($scope.requestData));
