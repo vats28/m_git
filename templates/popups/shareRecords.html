@@ -1,0 +1,79 @@
+<ion-modal-view>
+    <ion-header-bar class="assertive-bg">
+        <h1 class="title light">Share Records</h1>
+        <button ng-click="closeModal()" class="animated fadeInUpBig fab-button-new t-20 r-20 size-48 light-bg ">
+            <i class="icon ion ion-close"></i></button>
+    </ion-header-bar>
+
+    <ion-content class="has-header has-footer" ng-controller="shareRecordsCtrl" ng-init="init()">
+        <div class="item stable-bg padding-10" align="center" ng-hide="fetchNature && fetchHospital">
+            <div class="col v-tab-item ">
+                <ion-spinner icon="spiral " style="stroke:red;"></ion-spinner>
+                <br/> <span class="dark">Refreshing Data</span>
+            </div>
+        </div>
+        <div class="item item-text-wrap border-0" align="center" style="border:0px;">
+            You can share your loved ones record with hospital/clinic or any favourite doctor.
+        </div>
+        <!--{{session_variables.array_fav_hospitals}}-->
+        <div class="item item-input item-select stable-bg">
+            <div class="input-label">
+                Select City
+            </div>
+            <select class="red-select-80" ng-model="cityId" ng-init="GetFavouriteHospital()">
+                <option value="">--All--</option>
+                <option ng-repeat="item in session_variables.array_fav_hospitals | unique:'city'" value="{{item.cityId}}">{{item.city}}</option>
+            </select>
+        </div>
+        <div class="item item-input item-select stable-bg">
+            <div class="input-label">
+                Share From
+            </div>
+            <select class="red-select-80" ng-model="SharedSubTenantId" ng-init="GetFavouriteHospital()">
+                <option value="">--select--</option>
+                <option ng-repeat="item in session_variables.array_fav_hospitals" ng-if="!cityId || (cityId == item.cityId)" value="{{item.id}}">{{item.subTenant +','+ item.city}}</option>
+            </select>
+        </div>
+
+
+        <div class="item item-input item-select stable-bg">
+            <div class="input-label">
+                Share To
+            </div>
+            <select class="red-select-80" ng-model="SubTenantId">
+                <option value="">--select--</option>
+                <option ng-repeat="item in session_variables.array_fav_hospitals" 
+                ng-if="SharedSubTenantId && (SharedSubTenantId != item.id) && (!cityId ||  (cityId == item.cityId))"
+                value="{{item.id}}">{{item.subTenant +','+ item.city}}</option>
+            </select>
+        </div>
+
+
+        <div class="list">
+
+
+            <div class="item padding-10 item-text-wrap border-0" align="center">
+               <h4 class="bold">In case you want share records with some email id please enter it below. 
+                   You can enter multiple emails seprated with comma(,)</h4> 
+            </div>
+
+            <label class="item item-input border-0">
+                <span class="input-label">Email : </span>
+                <input type="email" placeholder="eg : abc@xyz.com" ng-model="shareData.shareToEmail">
+            </label>
+
+            <li class="item item-checkbox checkbox-positive" ng-repeat="item in session_variables.array_rec_nature">
+                <label class="checkbox">
+                    <input ng-model="shareData.RecNatureId" type="radio" value="{{item.RecNatureId}}">
+                </label>
+                {{item.RecNatureProperty}}
+            </li>
+
+
+
+            <div class="item border-0">
+                <button class="button button-block button-assertive" ng-click="shareRecord()">Share Now</button>
+            </div>
+        </div>
+    </ion-content>
+</ion-modal-view>

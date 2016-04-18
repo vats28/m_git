@@ -3,8 +3,8 @@
 
     <ion-side-menu-content>
 
-        <ion-nav-bar class="header-bg light">
-            <ion-nav-back-button class="button-light">
+        <ion-nav-bar class="header-bg dark">
+            <ion-nav-back-button class="button-dark">
             </ion-nav-back-button>
 
             <ion-nav-buttons side="left">
@@ -12,14 +12,17 @@
                 </button>
             </ion-nav-buttons>
             <ion-nav-buttons side="right">
-                <!--<a ng-if="headerButton.showAddEnquiry" href="#/app/createEnquiry" class="button button-clear icon-right ion-ios-plus button-light animated zoomInUp"></a>-->
+                <a ng-if="headerButton.showHomeIcon" ng-click="onHeaderMoreButtonClick()" 
+                class="button button-clear icon ion-android-more-vertical animated zoomInDown"></a>
             </ion-nav-buttons>
 
+            <ion-nav-title>
+                <img src="icons/logo_small.png" style="height:17px;" />
+            </ion-nav-title>
         </ion-nav-bar>
         <ion-nav-view name="menuContent">
 
-            <button ng-if="headerButton.showVitalChart" class="animated zoomInDown fab-button-new size-48 t-20 r-20  energized"
-                    ng-click="jumpTo('app.vital_chart')">
+            <button ng-if="headerButton.showVitalChart" class="animated zoomInDown fab-button-new size-48 t-20 r-20  energized" ng-click="jumpTo('app.vital_chart')">
                 <i class="icon ion ion-stats-bars"></i>
             </button>
         </ion-nav-view>
@@ -27,24 +30,21 @@
     </ion-side-menu-content>
 
     <ion-side-menu side="left">
-        <ion-content class="dark-bg ">
-            <ion-list class="dark-bg sidepanel">
-                <a class="item item-avatar dark-bg">
-                    <img ng-src="{{userData.profFilePath}}" ng-if="userData.profFilePath"
-                         ng-click="openImagesPopup(userData.profFilePath)">
+        <ion-content class="" style="background-color:#ff5533;">
+            <ion-list class=" sidepanel" style="background-color:#ff5533;">
+                <a class="item item-avatar">
+                    <img ng-src="{{userData.profFilePath}}" ng-if="userData.profFilePath" ng-click="openImagesPopup(userData.profFilePath)">
                     <img src="img/profile-empty.jpg" ng-if="!userData.profFilePath">
 
-                    <h2 ng-bind="session_variables.name" class="light">Ravi</h2>
+                    <h2 ng-bind="session_variables.name">Ravi</h2>
 
-                    <p style="color: #D7E7E9">24</span> / <span ng-bind="session_variables.gender">Male</span></p>
-                    <button menu-close ng-click="jumpTo('app.profile_page')"
-                            class="button button-icon button-small button-clear button-light icon ion-gear-a menu_gear_icon"></button>
+                    <p>24</span> / <span ng-bind="session_variables.gender">Male</span></p>
+                    <button menu-close ng-click="jumpTo('app.profile_page')" class="button button-icon button-small button-clear button-light icon ion-gear-a menu_gear_icon"></button>
                 </a>
-                <ion-item menu-close ng-click="jumpTo(item.target)" class="s_item dark-bg item-icon-left"
-                          ng-repeat="item in menu.list" item="item">
+                <ion-item menu-close ng-click="jumpTo(item.target, item.type)" class=" item-icon-left" ng-repeat="item in menu.list" item="item">
                     <i class="icon {{item.icon}}"></i> {{item.name}}
                 </ion-item>
-                <ion-item menu-close ng-click="doLogout()" class="s_item dark-bg item-icon-left">
+                <ion-item menu-close ng-click="doLogout()" class="item-icon-left">
                     <i class="icon ion-log-out"></i> Logout
                 </ion-item>
 

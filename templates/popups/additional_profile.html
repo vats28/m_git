@@ -1,0 +1,30 @@
+<ion-modal-view>
+    <ion-header-bar class="assertive-bg">
+        <h1 class="title light">Additional Profile</h1>
+        <button ng-click="closeModal()" class="animated fadeInUpBig fab-button-new t-20 r-20 size-48 light-bg ">
+            <i class="icon ion ion-close"></i></button>
+    </ion-header-bar>
+
+    <ion-content class="has-header has-footer" ng-controller="additionalProfileCtrl" ng-init="init()">
+        <div class="list card">
+            <label class="item item-input">
+                <span class="input-label">Aadhar : </span>
+                <input type="tel" ng-model="session_variables.login_data.aadhar" maxlength="12">
+            </label>
+            <label class="item item-input">
+                <span class="input-label">Driving Licence : </span>
+                <input type="tel" ng-model="session_variables.login_data.driving_licence" maxlength="12">
+            </label>
+            <label class="item item-input">
+                <span class="input-label">Passport : </span>
+                <input type="text" ng-model="session_variables.login_data.passport" maxlength="12">
+            </label>
+
+
+            <div class="item">
+                <button class="button button-block button-assertive" ng-click="saveAdditonalProfile()">Update Detail</button>
+            </div>
+        </div>
+
+    </ion-content>
+</ion-modal-view>

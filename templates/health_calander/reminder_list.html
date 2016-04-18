@@ -1,0 +1,60 @@
+<ion-view view-title="Reminder List" ng-controller="reminderListCtrl">
+    <ion-content class="has-header has-footer" ng-init="init()">
+        <!-- header section start here -->
+        <div class="item item-avatar header-section">
+            <img ng-src="{{ userData.profFilePath }}" ng-if="userData.profFilePath" ng-click="openImagesPopup(userData.profFilePath)">
+            <img src="img/profile-empty.jpg" ng-if="!userData.profFilePath">
+            <h2 ng-bind="userData.name">Ravi</h2>
+            <h2><span ng-bind="getAge(userData.dob)">24</span> / <span ng-bind="userData.gender_str">Male</span></h2>
+            <p ng-bind="userData.email">1MedKey</p>
+            <!--<i class="ion icon ion-android-more-vertical header-menu-icon" ng-click="showModal('templates/popups/additional_profile.html')"></i>-->
+        </div>
+
+        <div class="button-bar padding-10">
+            <a class="button button-outline " style="background-color: white;color:black;" ng-click="jumpTo('app.family_calander')">Health Calander</a>
+            <a class="button theme_orange-bg" style="color:white;">Reminder</a>
+        </div>
+        <!-- header section end here -->
+
+        <!--<div class="list card" >
+            <div class="item item-avatar " style="padding-top: 0px;">
+                <img src="img/profile-empty.jpg"/>
+                <h1 >Appointment</h1>
+                <h2>Mother India</h2>
+                <p>What ever description</p>
+            </div>
+            <div class="item padding-10" align="center">
+                <h2 class="theme_orange">Click To Book</h2>
+            </div>
+        </div>-->
+        <div class="list card" ng-repeat="item in array_list">
+            <div class="item item-avatar ">
+                <img src="{{item.data.loved_one.profilePic ? item.data.loved_one.profilePic: 'img/profile-empty.jpg'}}" />
+                <h2 ng-bind="item.title">Appointment</h2>
+                <h2 ng-bind="item.data.loved_one.Lovedones_Name">Mother India</h2>
+                <p ng-bind="'Place : ' + item.data.time_place"></p>
+                <p ng-bind="'Desc : '+ item.text">What ever description</p>
+            </div>
+            <div class="item padding-10" align="center">
+                <h2 class="theme_orange">Click To Book</h2>
+            </div>
+        </div>
+        <div class="list"></div>
+    </ion-content>
+    <!--section footer   -->
+    <div class="tabs  tabs-icon-top sub-header-strip">
+
+        <a class="tab-item" ng-click="jumpTo('app.family_calander')">
+            <img src="icons/calander.png" /> </br> Calender
+        </a>
+        <a class="tab-item" ng-click="jumpTo('app.list_loved_ones')">
+            <img src="icons/loves_one.png" /> </br> Loved ones
+        </a>
+        <a class="tab-item" ng-click="jumpTo('app.reminder_list')">
+            <img src="icons/reminder.png" /> </br> Reminder
+        </a>
+        <a class="tab-item" ng-click="jumpTo('app.bill_list')">
+            <img src="icons/money.png" /> </br> Bills
+        </a>
+    </div>
+</ion-view>

@@ -1,30 +1,75 @@
 angular.module('starter.controllers', [])
 
-    .controller('AppCtrl', function ($scope, $state, $ionicModal, $ionicPopup,
-        $ionicHistory, $ionicScrollDelegate, $ionicLoading, $ionicSideMenuDelegate, generic_http_post_service, $timeout, date_picker) {
+    .controller('AppCtrl', function($scope, $state, $ionicModal, $ionicPopup,
+        $ionicHistory, $ionicScrollDelegate, $ionicLoading, $ionicSideMenuDelegate, generic_http_post_service,
+        $timeout, date_picker, $rootScope) {
 
         // With the new view caching in Ionic, Controllers are only called
         // when they are recreated or on app start, instead of every page change.
         // To listen for when this page is active (for example, to refresh data),
         // listen for the $ionicView.enter event:
         $scope.headerButton = {};
-        $scope.$on('$ionicView.enter', function (e) {
+        $scope.$on('$ionicView.enter', function(e) {
+            if ($scope.modal)
+                $scope.closeModal();//just in case if a modal is opened then it get closed on changing page
+
             var stateId = $ionicHistory.currentView().stateId;
 
             if (stateId == "app.medical_records") {
                 $scope.headerButton.showVitalChart = true;
+                $scope.headerButton.showHomeIcon = false;
             } else if (stateId == "app.landing") {
-                $ionicHistory.clearCache()   
+                $ionicHistory.clearCache()
             } else {
                 $scope.headerButton.showVitalChart = false;
+                $scope.headerButton.showHomeIcon = true;
             }
         });
+
+
+        $scope.lineChartData = {
+            labels: [
+                'Jan',
+                'Feb',
+                'Mar'
+            ],
+            datasets: [
+                {
+                    data: [0, 5, 10, 15, 20, 25]
+                },
+                {
+                    data: [3, 6, 9, 12, 15, 18]
+                }
+            ]
+        };
+
+        $scope.lineChartData2 = {
+            labels: [
+                'Apr',
+                'May',
+                'Jun',
+                'Jul',
+                'Aug',
+            ],
+            datasets: [
+                {
+                    data: [1, 70, 5, 34, 10, 90]
+                }
+            ]
+        };
+
+        $scope.activeData = $scope.lineChartData;
+        $scope.activeData2 = $scope.lineChartData2;
+
+
+        $scope.header_title = "";
 
         // Form data for the login modal
         $scope.loginData = {};
         $scope.session_variables = {};
         $scope.userData = {};// just to show values in profile edit page
         $scope.session_variables.login_data = {};
+        $scope.selectedLovedOne = {};
         $scope.InTesting = false;
         $scope.app_data = {};
         $scope.app_data.title = "mCURA";
@@ -39,40 +84,98 @@ angular.module('starter.controllers', [])
 
         $scope.localStorageKeys = Object.freeze({
             RELATION_LIST: 'mcura_relation',
+            HOSPITAL_LIST: 'hospital_list',
+            RECORD_NATURE_LIST: 'record_nature_list',
+            USER_DATA: 'user_data',
+            LOVED_ONE_LIST: 'loved_one_list',
+            LOCAL_NOTIFICATIONS: 'local_notifications'
         });
 
 
         $scope.menu = {};
 
 
-        $scope.doLogout = function () {
+        $scope.doLogout = function() {
             $scope.session_variables = {};
             $scope.session_variables.isLoggedIn = false;
             $scope.RemoveInLocalStorage($scope.LOGIN_STORE_KEY);
             $scope.jumpTo('app.logout');
             $scope.disableBack();
             $scope.clearHistory();
+            $scope.clearLocalStorage();
             $scope.jumpTo('app.landing');
         }
 
-        $scope.showAlertWindow = function (text) {
+        $scope.schedule_notification = function(data) {
+            cordova.plugins.notification.local.schedule(data);
+        }
+
+        $scope.update_notification = function(data) {
+            cordova.plugins.notification.local.update({
+                id: 1,
+                title: "Updated Notification"
+            });
+        }
+
+        $scope.cancel_notification = function(ids) {
+            //ids = [1, 2];
+            cordova.plugins.notification.local.cancel(ids, function() {
+                // Notifications were cancelled
+                $scope.showToast("This notification will be removed as time expired");
+                console.log("Notification removed");
+            }, scope);
+        }
+
+        $scope.trigger_notification = function(data) {
+            // Notification has reached its trigger time (Tomorrow at 8:45 AM)
+            cordova.plugins.notification.local.on("trigger", function(notification) {
+                // if (notification.id != 10)
+                //     return;
+
+                // // After 10 minutes update notification's title 
+                // setTimeout(function() {
+                //     cordova.plugins.notification.local.update({
+                //         id: 10,
+                //         title: "Meeting in 5 minutes!"
+                //     });
+                // }, 600000);
+            });
+        }
+
+        $scope.onHeaderMoreButtonClick = function() {
+            var stateId = $ionicHistory.currentView().stateId;
+            $rootScope.$broadcast('onHeaderMoreButtonClick', stateId);
+        }
+
+
+
+
+        $scope.clearLocalStorage = function() {
+            $scope.RemoveInLocalStorage($scope.localStorageKeys.RELATION_LIST);
+            $scope.RemoveInLocalStorage($scope.localStorageKeys.HOSPITAL_LIST);
+            $scope.RemoveInLocalStorage($scope.localStorageKeys.RECORD_NATURE_LIST);
+            $scope.RemoveInLocalStorage($scope.localStorageKeys.USER_DATA);
+            $scope.RemoveInLocalStorage($scope.localStorageKeys.LOVED_ONE_LIST);
+        }//end
+
+        $scope.showAlertWindow = function(text) {
             $ionicPopup.alert({
                 title: text,
                 //cancelType: 'color_grey',// String (default: 'button-default'). The type of the Cancel button.
                 okType: 'positive'// String (default: 'OK'). The text of the OK button.
-            }).then(function (res) {
+            }).then(function(res) {
                 console.log('Your log ', res);
             });
         }
 
-        $scope.showAlertWindow_Titled = function (title, template, callback, oktext) {
+        $scope.showAlertWindow_Titled = function(title, template, callback, oktext) {
 
             $ionicPopup.alert({
                 title: title,
                 template: '<div align="center">' + template + '</div>',
                 okText: oktext != null ? oktext : 'OK',
                 okType: 'button-dark'
-            }).then(function (res) {
+            }).then(function(res) {
                 if (callback != null && callback != undefined) {
                     callback();
                 }
@@ -83,29 +186,29 @@ angular.module('starter.controllers', [])
 
         // An alert dialog
         var alertPopup;
-        $scope.templateUrl = function (_title, _templateUrl, _scope) {
+        $scope.templateUrl = function(_title, _templateUrl, _scope) {
             alertPopup = $ionicPopup.alert({
                 title: _title,
                 templateUrl: _templateUrl,
                 scope: _scope
             });
 
-            alertPopup.then(function (res) {
+            alertPopup.then(function(res) {
                 // console.log('Thank you for not eating my delicious ice cream cone');
             });
         };
 
-        $scope.templateUrl_close = function () {
+        $scope.templateUrl_close = function() {
             alertPopup.close();
             alertPopup = null;
         }
 
-        $scope.testAlertWindow = function (msg) {
+        $scope.testAlertWindow = function(msg) {
             if ($scope.InTesting)
                 alert(msg);
         }// end  testAlertWindow
 
-        $scope.doubleBack = function () {
+        $scope.doubleBack = function() {
             /*$ionicHistory.goBack();
              $ionicHistory.goBack();*/
             var backView = $ionicHistory.viewHistory().views[$ionicHistory.viewHistory().backView.backViewId];//$scope.$viewHistory.views[$scope.$viewHistory.backView.backViewId];
@@ -117,29 +220,31 @@ angular.module('starter.controllers', [])
             backView && backView.go();
         }// end
 
-        $scope.goBackScreen = function () {
+        $scope.goBackScreen = function() {
             $ionicHistory.goBack();
 
         }// end
 
-        $scope.clearCache = function () {
+
+
+        $scope.clearCache = function() {
 
             $ionicHistory.clearCache();
 
         }//end
 
-        $scope.clearCacheAndHistory = function () {
+        $scope.clearCacheAndHistory = function() {
             $ionicHistory.clearCache();
             $ionicHistory.clearHistory();
 
         }//end
 
-        $scope.clearHistory = function () {
+        $scope.clearHistory = function() {
             $ionicHistory.clearHistory();
 
         }//end
 
-        $scope.disableBack = function () {
+        $scope.disableBack = function() {
             $ionicHistory.nextViewOptions({
                 disableBack: true
             });
@@ -148,7 +253,7 @@ angular.module('starter.controllers', [])
              });*/
         }// end
 
-        $scope.enableBack = function () {
+        $scope.enableBack = function() {
 
             $ionicHistory.nextViewOptions({
                 disableBack: false
@@ -158,19 +263,23 @@ angular.module('starter.controllers', [])
              });*/
         }// end
 
-        $scope.scrollTop = function () {
+        $scope.scrollTop = function() {
             $ionicScrollDelegate.scrollTop();
         }
 
-        $scope.jumpTo = function (pageName) {
+        $scope.jumpTo = function(pageName, type) {
             try {
-                $state.go(pageName);
+                if (type == "popup") {
+                    $scope.showModal(pageName);
+                } else {
+                    $state.go(pageName);
+                }
             } catch (err) {
                 alert(err);
             }
         }//end
 
-        $scope.jumpTo_cacheFalse = function (pageName) {
+        $scope.jumpTo_cacheFalse = function(pageName) {
             try {
 
                 //$scope.jumpTo(pageName);
@@ -180,30 +289,35 @@ angular.module('starter.controllers', [])
             }
         }//end
 
-        $scope.enableSideMenuDrag = function () {
+        $scope.enableSideMenuDrag = function() {
             $ionicSideMenuDelegate.canDragContent(true);
         }
 
-        $scope.disableSideMenuDrag = function () {
+        $scope.disableSideMenuDrag = function() {
             $ionicSideMenuDelegate.canDragContent(false);
         }
 
-        $scope.resizePage = function () {
+        $scope.resizePage = function() {
             $ionicScrollDelegate.resize();
         }
 
-        $scope.showLoader = function (msg) {
+        $scope.showLoader = function(msg, _duration) {
             $ionicLoading.show({
-                template: '<ion-spinner icon="lines" class="spinner-energized" style="float: left;"></ion-spinner>' + '<span style="margin-left: 5px;">' + msg + '</span>'//'<span class="icon spin ion-loading-d"></span> ' + msg
-
+                template: '<ion-spinner icon="lines" class="spinner-energized" style="float: left;"></ion-spinner>' + '<span style="margin-left: 5px;">' + msg + '</span>',
+                duration: _duration ? _duration : undefined
             });
         };
-        $scope.hideLoader = function () {
+        $scope.hideLoader = function() {
             $ionicLoading.hide();
         };
 
+        $scope.getDateWithMonthName = function(dateString) {
+            // alert(date_picker.getDateWithMonthName(dateString));
+            return date_picker.getDateWithMonthName(dateString);
+        }
+
         $scope.progressText = 'Uploading file ...';
-        $scope.showProgressLoader = function () {
+        $scope.showProgressLoader = function() {
             $ionicLoading.show({
                 template: '<ion-spinner icon="lines" class="spinner-energized" style="float: left;"></ion-spinner>' + '<span style="margin-left: 5px;" ng-bind="session_variables.progressText"></span>'//'<span class="icon spin ion-loading-d"></span> ' + msg
 
@@ -212,7 +326,7 @@ angular.module('starter.controllers', [])
 
 
 
-        $scope.showToast = function (msg) {
+        $scope.showToast = function(msg) {
 
             $ionicLoading.show({
                 template: msg,
@@ -223,13 +337,13 @@ angular.module('starter.controllers', [])
         };
 
         // A confirm dialog
-        $scope.showConfirm = function (title, template, data, callback) {
+        $scope.showConfirm = function(title, template, data, callback) {
             $ionicPopup.confirm({
                 title: title,
                 template: '<div align="center">' + template + '</div>',
                 okType: 'button-assertive',
                 cancelType: 'button-dark'
-            }).then(function (res) {
+            }).then(function(res) {
                 if (res) {
                     console.log('You are sure');
                     if (callback) {
@@ -241,20 +355,45 @@ angular.module('starter.controllers', [])
             });
         };//end
 
-        $scope.SaveInLocalStorage = function (key, value) {
+        $scope.SaveInLocalStorage = function(key, value) {
             window.localStorage.setItem(key, value);
         }//end
 
-        $scope.GetInLocalStorage = function (key) {
+        $scope.GetInLocalStorage = function(key) {
             return window.localStorage.getItem(key);
         }//end
 
-        $scope.RemoveInLocalStorage = function (key) {
+        $scope.RemoveInLocalStorage = function(key) {
             window.localStorage.removeItem(key);
         }//end
 
 
-        $scope.SaveLoginCredential = function (data) {
+        $scope.$on('local_notification', function(event, data) {
+            //  $scope.showAlertWindow_Titled(data.title, data.text);
+            //alert("again : "+data);
+            try {
+
+                $scope.jumpTo('app.reminder_list');
+                $scope.session_variables.currentNotification = data;
+
+                //check if time expired to cancel this notification
+                if ($scope.isNoticationExpired(data.data)) {
+                    $scope.cancel_notification([data.id]);
+                }
+
+            } catch (error) {
+                //alert('local_notification error : ' + error);
+            }
+        });
+
+        $scope.isNoticationExpired = function(to_time) {
+
+            //match date_picker
+            //alert("data : " + to_time);
+            console.log("to_time : " + to_time.to_time);
+        }//edn 
+
+        $scope.SaveLoginCredential = function(data) {
 
             try {
                 $scope.SaveInLocalStorage($scope.LOGIN_STORE_KEY, data)
@@ -287,6 +426,18 @@ angular.module('starter.controllers', [])
             },
             {
                 id: 13,
+                name: "Status tracker",
+                icon: "ion-ios-body",
+                target: "app.health_status"
+            },
+            {
+                id: 16,
+                name: "Reminders",
+                icon: "ion-android-notifications",
+                target: "app.reminder_list",
+            },
+            {
+                id: 15,
                 name: "Prescription",
                 icon: "ion-ios-list",
                 target: "app.fav_pres"
@@ -294,7 +445,8 @@ angular.module('starter.controllers', [])
             {
                 id: 4,
                 name: "Insurance",
-                icon: "ion-umbrella"
+                icon: "ion-umbrella",
+                target: "app.insurance"
             },
             {
                 id: 5,
@@ -337,12 +489,12 @@ angular.module('starter.controllers', [])
                 name: "Dashboard",
                 icon: "ion-home",
                 target: "app.dashboard"
-            }
+            },
 
         ];
 
 
-        $scope.openImagesPopup = function (filePath) {
+        $scope.openImagesPopup = function(filePath) {
             $scope.session_variables.allImages = [];
             $scope.session_variables.allImages.push({ src: filePath });
             $scope.activeSlide = 0;
@@ -350,27 +502,27 @@ angular.module('starter.controllers', [])
         }
 
 
-        $scope.showModal = function (templateUrl) {
+        $scope.showModal = function(templateUrl) {
             // $ionicBackdrop.retain();
 
             $ionicModal.fromTemplateUrl(templateUrl, {
                 scope: $scope,
                 animation: 'slide-in-up'
-            }).then(function (modal) {
+            }).then(function(modal) {
                 $scope.modal = modal;
                 $scope.modal.show();
             });
         }
 
         // Close the modal
-        $scope.closeModal = function () {
+        $scope.closeModal = function() {
             // $ionicBackdrop.release();
             $scope.modal.hide();
             $scope.modal.remove()
         };
 
 
-        $scope.getRelation = function (callback) {
+        $scope.getRelation = function(callback) {
             $scope.showLoader("Fetching data...");
             $scope.requestData = {};
             $scope.requestData.UserRoleID = '' + $scope.session_variables.login_data.userroleid;
@@ -379,7 +531,71 @@ angular.module('starter.controllers', [])
                 $scope.requestData, callback);
         }//end
 
-        $scope.getAge = function (dateString) {
+
+        $scope.GetMedicalRecordNature_main = function(callback) {
+            $scope.plusIconClicked = true;
+            //$scope.showLoader("Fetching record natures...");
+            $scope.requestData = {};
+            generic_http_post_service.getDetails_httpget(generic_http_post_service.getServices().GET_MEDICAL_RECORD_NATURE,
+                $scope.requestData, callback);
+        }
+
+        $scope.GetFavouriteHospital_main = function(callback) {
+            // $scope.showLoader("Fetching favourite hospitals...");
+            $scope.requestData = {};
+            generic_http_post_service.getDetails_httpget(generic_http_post_service.getServices().GET_MEDICAL_RECORD_NATURE,
+                $scope.requestData, callback);
+        }
+
+        $scope.GetSubtenants = function(callback) {
+            $scope.requestData = {};
+            //$scope.requestData.areaId = 1;
+            //$scope.requestData.subTenant = 1;
+            $scope.requestData.UserRoleID = '' + $scope.session_variables.login_data.userroleid;
+            generic_http_post_service.getDetails_httpget(generic_http_post_service.getServices().GET_SUBTENANT_SEARCH,
+                $scope.requestData, callback);
+        }
+
+
+
+        $scope.getLovedOneList_main = function(callback) {
+            $scope.requestData = {};
+            $scope.requestData.UserPrimaryRoleID = '' + $scope.session_variables.login_data.userroleid;
+            generic_http_post_service.getDetails_httpget(generic_http_post_service.getServices().GET_LOVEDONE,
+                $scope.requestData, callback);
+        }//end
+
+        //http://test.tn.mcura.com/health_dev.svc/Json/GetVital?UserRoleID=1551       
+
+        $scope.getVital_main = function(callback) {
+            $scope.requestData = {};
+            $scope.requestData.UserRoleID = '' + $scope.session_variables.login_data.userroleid;
+            generic_http_post_service.getDetails_httpget(generic_http_post_service.getServices().GET_VITAL,
+                $scope.requestData, callback);
+        }//end
+
+
+        $scope.getVital_records_main = function(callback) {
+            $scope.requestData = {};
+            $scope.requestData.UserRoleID = '' + $scope.session_variables.login_data.userroleid;
+            $scope.requestData.MRNO = '' + $scope.session_variables.login_data.mrno;
+            generic_http_post_service.getDetails_httpget(generic_http_post_service.getServices().GET_VITAL_RECORDS,
+                $scope.requestData, callback);
+        }//end
+
+
+        $scope.getUserData_main = function(callback) {
+
+            $scope.showLoader("Fetching details...", 10000);
+            // alert(JSON.stringify($scope.session_variables.login_data));
+            $scope.requestData = {};
+            $scope.requestData.userId = $scope.session_variables.login_data.userid;
+            generic_http_post_service.getDetails_httpget(generic_http_post_service.getServices().GET_PAT_DETAILS,
+                $scope.requestData, callback);
+        }
+        //
+
+        $scope.getAge = function(dateString) {
             if (!dateString)
                 return;
             try {
@@ -390,4 +606,41 @@ angular.module('starter.controllers', [])
                 alert(error);
             }
         }//end getAge
+
+
+
+
+        $scope.isNumberKey = function(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode >= 97 && charCode <= 122)
+                || (charCode >= 65 && charCode <= 90)) {
+                //do nothing
+            } else {
+                evt.preventDefault();
+            }
+        }
+
+
+        $scope.getValueInJson = function(arr, keyvalue, keyname, required_key) {
+            var retval = "";
+            var keepGoing = true;
+
+            angular.forEach(arr, function(value, key) {
+                if (keepGoing) {
+                    if (value[keyname] == keyvalue) {
+                        retval = value[required_key];
+                        keepGoing = false;
+                    }
+                }
+            });
+
+            return retval;
+        }
+
+
+        $scope.getDateWithMonthName = function(dateString) {
+            return date_picker.getDateWithMonthName(dateString);
+        }//end 
+
+
     });

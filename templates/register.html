@@ -33,7 +33,7 @@
         <div class="card list">
             <label class="item item-input item-stacked-label">
                 <span class="input-label">Name</span>
-                <input ng-model="reg.name" type="text" placeholder="Enter your name">
+                <input ng-model="reg.name"  ng-keypress="isNumberKey($event)" type="text" placeholder="Enter your name">
             </label>
 
 

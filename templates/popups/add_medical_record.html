@@ -1,0 +1,79 @@
+<ion-modal-view>
+    <ion-header-bar class="stable-bg" align="center">
+        <div align="center" style="width:100%">
+            <img src="icons/logo_small.png" style="height:17px; position:relative; top:25%;">
+        </div>
+
+        <button ng-click="closeModal()" class="animated fadeInUpBig fab-button-new t-20 r-20 size-48 light-bg ">
+            <i class="icon ion ion-close"></i></button>
+    </ion-header-bar>
+
+    <ion-content class="has-header has-footer" ng-controller="addMedicalRecordCtrl">
+        <!--<div class="item stable-bg padding-10" align="center" ng-hide="progressDone">
+            <div class="col v-tab-item ">
+                <ion-spinner icon="spiral " style="stroke:red;"></ion-spinner>
+                <br/> <span class="dark">Refreshing Data</span>
+            </div>
+        </div>-->
+        <div class="item item-avatar header-section">
+            <img ng-src="{{ userData.profFilePath }}" ng-if="userData.profFilePath" ng-click="openImagesPopup(userData.profFilePath)">
+            <img src="img/profile-empty.jpg" ng-if="!userData.profFilePath">
+            <h2 ng-bind="userData.name">Ravi</h2>
+            <h2><span ng-bind="getAge(userData.dob)">24</span> / <span ng-bind="userData.gender_str">Male</span></h2>
+            <p ng-bind="userData.email">1MedKey</p>
+            <!--<i class="ion icon ion-android-more-vertical header-menu-icon" ng-click="showModal('templates/popups/additional_profile.html')"></i>-->
+        </div>
+        <div class="row" ng-repeat="item in array_list">
+            <div class="item col-47 " ng-hide="visibleClass == 'col' + $index" align="center" style="margin:5px auto;">
+                <ul>
+                    <li>
+                        <a ng-click="flipImage(item.recNatureId1, 'col' + $index)"> <img src="{{item.img1}}"> </br>
+                            <p ng-bind="item.col1"></p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="item col-47 " ng-show="visibleClass == 'col' + $index" style="margin:5px auto;">
+                <ul>
+                    <li><a class="button button-clear button-small icon ion-camera theme_orange" ng-click="dataAction(1)"><span class="dark"> &nbsp; Photo/Video</span></a></li>
+                    <li><a class="button button-clear button-small icon ion-upload theme_orange" ng-click="dataAction(2)"><span class="dark"> &nbsp; Upload File</span></a></li>
+                    <li><a class="button button-clear button-small icon ion-mic-a theme_orange" ng-click="dataAction(3)"><span class="dark"> &nbsp; Audio</span></a></li>
+                    <li><a class="button button-clear button-small icon ion-soup-can theme_orange" ng-click="dataAction(4)"><span class="dark"> &nbsp; Data</span></a></li>
+                </ul>
+            </div>
+
+            <div class="item col-47 "ng-hide="visibleClass == 'col2' + $index" align="center" style="margin:5px auto;">
+                <ul>
+                    <li>
+                        <a ng-click="flipImage(item.recNatureId2, 'col2' + $index)"> <img src="{{item.img2}}"> </br>
+                            <p ng-bind="item.col2"></p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="item col-47 "  ng-show="visibleClass == 'col2' + $index" style="margin:5px auto;">
+                 <ul>
+                    <li><a class="button button-clear button-small icon ion-camera theme_orange" ng-click="dataAction(1)"><span class="dark"> &nbsp; Photo/Video</span></a></li>
+                    <li><a class="button button-clear button-small icon ion-upload theme_orange" ng-click="dataAction(2)"><span class="dark"> &nbsp; Upload File</span></a></li>
+                    <li><a class="button button-clear button-small icon ion-mic-a theme_orange" ng-click="dataAction(3)"><span class="dark"> &nbsp; Audio</span></a></li>
+                    <li><a class="button button-clear button-small icon ion-soup-can theme_orange" ng-click="dataAction(4)"><span class="dark"> &nbsp; Data</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </ion-content>
+    <div class="tabs  tabs-icon-top sub-header-strip">
+        <a class="tab-item" ng-click="jumpTo('app.family_calander')">
+            <img src="icons/calander.png" /> </br> Calender
+        </a>
+        <a class="tab-item" ng-click="jumpTo('app.list_loved_ones')">
+            <img src="icons/loves_one.png" /> </br> Loved ones
+        </a>
+        <a class="tab-item" ng-click="jumpTo('app.reminder_list')">
+            <img src="icons/reminder.png" /> </br> Reminder
+        </a>
+        <a class="tab-item" ng-click="jumpTo('app.bill_list')">
+            <img src="icons/money.png" /> </br> Bills
+        </a>
+    </div>
+</ion-modal-view>

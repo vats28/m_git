@@ -17,7 +17,7 @@
         <i class="icon ion ion-aperture light"></i>
     </button>
 
-    <ion-content ng-init="init()">
+    <ion-content class="has-header " ng-init="init()">
         <div id="content">
 
             <div id="profile-info">
@@ -64,22 +64,14 @@
                             'button button-small button-assertive button-outline' : userData.gender != 3}" ng-click="setGender(3)">Transgender</button>
                 </div>
             </div>
-            <label class="item item-input item-stacked-label">
+            <!--<label class="item item-input item-stacked-label">
                 <span class="input-label">Email</span>
                 <input ng-disabled="true" ng-model="userData.email" type="email" placeholder="Enter your email">
-            </label>
-            <!--<label class="item item-input item-stacked-label">
-                <span class="input-label">Password</span>
-                <input ng-disabled="true" ng-model="userData.pass" type="password" placeholder="Enter password">
-            </label>
-            <label class="item item-input item-stacked-label">
-                <span class="input-label">Verify Password</span>
-                <input ng-disabled="true" ng-model="userData.cfm_pass" type="password" placeholder="Enter password">
             </label>-->
         </div>
+        <!--<br/>
         <br/>
-        <br/>
-        <br/>
+        <br/>-->
     </ion-content>
 
     </ion-view>

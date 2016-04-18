@@ -1,0 +1,132 @@
+<ion-view view-title="Status">
+
+    <ion-content class="has-header has-footer" ng-controller="healthStatusCtrl" ng-init="init()">
+      <!-- header section start here -->
+        <div class="item item-avatar header-section">
+            <img ng-src="{{ userData.profFilePath }}" ng-if="userData.profFilePath" ng-click="openImagesPopup(userData.profFilePath)">
+            <img src="img/profile-empty.jpg" ng-if="!userData.profFilePath">
+            <h2 ng-bind="userData.name">Ravi</h2>
+            <h2><span ng-bind="getAge(userData.dob)">24</span> / <span ng-bind="userData.gender_str">Male</span></h2>
+            <p ng-bind="userData.email">1MedKey</p>
+            <!--<i class="ion icon ion-android-more-vertical header-menu-icon" ng-click="showModal('templates/popups/additional_profile.html')"></i>-->
+        </div>
+
+
+        <!--<div class="item tabs tabs-secondary  sub-header-strip tabs-icon-top">
+            <a class="tab-item" ng-click="jumpTo('app.family_calander')">
+                <i class="icon ion-calendar assertive"></i> Calender
+            </a>
+            <a class="tab-item" ng-click="jumpTo('app.list_loved_ones')">
+                <i class="icon ion-heart assertive"></i> Loved ones
+            </a>
+            <a class="tab-item" ng-click="jumpTo('app.health_status')">
+                <i class="icon ion-ios-bell assertive"></i> Reminder
+            </a>
+            <a class="tab-item" ng-click="jumpTo('app.bill_list')">
+                <i class="icon icon-inr assertive"></i> Bills
+            </a>
+        </div>-->
+        <!-- header section end here -->
+        <div class="card list">
+            <div class="item item-divider dark-bg light">Tracker</div>
+            <div class="item padding-0">
+                <div class="row">
+                    <div class="col col-40  bold r-border">Date/Time</div>
+                    <div class="col col-20  bold r-border">Vitals</div>
+                    <div class="col col-20  bold r-border">Target</div>
+                    <div class="col col-20  bold">Actual</div>
+                </div>
+            </div>
+            <div class="item padding-0 item-text-wrap">
+                <div class="row">
+                    <div class="col col-40 r-border">16-02-16/4:15 PM</div>
+                    <div class="col col-20 r-border">SPo2</div>
+                    <div class="col col-20 r-border">98</div>
+                    <div class="col col-20 ">95</div>
+                </div>
+            </div>
+            <div class="item padding-0 item-text-wrap">
+                <div class="row">
+                    <div class="col col-40 r-border">16-02-16/4:15 PM</div>
+                    <div class="col col-20 r-border">SPo2</div>
+                    <div class="col col-20 r-border">98</div>
+                    <div class="col col-20 ">95</div>
+                </div>
+            </div>
+            <div class="item padding-0 item-text-wrap">
+                <div class="row">
+                    <div class="col col-40 r-border">16-02-16/4:15 PM</div>
+                    <div class="col col-20 r-border">SPo2</div>
+                    <div class="col col-20 r-border">98</div>
+                    <div class="col col-20 ">95</div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="card list">
+            <div class="item item-divider dark-bg light">My medicine Adherence</div>
+            <div class="item padding-0">
+                <div class="row">
+                    <div class="col col-30  bold r-border">Date/Time</div>
+                    <div class="col col-20  bold r-border">Medicine</div>
+                    <div class="col col-30  bold r-border">Dosage</div>
+                    <div class="col col-20  bold">Actual</div>
+                </div>
+            </div>
+            <div class="item padding-0 item-text-wrap">
+                <div class="row">
+                    <div class="col col-30 r-border">16-02-16/4:15 PM</div>
+                    <div class="col col-20 r-border">Tab 2mg</div>
+                    <div class="col col-30 r-border">Before Food 1-1-0 5 days </div>
+                    <div class="col col-20 ">8:10 Am</div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="card list">
+            <div class="item item-divider item-icon-right dark-bg light">Set Reminder<i class="icon ion-plus " ng-click="GetMedicalRecordNature() "></i></div>
+            <div class="item item-avatar">
+                <img src="img/profile-empty.jpg" />
+                <p class="bold">Ravi/Mother</p>
+                <p>Date/Time : </p>
+                <p>Activity : </p>
+                <p>Urgency : </p>
+            </div>
+        </div>
+        <div class="card list">
+            <div class="item item-divider item-icon-right dark-bg light">My health pic<i class="icon ion-plus " ng-click="showModalAddHealthProvider() "></i></div>
+            <hscroller>
+                <hcard ng-repeat="item in session_variables.records" index="{{$index}}" ng-if="IsImage(item.image_path)" desc="{{item.docName +'<br/>'+ item.date}}"
+                image="{{item.url + '/' +item.image_path}}"></hcard>
+            </hscroller>
+        </div>
+        <div class="card list">
+            <div class="item item-divider item-icon-right dark-bg light">My health provider<i class="icon ion-plus " ng-click="GetMedicalRecordNature() "></i></div>
+
+            <hscroller>
+                <hcard ng-repeat="item in items" index="{{$index}}" desc="{{item.desc}}" image="{{item.image}}"></hcard>
+            </hscroller>
+        </div>
+
+        <div class="list"></div>
+    </ion-content>
+     <!--section footer   -->
+  <div class="tabs  tabs-icon-top sub-header-strip">
+
+        <a class="tab-item" ng-click="jumpTo('app.family_calander')">
+          <img src="icons/calander.png" /> </br> Calender
+        </a>
+        <a class="tab-item" ng-click="jumpTo('app.list_loved_ones')">
+           <img src="icons/loves_one.png" /> </br> Loved ones
+        </a>
+        <a class="tab-item" ng-click="jumpTo('app.reminder_list')">
+            <img src="icons/reminder.png" /> </br> Reminder
+        </a>
+        <a class="tab-item" ng-click="jumpTo('app.bill_list')">
+          <img src="icons/money.png" /> </br> Bills
+        </a>
+    </div>
+</ion-view>

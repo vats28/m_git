@@ -1,0 +1,59 @@
+<ion-view view-title="Bills" ng-controller="billListCtrl">
+    <ion-content class="" ng-init="init()">
+
+       <!-- header section start here -->
+        <div class="item item-avatar header-section">
+            <img ng-src="{{ userData.profFilePath }}" ng-if="userData.profFilePath" ng-click="openImagesPopup(userData.profFilePath)">
+            <img src="img/profile-empty.jpg" ng-if="!userData.profFilePath">
+            <h2 ng-bind="userData.name">Ravi</h2>
+            <h2><span ng-bind="getAge(userData.dob)">24</span> / <span ng-bind="userData.gender_str">Male</span></h2>
+            <p ng-bind="userData.email">1MedKey</p>
+            <!--<i class="ion icon ion-android-more-vertical header-menu-icon" ng-click="showModal('templates/popups/additional_profile.html')"></i>-->
+        </div>
+
+
+        <!--<div class="item tabs tabs-secondary  sub-header-strip tabs-icon-top">
+            <a class="tab-item" ng-click="jumpTo('app.family_calander')">
+                <i class="icon ion-calendar assertive"></i> Calender
+            </a>
+            <a class="tab-item" ng-click="jumpTo('app.list_loved_ones')">
+                <i class="icon ion-heart assertive"></i> Loved ones
+            </a>
+            <a class="tab-item" ng-click="jumpTo('app.health_status')">
+                <i class="icon ion-ios-bell assertive"></i> Reminder
+            </a>
+            <a class="tab-item" ng-click="jumpTo('app.bill_list')">
+                <i class="icon icon-inr assertive"></i> Bills
+            </a>
+        </div>-->
+        <!-- header section end here -->
+        <div class="list card" ng-repeat="item in billList">
+            <div class="item item-divider">
+                <span class="light float-l" ng-bind="item.hospital+', '+item.city" style="color:#454545"></span>
+                <p ng-bind="getDateWithMonthName(item.date)" class="float-r" style="color:#454545;"></p>
+            </div>
+            <div class="item item-text-wrap padding-10">
+                <h3 ng-bind="'Bill no. : ' + item.bill_num"></h3>
+                <p ng-bind="'Amount : '+ item.amount"></p>
+                <button class="button button-small button-assertive pay-button"> Pay </button>
+            </div>
+        </div>
+        <div class="list"></div>
+    </ion-content>
+     <!--section footer   -->
+  <div class="tabs  tabs-icon-top sub-header-strip">
+
+        <a class="tab-item" ng-click="jumpTo('app.family_calander')">
+          <img src="icons/calander.png" /> </br> Calender
+        </a>
+        <a class="tab-item" ng-click="jumpTo('app.list_loved_ones')">
+           <img src="icons/loves_one.png" /> </br> Loved ones
+        </a>
+        <a class="tab-item" ng-click="jumpTo('app.reminder_list')">
+            <img src="icons/reminder.png" /> </br> Reminder
+        </a>
+        <a class="tab-item" ng-click="jumpTo('app.bill_list')">
+          <img src="icons/money.png" /> </br> Bills
+        </a>
+    </div>
+</ion-view>

@@ -204,19 +204,26 @@ angular.module('starter.mediRecLovedOne', [])
 
         $scope.session_variables.my_rec_nature = "";
 
-
         $scope.GetMedicalRecordNature = function () {
-            $scope.plusIconClicked = true;
-            $scope.showLoader("Fetching data...");
-            $scope.requestData = {};
-            generic_http_post_service.getDetails_httpget(generic_http_post_service.getServices().GET_MEDICAL_RECORD_NATURE,
-                $scope.requestData, $scope.GetMedicalRecordNature_callback);
+
+            var array_rec_nature = null;
+            try {
+                array_rec_nature = JSON.parse($scope.GetInLocalStorage($scope.localStorageKeys.RECORD_NATURE_LIST));
+            } catch (error) { }
+
+            if (!array_rec_nature) {
+                $scope.GetMedicalRecordNature_main($scope.GetMedicalRecordNature_callback);
+            } else {
+                $scope.session_variables.array_rec_nature = array_rec_nature;
+                $scope.GetMedicalRecordNature_callback($scope.session_variables.array_rec_nature);
+            }
         }
 
         $scope.GetMedicalRecordNature_callback = function (data) {
             $scope.hideLoader();
             if (data != null && data != []) {
                 $scope.session_variables.array_rec_nature = data;
+                $scope.SaveInLocalStorage($scope.localStorageKeys.RECORD_NATURE_LIST, JSON.stringify(data));
                 $scope.showAddMedRecPopup();
             } else {
                 $scope.showAlertWindow_Titled("Sorry", "No data");
@@ -421,6 +428,7 @@ angular.module('starter.mediRecLovedOne', [])
             try {
                 if (data.success == 1) {
                     $scope.showAlertWindow_Titled("Success", data.msg, $scope.init, null);
+                    $scope.getUserData();
                 } else {
                     $scope.showAlertWindow_Titled("Error", data.msg, null, null);
                 }
@@ -572,6 +580,7 @@ angular.module('starter.mediRecLovedOne', [])
             try {
                 if (data.success == 1) {
                     $scope.showAlertWindow_Titled("Success", data.msg, $scope.init, null);
+                    $scope.getUserData();
                 } else {
                     $scope.showAlertWindow_Titled("Error", data.msg, null, null);
                 }
@@ -705,6 +714,7 @@ angular.module('starter.mediRecLovedOne', [])
         }
 
         //save health condition
+        $scope.medRec_temp.myHealthCondition.exist_from = '2016-03-18';
         $scope.saveHealthCondition = function () {
             $scope.showLoader('Please wait ...');
             //{"MRNO":"12","HealthConditionTypeID":"1", "ExistsFrom":"12/12/2016", "UserRoleID":"12",  "HealthConditionID":"1"}
@@ -725,6 +735,7 @@ angular.module('starter.mediRecLovedOne', [])
             try {
                 if (data.success == 1) {
                     $scope.showAlertWindow_Titled("Success", data.msg, $scope.init, null);
+                    $scope.getUserData();
                 } else {
                     $scope.showAlertWindow_Titled("Error", data.msg, null, null);
                 }
@@ -864,6 +875,7 @@ angular.module('starter.mediRecLovedOne', [])
             try {
                 if (data.success == 1) {
                     $scope.showAlertWindow_Titled("Success", data.msg, $scope.init, null);
+                    $scope.getUserData();
                 } else {
                     $scope.showAlertWindow_Titled("Error", data.msg, null, null);
                 }
@@ -874,7 +886,7 @@ angular.module('starter.mediRecLovedOne', [])
 
 
         $scope.showHistoryPopup = function () {
-$scope.plusIconClicked = true;
+            $scope.plusIconClicked = true;
 
             $ionicPopup.show({
                 template: '<div class="card list" >' +
@@ -986,6 +998,7 @@ $scope.plusIconClicked = true;
             try {
                 if (data.success == 1) {
                     $scope.showAlertWindow_Titled("Success", data.msg, null, null);
+                    $scope.getUserData();
                 } else {
                     $scope.showAlertWindow_Titled("Error", data.msg, null, null);
                 }
@@ -1117,7 +1130,7 @@ $scope.plusIconClicked = true;
                 //params.UserRoleID = '' + $scope.session_variables.login_data.userroleid;
 
                 options.params = params;
-                alert(JSON.stringify(options));
+               // alert(JSON.stringify(options));
                 fileTransfer.uploadFile($scope.fileupload_callback, generic_http_post_service.getServices().FILE_UPLOAD,
                     filePath, options);
 
@@ -1162,7 +1175,7 @@ $scope.plusIconClicked = true;
             $scope.requestData.UserRoleID = '' + $scope.session_variables.selected_lovedone.Lovedones_mcura_id;
             $scope.requestData.RecNatureId = '' + $scope.session_variables.my_rec_nature;
             $scope.requestData.FilePath = '' + filepath;
-            alert(JSON.stringify($scope.requestData));
+           // alert(JSON.stringify($scope.requestData));
             generic_http_post_service.getDetails(generic_http_post_service.getServices().PAT_MED_RECORD_INSERT,
                 $scope.requestData, $scope.afterSuccessfullUpload_callback);
 
@@ -1173,6 +1186,8 @@ $scope.plusIconClicked = true;
             $scope.hideLoader();
             if (data.success == 1) {
                 $scope.showAlertWindow_Titled("Success", "File uploaded");
+
+                $scope.getUserData();
             } else {
                 $scope.showAlertWindow_Titled("Error", data.msg);
             }

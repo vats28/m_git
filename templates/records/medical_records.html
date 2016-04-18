@@ -1,52 +1,82 @@
-<ion-view view-title="mCURA" hide-nav-bar="false">
+<ion-view cache-view="false" hide-nav-bar="false">
 
-    <ion-content class="page-bg-color" ng-controller="mediRecCtrl" ng-init="init()">
+    <ion-content class="has-header has-footer" lazy-scroll ng-controller="mediRecCtrl" ng-init="init()">
         <!-- header section start here -->
-        <div class="item item-avatar">
-            <img ng-src="{{userData.profFilePath}}" ng-if="userData.profFilePath" ng-click="openImagesPopup(userData.profFilePath)">
+        <div class="item item-avatar header-section">
+            <img ng-src="{{ userData.profFilePath }}" ng-if="userData.profFilePath" ng-click="openImagesPopup(userData.profFilePath)">
             <img src="img/profile-empty.jpg" ng-if="!userData.profFilePath">
-
             <h2 ng-bind="userData.name">Ravi</h2>
-
             <h2><span ng-bind="getAge(userData.dob)">24</span> / <span ng-bind="userData.gender_str">Male</span></h2>
-
             <p ng-bind="userData.email">1MedKey</p>
-
-            <!--<p>
-            <a href="#" class="subdued">Health Status Update</a>
-          </p>-->
+            <!--<i class="ion icon ion-android-more-vertical header-menu-icon" ng-click="showModal('templates/popups/additional_profile.html')"></i>-->
         </div>
 
 
-        <div class="item tabs tabs-secondary  stable-bg tabs-icon-top">
-            <a class="tab-item" href="#">
-                <i class="icon ion-calendar"></i> Calender
+        <!--<div class="item tabs tabs-secondary  sub-header-strip tabs-icon-top">
+            <a class="tab-item" ng-click="jumpTo('app.family_calander')">
+                <i class="icon ion-calendar assertive"></i> Calender
             </a>
             <a class="tab-item" ng-click="jumpTo('app.list_loved_ones')">
-                <i class="icon ion-heart"></i> Loved ones
+                <i class="icon ion-heart assertive"></i> Loved ones
             </a>
-            <a class="tab-item" href="#">
-                <i class="icon ion-android-playstore"></i> Store
+            <a class="tab-item" ng-click="jumpTo('app.health_status')">
+                <i class="icon ion-ios-bell assertive"></i> Reminder
             </a>
-            <a class="tab-item" href="#">
-                <i class="icon ion-cash"></i> Bills
+            <a class="tab-item" ng-click="jumpTo('app.bill_list')">
+                <i class="icon icon-inr assertive"></i> Bills
             </a>
-        </div>
+        </div>-->
         <!-- header section end here -->
+        <div class="item padding-5" style="margin:0px;padding:0px;">
 
+            <div class="row" style="height:30%; ">
+                <div class="col-47 " style="margin: 0px auto;" >
+                    <div class="item item-input item-select full-width padding-0">
+                        <select style="width:100%; direction:rtl; right:30px;" ng-change="onVitalChange()" ng-model="temp.loved_one_id">
+                            <option value="" selected="selected">SPO2</option>
+                            <option value="">Pulse</option>
+                            <option value="">BP</option>
 
-        <div class="card list">
+                            <!--<option ng-repeat="item in temp.lovedone_list | unique:'Lovedones_Name'" value="{{item.Lovedones_mcura_id +'_'+$index}}">{{item.Lovedones_Name}}</option>-->
+                        </select>
+                    </div>
+                </div>
+                <div class="col-47 " style="margin: 0px auto;">
+                    <div class="item item-input item-select full-width padding-0">
+                        <select style="width:100%; direction:rtl; right:30px;" ng-change="onVitalChange()" ng-model="temp.loved_one_id">
+                            <option value="" selected="selected">SPO2</option>
+                            <option value="">Pulse</option>
+                            <option value="">BP</option>
+
+                            <!--<option ng-repeat="item in temp.lovedone_list | unique:'Lovedones_Name'" value="{{item.Lovedones_mcura_id +'_'+$index}}">{{item.Lovedones_Name}}</option>-->
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="height:30%">
+                <div class="col-47 " style="margin: 0px auto;" ><!--<div class="col-50  ">-->
+
+                    <cjs-line dataset="activeData" responsive="true"></cjs-line>
+                </div>
+                <div class="col-47 " style="margin: 0px auto;" ><!--<div class="col-50 ">-->
+
+                    <cjs-line dataset="activeData2" responsive="true"></cjs-line>
+                </div>
+            </div>
+        </div>
+
+        <div class="heading_orange">Medical Records</div>
+        <div class="card list no-box-shadow">
             <div class="item item-divider item-icon-left item-icon-right dark-bg light" ng-click="toggleGroup(array_list.PatMedRecords) "
             ng-class="{active_acc: isGroupShown(array_list.PatMedRecords)}">
                 <i ng-click="toggleGroup(array_list.PatMedRecords)" class="icon icon-left " ng-class="isGroupShown(array_list.PatMedRecords) ? 'ion-ios-arrow-down' : 'ion-ios-arrow-up'"></i>
 
 
-                <!--ng-if="array_list.med_rec_can_add==1 "-->
                 <span>Medical Records</span>
-                <i class="icon ion-plus-circled " data-ng-click="GetMedicalRecordNature() "></i>
+                <i class="icon ion-plus " ng-click="GetMedicalRecordNature() "></i>
             </div>
-            <a class="item item-icon-left item-icon-right item-text-wrap item-accordion " ng-show="isGroupShown(array_list.PatMedRecords) "
-            ng-repeat="item in array_list.PatMedRecords " item="item ">
+            <!--<a class="item  item-text-wrap item-accordion " ng-show="isGroupShown(array_list.PatMedRecords) " ng-repeat="item in array_list.PatMedRecords "
+            item="item ">
                 <i ng-class="{ 'icon  {{ recNatureIcons.LAB }}' : item.rec_nature_id==1 ,
                 'icon {{ recNatureIcons.NOTE }}' : item.rec_nature_id==2 , 'icon {{ recNatureIcons.LAB }}' : item.rec_nature_id> 3, 'icon
                 {{ recNatureIcons.IMAGE }}' : item.rec_nature_id == 3}"></i>
@@ -54,22 +84,41 @@
                 <p>Doctor: <span ng-bind="item.docName"></span></p>
 
                 <p>Date: <span ng-bind="item.date"></span></p>
-                <i class="icon ion-android-open positive" ng-click="openMediaFile(item)"></i>
+                <i class="icon ion-android-open positive" ng-click="openMediaFile(item)"></i>     
+            </a>-->
 
-            </a>
+            <div class="item padding-0" ng-show="isGroupShown(array_list.PatMedRecords) ">
+                <div class="row">
+                    <div class="col col-30  bold r-border">Date</div>
+                    <div class="col col-30  bold r-border">Doctor</div>
+                    <div class="col col-20  bold r-border">Type</div>
+                    <div class="col col-20  bold">Action</div>
+                </div>
+            </div>
+            <div class="item padding-0 item-text-wrap" ng-show="isGroupShown(array_list.PatMedRecords) " ng-repeat="item in array_list.PatMedRecords ">
+                <div class="row">
+                    <div class="col col-30 r-border" ng-bind="item.date">16-02-16/4:15 PM</div>
+                    <div class="col col-30 r-border" ng-bind="item.docName"></div>
+                    <div class="col col-20 r-border">
+                        <i ng-class="{ 'icon  {{ recNatureIcons.LAB }}' : item.rec_nature_id==1 ,
+                'icon {{ recNatureIcons.NOTE }}' : item.rec_nature_id==2 , 'icon {{ recNatureIcons.LAB }}' : item.rec_nature_id> 3, 'icon
+                {{ recNatureIcons.IMAGE }}' : item.rec_nature_id == 3}"></i>
+                    </div>
+                    <div class="col col-20 " ng-click="openMediaFile(item)"> view </div>
+                </div>
+            </div>
         </div>
 
-        <div class="card list">
+        <div class="card list no-box-shadow">
             <div class="item item-divider item-icon-left item-icon-right dark-bg light" ng-click="toggleGroup(array_list.PatMedHistory) "
             ng-class="{active_acc: isGroupShown(array_list.PatMedHistory)}">
                 <i ng-click="toggleGroup(array_list.PatMedHistory)" class="icon icon-left " ng-class="isGroupShown(array_list.PatMedHistory) ? 'ion-ios-arrow-down' : 'ion-ios-arrow-up'"></i>
 
-                <!--ng-if="array_list.med_rec_can_add==1 " -->
 
                 <span>History</span>
-                <i class="icon ion-plus-circled " ng-click="showHistoryPopup() "></i>
+                <i class="icon ion-plus " ng-click="showHistoryPopup() "></i>
             </div>
-            <a class="item item-icon-left item-text-wrap item-accordion " ng-show="isGroupShown(array_list.PatMedHistory)
+            <!--<a class="item item-icon-left item-text-wrap item-accordion " ng-show="isGroupShown(array_list.PatMedHistory)
                     " ng-repeat="item in array_list.PatMedHistory " item="item ">
                 <i class="icon ion-ios-paper-outline "></i>
 
@@ -79,10 +128,25 @@
 
                 <p>Brief: <span ng-bind="item.txtContent "></span></p>
 
-            </a>
+            </a>-->
+
+            <div class="item padding-0" ng-show="isGroupShown(array_list.PatMedHistory) ">
+                <div class="row">
+                    <div class="col col-30  bold r-border">Date</div>
+                    <div class="col col-40  bold r-border">Condition</div>
+                    <div class="col col-30  bold ">Doctor</div>
+                </div>
+            </div>
+            <div class="item padding-0 item-text-wrap" ng-show="isGroupShown(array_list.PatMedHistory) " ng-repeat="item in array_list.PatMedHistory ">
+                <div class="row">
+                    <div class="col col-30 r-border" ng-bind="item.date">16-02-16/4:15 PM</div>
+                    <div class="col col-40 r-border" ng-bind="item.txtContent"></div>
+                    <div class="col col-30 " ng-bind="item.docName ? item.docName : 'self ' "></div>
+                </div>
+            </div>
         </div>
 
-        <div class="card list ">
+        <div class="card list no-box-shadow">
             <div class="item item-divider item-icon-left item-icon-right dark-bg light " ng-click="toggleGroup(array_list.PatAllergy) "
             ng-class="{active_acc: isGroupShown(array_list.PatAllergy)} ">
                 <i ng-click="toggleGroup(array_list.PatAllergy)" class="icon icon-left " ng-class="isGroupShown(array_list.PatAllergy) ? 'ion-ios-arrow-down' : 'ion-ios-arrow-up'"></i>
@@ -90,17 +154,32 @@
                 <!--ng-if="array_list.med_rec_can_add == 1" -->
 
                 <span>Allergy</span>
-                <i class="icon ion-plus-circled" ng-click="GetAllergyType()"></i>
+                <i class="icon ion-plus" ng-click="GetAllergyType()"></i>
             </div>
-            <a class="item  item-text-wrap item-accordion" ng-show="isGroupShown(array_list.PatAllergy)" ng-repeat="item in array_list.PatAllergy"
+            <!--<a class="item  item-text-wrap item-accordion" ng-show="isGroupShown(array_list.PatAllergy)" ng-repeat="item in array_list.PatAllergy"
             item="item">
                 <p>Exist From: <span ng-bind="item.ExistsFrom"></span></p>
 
                 <p><b>Name: </b><span ng-bind="item.AllergyName"></span>&nbsp;&nbsp;&nbsp;&nbsp; <b>Type: </b><span ng-bind="item.AllergyTypeName"></span></p>
-            </a>
+            </a>-->
+
+            <div class="item padding-0" ng-show="isGroupShown(array_list.PatAllergy) ">
+                <div class="row">
+                    <div class="col col-30  bold r-border">Name</div>
+                    <div class="col col-40  bold r-border">Type</div>
+                    <div class="col col-30  bold ">Exist from</div>
+                </div>
+            </div>
+            <div class="item padding-0 item-text-wrap" ng-show="isGroupShown(array_list.PatAllergy) " ng-repeat="item in array_list.PatAllergy ">
+                <div class="row">
+                    <div class="col col-30 r-border" ng-bind="item.AllergyName">16-02-16/4:15 PM</div>
+                    <div class="col col-40 r-border" ng-bind="item.AllergyTypeName"></div>
+                    <div class="col col-30 " ng-bind="item.ExistsFrom"></div>
+                </div>
+            </div>
         </div>
 
-        <div class="card list">
+        <div class="card list no-box-shadow">
             <div class="item item-divider item-icon-left item-icon-right dark-bg light" ng-click="toggleGroup(array_list.HealthCondition) "
             ng-class="{active_acc: isGroupShown(array_list.HealthCondition)}">
                 <i ng-click="toggleGroup(array_list.HealthCondition)" class="icon icon-left " ng-class="isGroupShown(array_list.HealthCondition) ? 'ion-ios-arrow-down' : 'ion-ios-arrow-up'"></i>
@@ -108,9 +187,9 @@
                 <!--ng-if="array_list.med_rec_can_add == 1" -->
 
                 <span>Health Condition</span>
-                <i class="icon ion-plus-circled" ng-click="fetchHealthConditions()"></i>
+                <i class="icon ion-plus" ng-click="fetchHealthConditions()"></i>
             </div>
-            <a class="item  item-text-wrap item-accordion" ng-show="isGroupShown(array_list.HealthCondition)" ng-repeat="item in array_list.HealthCondition"
+            <!--<a class="item  item-text-wrap item-accordion" ng-show="isGroupShown(array_list.HealthCondition)" ng-repeat="item in array_list.HealthCondition"
             item="item">
 
                 <p><b>Name: </b><span ng-bind="item.HCondition"></span></p>
@@ -122,10 +201,25 @@
                         <p>Exist From: <span ng-bind="item.Existsfrom"></span></p>
                     </div>
                 </div>
-            </a>
+            </a>-->
+
+            <div class="item padding-0" ng-show="isGroupShown(array_list.HealthCondition) ">
+                <div class="row">
+                    <div class="col col-30  bold r-border">Name</div>
+                    <div class="col col-40  bold r-border">Type</div>
+                    <div class="col col-30  bold ">Exist from</div>
+                </div>
+            </div>
+            <div class="item padding-0 item-text-wrap" ng-show="isGroupShown(array_list.HealthCondition) " ng-repeat="item in array_list.HealthCondition ">
+                <div class="row">
+                    <div class="col col-30 r-border" ng-bind="item.HCondition">16-02-16/4:15 PM</div>
+                    <div class="col col-40 r-border" ng-bind="item.HConTypeProperty"></div>
+                    <div class="col col-30 " ng-bind="item.Existsfrom"></div>
+                </div>
+            </div>
         </div>
 
-        <div class="card list">
+        <div class="card list no-box-shadow">
             <div class="item item-divider item-icon-left item-icon-right dark-bg light" ng-click="toggleGroup(array_list.EmergencyContact) "
             ng-class="{active_acc: isGroupShown(array_list.EmergencyContact)}">
                 <i ng-click="toggleGroup(array_list.EmergencyContact)" class="icon icon-left " ng-class="isGroupShown(array_list.EmergencyContact) ? 'ion-ios-arrow-down' : 'ion-ios-arrow-up'"></i>
@@ -133,24 +227,40 @@
                 <!--ng-if="array_list.med_rec_can_add == 1" -->
 
                 <span>Emergency Contact</span>
-                <i class="icon ion-plus-circled" ng-click="GetRelation_showPopup()"></i>
+                <i class="icon ion-plus" ng-click="GetRelation_showPopup()"></i>
             </div>
-            <a class="item  item-text-wrap item-accordion" ng-show="isGroupShown(array_list.EmergencyContact)" ng-repeat="item in array_list.EmergencyContact"
+            <!--<a class="item  item-text-wrap item-accordion" ng-show="isGroupShown(array_list.EmergencyContact)" ng-repeat="item in array_list.EmergencyContact"
             item="item">
                 <p>Name: <span ng-bind="item.Name"></span></p>
 
                 <p>Relation: <span ng-bind="item.Relationship"></span></p>
 
                 <p>Contact1: <span ng-bind="item.ContactNo"></span>, Contact2: <span ng-bind="item.ContactNo2"></span>
-                    <span
-                    ng-if="!item.ContactNo2">-NA-</span>
+                    <span ng-if="!item.ContactNo2">-NA-</span>
                 </p>
 
-            </a>
+            </a>-->
+
+            <div class="item padding-0" ng-show="isGroupShown(array_list.EmergencyContact) ">
+                <div class="row">
+                    <div class="col col-20  bold r-border">Name</div>
+                    <div class="col col-20  bold r-border">Relation</div>
+                    <div class="col col-30  bold r-border">contact 1</div>
+                    <div class="col col-30  bold ">contact 2</div>
+                </div>
+            </div>
+            <div class="item padding-0 item-text-wrap" ng-show="isGroupShown(array_list.EmergencyContact) " ng-repeat="item in array_list.EmergencyContact ">
+                <div class="row">
+                    <div class="col col-20 r-border" ng-bind="item.Name">16-02-16/4:15 PM</div>
+                    <div class="col col-20 r-border" ng-bind="item.Relationship"></div>
+                    <div class="col col-30 r-border" ng-bind="item.ContactNo"></div>
+                    <div class="col col-30 " ng-bind="item.ContactNo2"></div>
+                </div>
+            </div>
         </div>
 
 
-        <div class="card list">
+        <div class="card list no-box-shadow">
             <div class="item item-divider item-icon-left item-icon-right dark-bg light" ng-click="toggleGroup(array_list.PatMedication) "
             ng-class="{active_acc: isGroupShown(array_list.PatMedication)}">
                 <i ng-click="toggleGroup(array_list.PatMedication)" class="icon icon-left " ng-class="isGroupShown(array_list.PatMedication) ? 'ion-ios-arrow-down' : 'ion-ios-arrow-up'"></i>
@@ -158,9 +268,15 @@
                 <!--ng-if="array_list.med_rec_can_add == 1"-->
 
                 <span>Medication</span>
-                <i class="icon ion-plus-circled"></i>
+                <i class="icon ion-plus"></i>
             </div>
-            <a class="item  item-text-wrap item-accordion" ng-show="isGroupShown(array_list.PatMedication)" ng-repeat="item in array_list.PatMedication"
+
+            <!--Generic Name
+Brands Name
+Tab 2mg
+Before Food 1-1-0 5 days
+Special Instructions-->
+            <!--<a class="item  item-text-wrap item-accordion" ng-show="isGroupShown(array_list.PatMedication)" ng-repeat="item in array_list.PatMedication"
             item="item">
                 <p>Subtenant: <span ng-bind="item.SubTenant"></span></p>
 
@@ -172,12 +288,56 @@
 
                 <p>Instruction: <span ng-bind="item.instruction"></span></p>
 
-            </a>
+            </a>-->
+            <div class="item padding-0" ng-show="isGroupShown(array_list.PatMedication) ">
+                <div class="row">
+                    <div class="col col-20  bold r-border" align="center">
+                        <i class="icon icon-injection medication_icon"></i>
+                    </div>
+                    <div class="col col-80 ">
+                        <p>Generic Name</p>
+                        <p>Brands Name</p>
+                        <p>Tab 2mg</p>
+                        <p>Before Food 1-1-0 5 days</p>
+                        <p>Special Instructions</p>
 
+                    </div>
+                </div>
+            </div>
+            <div class="item padding-0" ng-show="isGroupShown(array_list.PatMedication) ">
+                <div class="row">
+                    <div class="col col-20  bold r-border" align="center">
+                        <i class="icon icon-injection medication_icon"></i>
+                    </div>
+                    <div class="col col-80 ">
+                        <p>Generic Name</p>
+                        <p>Brands Name</p>
+                        <p>Tab 2mg</p>
+                        <p>Before Food 1-1-0 5 days</p>
+                        <p>Special Instructions</p>
 
+                    </div>
+                </div>
+            </div>
         </div>
 
 
         <div class="list"></div>
     </ion-content>
+
+    <!--section footer   -->
+    <div class="tabs  tabs-icon-top sub-header-strip">
+        <a class="tab-item" ng-click="jumpTo('app.family_calander')">
+            <img src="icons/calander.png" /> </br> Calender
+        </a>
+        <a class="tab-item" ng-click="jumpTo('app.list_loved_ones')">
+            <img src="icons/loves_one.png" /> </br> Loved ones
+        </a>
+        <a class="tab-item" ng-click="jumpTo('app.reminder_list')">
+            <img src="icons/reminder.png" /> </br> Reminder
+        </a>
+        <a class="tab-item" ng-click="jumpTo('app.bill_list')">
+            <img src="icons/money.png" /> </br> Bills
+        </a>
+    </div>
 </ion-view>

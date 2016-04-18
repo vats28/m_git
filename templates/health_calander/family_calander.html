@@ -1,0 +1,70 @@
+<ion-view view-title="Health Calander" ng-controller="familyCalanderCtrl">
+    <ion-content class="has-header has-footer" ng-init="init()">
+ <!-- header section start here -->
+        <div class="item item-avatar header-section">
+            <img ng-src="{{ userData.profFilePath }}" ng-if="userData.profFilePath" ng-click="openImagesPopup(userData.profFilePath)">
+            <img src="img/profile-empty.jpg" ng-if="!userData.profFilePath">
+            <h2 ng-bind="userData.name">Ravi</h2>
+            <h2><span ng-bind="getAge(userData.dob)">24</span> / <span ng-bind="userData.gender_str">Male</span></h2>
+            <p ng-bind="userData.email">1MedKey</p>
+            <!--<i class="ion icon ion-android-more-vertical header-menu-icon" ng-click="showModal('templates/popups/additional_profile.html')"></i>-->
+        </div>
+
+
+        <!-- header section end here -->
+        <div class="button-bar padding-10">
+            <a class="button theme_orange-bg" style="color:white;">Health Calander</a>
+            <a class="button button-outline " style="background-color: white;color:black;" ng-click="jumpTo('app.reminder_list')">Reminder</a>
+        </div>
+        <div class="list card">
+            <div class="item item-divider padding-10 positive item-icon-left " style="background-color:#ececec">
+                <i class="icon ion ion-calander"></i> 23-10-2015
+            </div>
+            <div class="item padding-10 item-text-wrap">
+                <p><b>Father in law Empty stomach sugar test</b></p>
+                <p>Appointment : <span>path labs </span></p>
+            </div>
+            <div class="item padding-10 item-text-wrap">
+                <p><b>Mother in law full body diagnose</b></p>
+                <p>Appointment : <span>path labs </span></p>
+            </div>
+        </div>
+
+        <div class="list card">
+            <div class="item item-input item-select " style="background-color:#ececec">
+                <div class="input-label">
+                    Activities
+                </div>
+                <select class="red-select" ng-model="lovedone_id">
+                    <option value="">All</option>
+                    <option ng-repeat="item in session_variables.activity_list" value="{{item.id}}">{{item.name}}</option>
+                </select>
+            </div>
+            <div class="item padding-10 item-text-wrap">
+                <p>7:30 AM – Husband – calories burnt 450 Target 600</p>
+            </div>
+            <div class="item padding-10 item-text-wrap">
+                <p>12:30PM – Father in law took before food medicines </p>
+            </div>
+        </div>
+
+
+        <div class="list"></div>
+    </ion-content>
+     <!--section footer   -->
+   <div class="tabs  tabs-icon-top sub-header-strip">
+
+        <a class="tab-item" ng-click="jumpTo('app.family_calander')">
+          <img src="icons/calander.png" /> </br> Calender
+        </a>
+        <a class="tab-item" ng-click="jumpTo('app.list_loved_ones')">
+           <img src="icons/loves_one.png" /> </br> Loved ones
+        </a>
+        <a class="tab-item" ng-click="jumpTo('app.reminder_list')">
+            <img src="icons/reminder.png" /> </br> Reminder
+        </a>
+        <a class="tab-item" ng-click="jumpTo('app.bill_list')">
+          <img src="icons/money.png" /> </br> Bills
+        </a>
+    </div>
+</ion-view>

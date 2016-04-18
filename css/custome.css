@@ -1,0 +1,48 @@
+@charset "utf-8";
+/* CSS Document */
+.header-bg{background-color: rgba(255, 255, 255, 0.58); background-image:none;}
+.header-section{background-color: rgba(255, 255, 255, 0.58);}
+.header-section h2{ color:#848484;}
+.header-section p{ color:#848484;}
+.dark-bg{ background-color:#767676}
+.item-icon-left .icon::before, .item-icon-right .icon::before{ width:23px;}
+.ion-ios-arrow-up::before{ font-size:23px;}
+.ion-ios-arrow-down::before{ font-size:23px;}
+.card.list .icon.ion-plus{ font-size:19px; height:22px; width:22px; padding:3px; border-radius:100px; background-color:#474747; margin-top:7px;}
+.card, .list-inset{margin: 10px 10px 2px;}
+.sub-header-strip{background-color: rgba(255, 255, 255, 0.58); padding-top:3px;}
+.tabs.tabs-icon-top.sub-header-strip img{ max-width:28px; max-height:28px; }
+.tabs.tabs-icon-top.sub-header-strip{ font-size:12px; background-color:#fff; }
+.col{ font-size:13px; text-align:center;}
+.tab-item{ text-align:center;}
+.tab-item img{max-width:35px; }
+.popu .tabs .tab-item{ line-height:16px; font-size:13px;}
+.button.button-dark {
+    background-color: #fff;
+    border-color: rgba(255, 45, 0, 0.74);
+    color: #ff5533;
+}
+.button.button-dark:hover{ color:#fff; background-color:#FF5533;}
+.tabs{ height:60px;}
+/*has footer deepanshu*/
+.has-footer{ bottom:70px;}
+.header-bg{ box-shadow:none;}
+.sub-header-strip{ padding-top:5px; background-color: transparent; }
+.tabs{ border-top:0px;}
+.heading_orange {
+    background-color: #ff5533;
+    font-size: 14px;
+    font-weight: 400;
+    color: #fff;
+    padding: 5px 15px;
+    border-bottom: 1px #E4E4E4 solid;
+    margin-bottom: 5px;
+}
+.border-radius{ border-radius:3px !important;}
+.no-box-shadow{ box-shadow:none;}
+.headtext_orange{ font-size:16px; color:#ff5533}
+.text_orange{ font-size:16px; color:#ff5533}
+/*.scroll-content{ margin-bottom:70px;} deepanshu */
+.red-select{ background-color:#f2f2f2 !important; text-align:left; color:#454545 !important; }
+div.hscroller-card{ background-color:#fff !important;}
+div.hscroller-card div.hscroller-label{ color:#ff5533}

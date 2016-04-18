@@ -21,8 +21,8 @@ angular.module('utils.camera', [])
                     targetWidth: targetWidth,
                     targetHeight: targetHeight,
                     popoverOptions: CameraPopoverOptions,
-                    saveToPhotoAlbum: false,
-                    correctOrientation: true
+                    saveToPhotoAlbum: true,
+                    // correctOrientation: true
                 };
 
 

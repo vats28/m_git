@@ -1,0 +1,39 @@
+<ion-view view-title="Insurance">
+
+    <ion-content class="has-header has-footer" ng-controller="insuranceCtrl" ng-init="init()">
+        <div class="card list" ng-repeat="item in insuranceList">
+            <div class="item item-divider bold" align="center">Insurance Detail</div>
+            <div class="item">
+                <div class="row">
+                    <div class="col">Policy</div>
+                    <div class="col" ng-bind="': '+item.policy"></div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="row">
+                    <div class="col">Policy Number</div>
+                    <div class="col" ng-bind="': '+item.policy_num"></div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="row">
+                    <div class="col">Policy Cover</div>
+                    <div class="col" ng-bind="': '+item.policy_cover"></div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="row">
+                    <div class="col">Expiry Date</div>
+                    <div class="col" ng-bind="': '+getDateWithMonthName(item.expiry_date)"></div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="row">
+                    <div class="col">Renew Date</div>
+                    <div class="col" ng-bind="': '+getDateWithMonthName(item.renew_date)"></div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </ion-content>
+</ion-view>

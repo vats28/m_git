@@ -1,39 +1,46 @@
 <ion-view view-title="{{ app_data.title }}" >
-  <ion-content class="page-bg-color" ng-controller="dashboardCtrl" ng-init="init()" >
+  <ion-content class="has-header has-footer" ng-controller="dashboardCtrl" ng-init="init()" >
 
-     <!-- header section start here -->
-    <div class="item item-avatar">
-      <img src="img/hritik.jpg">
-      <h2>Ravi</h2>
-      <p>Age <span>24</span>, Sex <span>Male</span></p>
-      <p>1MedKey</p>
+      <!-- header section start here -->
+        <div class="item item-avatar header-section">
+            <img ng-src="{{ userData.profFilePath }}" ng-if="userData.profFilePath" ng-click="openImagesPopup(userData.profFilePath)">
+            <img src="img/profile-empty.jpg" ng-if="!userData.profFilePath">
+            <h2 ng-bind="userData.name">Ravi</h2>
+            <h2><span ng-bind="getAge(userData.dob)">24</span> / <span ng-bind="userData.gender_str">Male</span></h2>
+            <p ng-bind="userData.email">1MedKey</p>
+            <!--<i class="ion icon ion-android-more-vertical header-menu-icon" ng-click="showModal('templates/popups/additional_profile.html')"></i>-->
+        </div>
 
-      <!--<p>
-        <a href="#" class="subdued">Health Status Update</a>
-      </p>-->
+
+        <!--<div class="item tabs tabs-secondary  sub-header-strip tabs-icon-top">
+            <a class="tab-item" ng-click="jumpTo('app.family_calander')">
+                <i class="icon ion-calendar assertive"></i> Calender
+            </a>
+            <a class="tab-item" ng-click="jumpTo('app.list_loved_ones')">
+                <i class="icon ion-heart assertive"></i> Loved ones
+            </a>
+            <a class="tab-item" ng-click="jumpTo('app.health_status')">
+                <i class="icon ion-ios-bell assertive"></i> Reminder
+            </a>
+            <a class="tab-item" ng-click="jumpTo('app.bill_list')">
+                <i class="icon icon-inr assertive"></i> Bills
+            </a>
+        </div>-->
+        <!-- header section end here -->
+  </ion-content> <!--section footer   -->
+    <div class="tabs  tabs-icon-top sub-header-strip">
+
+        <a class="tab-item" ng-click="jumpTo('app.family_calander')">
+            <i class="icon ion-calendar assertive"></i> Calender
+        </a>
+        <a class="tab-item" ng-click="jumpTo('app.list_loved_ones')">
+            <i class="icon ion-heart assertive"></i> Loved ones
+        </a>
+        <a class="tab-item" ng-click="jumpTo('app.reminder_list')">
+            <i class="icon ion-ios-bell assertive"></i> Reminder
+        </a>
+        <a class="tab-item" ng-click="jumpTo('app.bill_list')">
+            <i class="icon icon-inr assertive"></i> Bills
+        </a>
     </div>
-
-    <div class="item tabs tabs-secondary  stable-bg tabs-icon-top">
-      <a class="tab-item" href="#">
-        <i class="icon ion-calendar" ng-click="jumpTo('app.calendar_events')"></i>
-        Calender
-      </a>
-      <a class="tab-item" ng-click="jumpTo('app.list_loved_ones')">
-        <i class="icon ion-heart"></i>
-        Loved ones
-      </a>
-      <a class="tab-item" href="#">
-        <i class="icon ion-android-playstore"></i>
-        Store
-      </a>
-      <a class="tab-item" href="#">
-        <i class="icon ion-cash"></i>
-        Bills
-      </a>
-    </div>
-
-      <!-- header section end here -->
-
-
-  </ion-content>
 </ion-view>

@@ -1,0 +1,74 @@
+<ion-modal-view ng-controller="addHealthProviderCtrl">
+    <ion-header-bar class="assertive-bg">
+        <h1 class="title light">Add Health Provider</h1>
+        <button ng-click="closeModal()" class="animated fadeInUpBig fab-button-new t-20 r-20 size-48 light-bg ">
+            <i class="icon ion ion-close"></i></button>
+    </ion-header-bar>
+
+    <button target-id="" class="animated fadeInDownBig fab-button-new r-20 t-106 size-56 positive-bg" ng-click="takePicture()"
+    ng-if="IsShowCamButton">
+        <i class="icon ion ion-camera light "></i>
+    </button>
+    <button target-id="" class="animated fadeInDownBig fab-button-new r-20 size-56 calm-bg" style="top:170px;" ng-click="openGallery()"
+    ng-if="IsShowCamButton">
+        <i class="icon ion ion-aperture light"></i>
+    </button>
+    <ion-content class="has-header has-footer" ng-init="init()">
+        <div class="item item-text-wrap border-0" align="center" style="border:0px;">
+            You can add hospital/clinic or any favourite doctor.
+        </div>
+        <div id="content">
+            <div id="profile-info">
+                <img id='profile-image' src="{{profilePic}}" ng-click="showCameraOption()" ng-if="profilePic" style="height: 120px; width: 120px">
+                <img id='profile-image' src="img/profile-empty.jpg" ng-click="showCameraOption()" ng-if="!profilePic" style="height: 120px; width: 120px">
+            </div>
+        </div>
+        <div class="item item-input item-select stable-bg">
+            <div class="input-label">
+                Facility
+            </div>
+            <select class="red-select" ng-model="lovedone_id">
+                <option value="">--select--</option>
+                <option ng-repeat="item in session_variables.facility_type_list" value="{{item.id}}">{{item.type}}</option>
+            </select>
+        </div>
+        <form>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Name</span>
+                <input type="text" placeholder="enter name">
+            </label>
+
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Address</span>
+                <input type="text" placeholder="enter address">
+            </label>
+
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Speciality</span>
+                <input type="text" placeholder="enter speciality">
+            </label>
+
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Email</span>
+                <input type="email" placeholder="enter email">
+            </label>
+
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Mobile</span>
+                <input type="tel" maxlength="10" placeholder="John">
+            </label>
+        </form>
+        <!--<div class="item border-0">
+            <button class="button button-block button-assertive" ></button>
+        </div>-->
+        
+        </div>
+        <br/>
+        <br/>
+        <br/>
+    </ion-content>
+
+    <div class="bar bar-footer bar-dark">
+        <button class="button button-clear icon  ion-plus pull-right">Add Now</button>
+    </div>
+</ion-modal-view>

@@ -1,50 +1,48 @@
 <ion-view view-title="Loved ones" ng-controller="listLovedCtrl">
-    <fab-button target-id="" class="animated zoomInDown b-20 r-20" ng-click="jumpTo('app.add_loved_ones')">
+    <!--<fab-button target-id="" class="animated zoomInDown b-20 r-20" ng-click="jumpTo('app.add_loved_ones')">
         <i class="icon ion ion-plus "></i>
-    </fab-button>
-    <ion-content class="page-bg-color" ng-init="init()">
+    </fab-button>-->
+    <ion-content class="has-header has-footer"  ng-init="init()">
         <!-- header section start here -->
-        <div class="item item-avatar">
-            <img ng-src="{{userData.profFilePath}}" ng-if="userData.profFilePath" ng-click="openImagesPopup(userData.profFilePath)">
+        <div class="item item-avatar header-section">
+            <img ng-src="{{ userData.profFilePath }}" ng-if="userData.profFilePath" ng-click="openImagesPopup(userData.profFilePath)">
             <img src="img/profile-empty.jpg" ng-if="!userData.profFilePath">
-
             <h2 ng-bind="userData.name">Ravi</h2>
-            <h2> <span ng-bind="getAge(userData.dob)">24</span> / <span ng-bind="userData.gender_str">Male</span></h2>
+            <h2><span ng-bind="getAge(userData.dob)">24</span> / <span ng-bind="userData.gender_str">Male</span></h2>
             <p ng-bind="userData.email">1MedKey</p>
+            <!--<i class="ion icon ion-android-more-vertical header-menu-icon" ng-click="showModal('templates/popups/additional_profile.html')"></i>-->
         </div>
 
-        <div class="item tabs tabs-secondary  stable-bg tabs-icon-top">
-            <a class="tab-item" href="#">
-                <i class="icon ion-calendar" ng-click="jumpTo('app.calendar_events')"></i> Calender
+
+        <!--<div class="item tabs tabs-secondary  sub-header-strip tabs-icon-top">
+            <a class="tab-item" ng-click="jumpTo('app.family_calander')">
+                <i class="icon ion-calendar assertive"></i> Calender
             </a>
             <a class="tab-item" ng-click="jumpTo('app.list_loved_ones')">
-                <i class="icon ion-heart"></i> Loved ones
+                <i class="icon ion-heart assertive"></i> Loved ones
             </a>
-            <a class="tab-item" href="#">
-                <i class="icon ion-android-playstore"></i> Store
+            <a class="tab-item" ng-click="jumpTo('app.health_status')">
+                <i class="icon ion-ios-bell assertive"></i> Reminder
             </a>
-            <a class="tab-item" href="#">
-                <i class="icon ion-cash"></i> Bills
+            <a class="tab-item" ng-click="jumpTo('app.bill_list')">
+                <i class="icon icon-inr assertive"></i> Bills
             </a>
-        </div>
-
+        </div>-->
         <!-- header section end here -->
 
-
-
-
-        <!--<div class="row" style=" border-bottom: solid #A4A4A4 2px;  ">-->
-        <!--<div class="col">-->
-        <!--<a class="button button-small button-block icon-left ion-plus button-dark" ng-click="jumpTo('app.add_loved_ones')">-->
-        <!--Add Profile-->
-        <!--</a>-->
-        <!--</div>-->
-        <!--<div class="col">-->
-        <!--<a class="button button-small button-block icon-left ion-pull-request">-->
-        <!--Request Pending-->
-        <!--</a>-->
-        <!--</div>-->
-        <!--</div>-->
+        <div class="item padding-10">
+            <div class="button-bar">
+                <button class="button button-small button-assertive button-outline">My Loved Ones</button>
+                <button class="button button-small button-assertive button-outline" ng-click="jumpTo('app.add_loved_ones')">Add Loved Ones</button>
+                <button class="button button-small button-assertive button-outline">Request Pending</button>
+            </div>
+        </div>
+        <div class="item stable-bg padding-10" align="center" ng-hide="progressDone">
+            <div class="col v-tab-item ">
+                <ion-spinner icon="spiral " style="stroke:red;"></ion-spinner>
+                <br/> <span class="dark">Refreshing Data</span>
+            </div>
+        </div>
 
         <div class="card" ng-if="temp.lovedone_list==null">
             <div class="item">
@@ -54,9 +52,8 @@
 
         </div>
 
-        <div class="card" ng-repeat="item in temp.lovedone_list " item="item" >
-            <div class="item item-avatar item-text-wrap">
-
+        <div class="card border-radius no-box-shadow" ng-repeat="item in temp.lovedone_list " item="item" style="background-color:transparent; ">
+            <div class="item item-avatar item-text-wrap " style="background-color:transparent; box-shadow:none">
                 <img ng-src="{{item.profilePic}}" ng-if="item.profilePic" ng-click="openMedicalRecord(item)" style="height: 120px; width: 120px">
                 <img src="img/profile-empty.jpg" ng-if="!item.profilePic" ng-click="openMedicalRecord(item)" style="height: 120px; width: 120px">
 
@@ -64,32 +61,48 @@
                 <p><span ng-bind="getAge(item.DOB)">24</span>/<span ng-bind="item.Gender">F</span> | <span ng-bind="item.Relationship">Uncle</span></p>
                 <p ng-if="item.LastVisit" ng-bind="'Last Visit: '+ item.LastVisit + ', Doctor: '+ item.DoctorName"></p>
                 <p ng-if="item.NextVisit" ng-bind="'Next Visit: '+ item.NextVisit"></p>
-                <button class="fab-button-new dark-bg light absolute_round_button" ng-click="call(item.LovedonesMobile)" style="bottom:5px; right:5px;">
-                    <i class="icon ion ion-android-call"></i></button>
-                <button class="fab-button-new light absolute_round_button" ng-click="email(item.LovedonesEmail)" style="bottom:5px; right:46px; background-color: #a2a2a2">
-                    <i class="icon ion ion-email"></i></button>
-
-
+                <button class="button button-clear button-assertive  icon ion-android-share-alt absolute_round_button" ng-click="showShareModal(item)"
+                style="bottom:5px; right:70px;"></button>
+                <button class="button button-clear button-dark  icon ion-android-call absolute_round_button" ng-click="call(item.LovedonesMobile)"
+                style="bottom:5px; right:0px;"></button>
+                <button class="button button-clear button-positive  icon ion-email absolute_round_button" ng-click="email(item.LovedonesEmail)"
+                style="bottom:5px; right:30px;"></button>
             </div>
 
 
-            <div class="item  item-text-wrap  stable-bg tabs-icon-top">
-
-
-                <div style="float: left">
-                    <button ng-click="showMedicalChart()" class=" fab-button-new btn_med_chart energized-bg ">
+            <div class="item  item-text-wrap  stable-bg tabs-icon-top sub-header-strip padding-0" style="background-color:transparent; border-top:0px; border-bottom:1px #ccc solid;">
+                <!--<div style="float: left">
+                    <button ng-click="showMedicalChart()" class=" fab-button-new btn_med_chart dark-bg ">
                         <i class="icon ion ion-ios-paper light"></i>
                     </button>
-                </div>
-                <div class="" style="padding-left:50px;">
-                    <span>BP-1/7-90/100 | BG-1/5-145</span>
+                </div>-->
 
+                <div class="row">
+                    <div class="col col-60">
+                        <span class="assertive ">BP-1/7-90/100 | BG-1/5-145</span>
+                    </div>
+                    <div class="col col-40">
+                        <a class="button button-assertive button-small button-outline float-r" style="white-space: nowrap;">Medicine Chart</a></div>
                 </div>
             </div>
 
         </div>
-
-
         <div class="list"></div>
     </ion-content>
+    <!--section footer   -->
+  <div class="tabs  tabs-icon-top sub-header-strip">
+
+        <a class="tab-item" ng-click="jumpTo('app.family_calander')">
+          <img src="icons/calander.png" /> </br> Calender
+        </a>
+        <a class="tab-item" ng-click="jumpTo('app.list_loved_ones')">
+           <img src="icons/loves_one.png" /> </br> Loved ones
+        </a>
+        <a class="tab-item" ng-click="jumpTo('app.reminder_list')">
+            <img src="icons/reminder.png" /> </br> Reminder
+        </a>
+        <a class="tab-item" ng-click="jumpTo('app.bill_list')">
+          <img src="icons/money.png" /> </br> Bills
+        </a>
+    </div>
 </ion-view>
