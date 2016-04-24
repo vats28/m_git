@@ -8,7 +8,16 @@
 .item-icon-left .icon::before, .item-icon-right .icon::before{ width:23px;}
 .ion-ios-arrow-up::before{ font-size:23px;}
 .ion-ios-arrow-down::before{ font-size:23px;}
-.card.list .icon.ion-plus{ font-size:19px; height:22px; width:22px; padding:3px; border-radius:100px; background-color:#474747; margin-top:7px;}
+.card.list .icon.ion-plus{ 
+    font-size: 19px;
+height: 33px;
+width: 33px;
+padding: 7px;
+border-radius: 50%;
+background-color: #474747;
+margin-top: 1.5px;
+right: 5px !important;
+}
 .card, .list-inset{margin: 10px 10px 2px;}
 .sub-header-strip{background-color: rgba(255, 255, 255, 0.58); padding-top:3px;}
 .tabs.tabs-icon-top.sub-header-strip img{ max-width:28px; max-height:28px; }

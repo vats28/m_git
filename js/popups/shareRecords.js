@@ -1,9 +1,9 @@
 angular.module('starter.shareRecords', [])
 
-    .controller('shareRecordsCtrl', function ($scope, generic_http_post_service) {
+    .controller('shareRecordsCtrl', function($scope, generic_http_post_service) {
 
         $scope.shareData = {};
-        $scope.init = function () {
+        $scope.init = function() {
             try {
                 $scope.GetMedicalRecordNature();
                 $scope.GetFavouriteHospital();
@@ -14,7 +14,7 @@ angular.module('starter.shareRecords', [])
             }
         }
 
-        $scope.GetMedicalRecordNature = function () {
+        $scope.GetMedicalRecordNature = function() {
             var array_rec_nature = null;
             try {
                 array_rec_nature = JSON.parse($scope.GetInLocalStorage($scope.localStorageKeys.RECORD_NATURE_LIST));
@@ -28,7 +28,7 @@ angular.module('starter.shareRecords', [])
             }
         }
 
-        $scope.GetMedicalRecordNature_callback = function (data) {
+        $scope.GetMedicalRecordNature_callback = function(data) {
             $scope.fetchNature = true;
             if (data != null && data != []) {
                 //alert('2');
@@ -41,7 +41,7 @@ angular.module('starter.shareRecords', [])
         }
 
 
-        $scope.GetFavouriteHospital = function () {
+        $scope.GetFavouriteHospital = function() {
             var array_fav_hospitals = null;
             try {
                 array_fav_hospitals = JSON.parse($scope.GetInLocalStorage($scope.localStorageKeys.HOSPITAL_LIST));
@@ -55,7 +55,7 @@ angular.module('starter.shareRecords', [])
             }
         }
 
-        $scope.GetFavouriteHospital_callback = function (data) {
+        $scope.GetFavouriteHospital_callback = function(data) {
             $scope.fetchHospital = true;
             // $scope.hideLoader();
             if (data != null && data != []) {
@@ -65,10 +65,10 @@ angular.module('starter.shareRecords', [])
                 $scope.showAlertWindow_Titled("Sorry", "No data");
             }
         }//end 
-        
-        
 
-        $scope.getLovedOneList = function () {
+
+
+        $scope.getLovedOneList = function() {
             if (!$scope.session_variables.lovedone_list) {
                 $scope.getLovedOneList_main($scope.getLovedOneList_callback);
             } else {
@@ -78,7 +78,7 @@ angular.module('starter.shareRecords', [])
 
         }//end
 
-        $scope.getLovedOneList_callback = function (data) {
+        $scope.getLovedOneList_callback = function(data) {
             $scope.fetchLovedOne = true;
             if (JSON.stringify(data) != '[]') {
                 $scope.session_variables.lovedone_list = data;
@@ -87,7 +87,7 @@ angular.module('starter.shareRecords', [])
             }
         }//end
 
-        $scope.shareRecord = function () {
+        $scope.shareRecord = function() {
             if (!$scope.SubTenantId) {
                 $scope.showAlertWindow_Titled("Sorry", "Please select a subtnant from which you want to share record");
                 return;
@@ -96,7 +96,7 @@ angular.module('starter.shareRecords', [])
                 $scope.showAlertWindow_Titled("Sorry", "Please select a subtnant to which you want to share record or enter email");
                 return;
             }
-            if (!$scope.RecNatureId) {
+            if (!$scope.shareData.RecNatureId) {
                 $scope.showAlertWindow_Titled("Sorry", "Please select a record nature of which you want to share record");
                 return;
             }
@@ -119,15 +119,15 @@ angular.module('starter.shareRecords', [])
             generic_http_post_service.getDetails(generic_http_post_service.getServices().USER_PRIVACY_SHARING_INSERT,
                 $scope.requestData, $scope.shareRecord_callback);
         }//end
-        
-        
-        
-        $scope.shareRecord_callback = function (data) {
+
+
+
+        $scope.shareRecord_callback = function(data) {
             $scope.hideLoader();
             if (data.success == 1) {
-
+                $scope.showAlertWindow_Titled('Success', "Records shared", $scope.closeModal);
             } else {
-
+                $scope.showAlertWindow_Titled('Error', "Some error occured");
             }
         }
 

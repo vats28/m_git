@@ -9,8 +9,8 @@ angular.module('starter', ['ionic', 'ngCordova', 'ngCordovaOauth', 'ionicLazyLoa
     'starter.dashboard', 'starter.mediRec', 'starter.profilePage', 'starter.addLoved', 'starter.listLoved',
     'starter.vital', 'starter.mediRecLovedOne', 'starter.shareRecords', 'starter.familyCalander',
     'starter.healthStatus', 'starter.addHealthProvider', 'starter.billList', 'starter.setReminder',
-    'starter.reminderList', 'starter.addMedicalRecord',
-    'chartjs',
+    'starter.reminderList', 'starter.addMedicalRecord', 'starter.newFamilyCalander',
+    'chartjs', 'ui.rCalendar',
     'utils.date_picker', 'utils.http_post', 'utils.validations', 'ion-fab-button',
     'utils.camera', 'utils.fileTransfer', 'utils.audio', 'utils.native_play_audio', 'ionic.contrib.ui.hscrollcards'])
 
@@ -206,7 +206,7 @@ angular.module('starter', ['ionic', 'ngCordova', 'ngCordovaOauth', 'ionicLazyLoa
                 url: '/family_calander',
                 views: {
                     'menuContent': {
-                        templateUrl: 'templates/health_calander/family_calander.html'
+                        templateUrl: 'templates/health_calander/new_family_calander.html'
                     }
                 }
             })

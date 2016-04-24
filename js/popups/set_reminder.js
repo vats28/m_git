@@ -122,45 +122,47 @@ angular.module('starter.setReminder', [])
             // Schedule notification for tomorrow to remember about the meeting
             try {
 
-                // $scope.temp.from_date = "2016-04-14";
-                // $scope.temp.from_time = "11:00 PM";
-                // $scope.temp.to_date = "2016-04-14";
-                // $scope.temp.to_time = "11:05 PM";
-                
-          //      alert(JSON.stringify($scope.temp.selected_lovedone));
-                
+                // $scope.temp.from_date = "2016-04-24";
+                // $scope.temp.from_time = "11:00 AM";
+                // $scope.temp.to_date = "2016-04-24";
+                // $scope.temp.to_time = "01:05 PM";
+
+                //      alert(JSON.stringify($scope.temp.selected_lovedone));
+
                 $scope.data = {};
                 $scope.data.id = Math.floor((Math.random() * 100000) + 1000);;//new Date().getMilliseconds();
-                $scope.data.title = $scope.getValueInJson($scope.temp.purpose_list, $scope.temp.purpose_id, "purpose_id", "purpose") ;//'Doctor Visit';
-                $scope.data.text = $scope.temp.event_description ;//+  '<br/>At ' + $scope.temp.from_date + ' ' + $scope.temp.from_time;;
-                 var time2 = date_picker.convertTo24HourFormat($scope.temp.from_time); 
-                //$scope.data.firstAt = new Date(2016,3,13,0,27,0,0);//$scope.parseDate($scope.temp.from_date, time2);
-               time2 = date_picker.convertTo24HourFormat($scope.temp.to_time); 
+                $scope.data.title = $scope.getValueInJson($scope.temp.purpose_list, $scope.temp.purpose_id, "purpose_id", "purpose");//'Doctor Visit';
+                $scope.data.text = $scope.temp.event_description;//+  '<br/>At ' + $scope.temp.from_date + ' ' + $scope.temp.from_time;;
+                
+                var time = date_picker.convertTo24HourFormat($scope.temp.from_time);
+                var time2 = date_picker.convertTo24HourFormat($scope.temp.to_time);
                 $scope.data.at = $scope.parseDate($scope.temp.to_date, time2);//new Date(2016, 3, 13, 0, 30, 0, 0);//
-                $scope.data.data = { 
-                    id: $scope.data.id, 
-                    place: $scope.temp.place, 
-                    from_time:$scope.data.at, 
-                    to_time:$scope.data.at, 
-                    time_place: 'at ' + $scope.temp.place + ' on ' +  $scope.temp.to_date +' '+  $scope.temp.to_time,
-                    loved_one: $scope.temp.selected_lovedone};
-                    
+                
+                $scope.data.data = {
+                    id: $scope.data.id,
+                    place: $scope.temp.place,
+                    from_time: $scope.parseDate($scope.temp.to_date, time),
+                    to_time: $scope.parseDate($scope.temp.to_date, time2),
+                    time_place: 'at ' + $scope.temp.place + ' on ' + $scope.temp.to_date + ' ' + $scope.temp.to_time,
+                    loved_one: $scope.temp.selected_lovedone
+                };
+
                 $scope.data.every = $scope.temp.repetition_id == 0 ? undefined : $scope.temp.repetition_id;
 
-               alert(JSON.stringify($scope.data));
-                
+               // alert(JSON.stringify($scope.data));
+
                 //save it in local storage
-                var local_notification_list  = JSON.parse($scope.GetInLocalStorage($scope.localStorageKeys.LOCAL_NOTIFICATIONS));
-                if(local_notification_list){
-                     local_notification_list.push($scope.data);
-                }else{
+                var local_notification_list = JSON.parse($scope.GetInLocalStorage($scope.localStorageKeys.LOCAL_NOTIFICATIONS));
+                if (local_notification_list) {
+                    local_notification_list.push($scope.data);
+                } else {
                     local_notification_list = [];
                     local_notification_list.push($scope.data);
                 }
                 $scope.SaveInLocalStorage($scope.localStorageKeys.LOCAL_NOTIFICATIONS, JSON.stringify(local_notification_list));
-                
+
                 //schdule it
-                $scope.schedule_notification($scope.data);
+                //$scope.schedule_notification($scope.data);
 
                 $scope.showAlertWindow_Titled("Success", "Reminder scheduled", $scope.closeModal);
             } catch (error) {
@@ -171,9 +173,9 @@ angular.module('starter.setReminder', [])
         $scope.parseDate = function(date, time) {
             var dateArr = date.split('-');
             var timeArr = time.split(':');
-           // alert(JSON.stringify(parseInt(dateArr[0])+","+ parseInt(dateArr[1] - 1)+","+ parseInt(dateArr[2])+","+ parseInt(timeArr[0])+","+ parseInt(timeArr[1])+","+ 0+","+ 0));
+            // alert(JSON.stringify(parseInt(dateArr[0])+","+ parseInt(dateArr[1] - 1)+","+ parseInt(dateArr[2])+","+ parseInt(timeArr[0])+","+ parseInt(timeArr[1])+","+ 0+","+ 0));
             var date = new Date(parseInt(dateArr[0]), parseInt(dateArr[1] - 1), parseInt(dateArr[2]), parseInt(timeArr[0]), parseInt(timeArr[1]), 0, 0);
-         //   alert("date : " + date);
+            //   alert("date : " + date);
             return date;
         }
 

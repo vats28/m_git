@@ -1,0 +1,34 @@
+<ion-view view-title="{{viewTitle}}" ng-controller="newFamilyCalanderCtrl">
+
+    <ion-nav-buttons side="right ">
+        <button class="button" ng-disabled="isToday()" ng-click="today()">Today</button>
+        <button class="button" ng-click="changeMode('month')">M</button>
+        <button class="button" ng-click="changeMode('week')">W</button>
+        <button class="button" ng-click="changeMode('day')">D</button>
+        <!--<button class="button" ng-click="loadEvents()">Load Events</button>-->
+    </ion-nav-buttons>
+
+    <ion-content scroll="false" class="main-content" ng-init="init()" >
+        
+        <calendar style="backgound:white !important" ng-model="calendar.currentDate" calendar-mode="calendar.mode" event-source="calendar.eventSource"
+        range-changed="reloadSource(startTime, endTime)" event-selected="onEventSelected(event)" title-changed="onViewTitleChanged(title)"
+        time-selected="onTimeSelected(selectedTime)" step="30"></calendar>
+     
+    </ion-content>
+    <!--section footer   -->
+    <div class="tabs  tabs-icon-top sub-header-strip">
+
+        <a class="tab-item" ng-click="jumpTo('app.family_calander')">
+            <img src="icons/calander.png" /> </br> Calender
+        </a>
+        <a class="tab-item" ng-click="jumpTo('app.list_loved_ones')">
+            <img src="icons/loves_one.png" /> </br> Loved ones
+        </a>
+        <a class="tab-item" ng-click="jumpTo('app.reminder_list')">
+            <img src="icons/reminder.png" /> </br> Reminder
+        </a>
+        <a class="tab-item" ng-click="jumpTo('app.bill_list')">
+            <img src="icons/money.png" /> </br> Bills
+        </a>
+    </div>
+</ion-view>

@@ -5,14 +5,14 @@
             <i class="icon ion ion-close"></i></button>
     </ion-header-bar>
 
-    <ion-content class="has-header has-footer" ng-controller="shareRecordsCtrl" ng-init="init()">
+    <ion-content class="has-header" ng-controller="shareRecordsCtrl" ng-init="init()">
         <div class="item stable-bg padding-10" align="center" ng-hide="fetchNature && fetchHospital">
-            <div class="col v-tab-item ">
+            <div class="col v-tab-item " >
                 <ion-spinner icon="spiral " style="stroke:red;"></ion-spinner>
                 <br/> <span class="dark">Refreshing Data</span>
             </div>
         </div>
-        <div class="item item-text-wrap border-0" align="center" style="border:0px;">
+        <div class="item item-text-wrap border-0" align="center" style="border:0px;padding-top:30px">
             You can share your loved ones record with hospital/clinic or any favourite doctor.
         </div>
         <!--{{session_variables.array_fav_hospitals}}-->

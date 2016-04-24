@@ -331,6 +331,11 @@ right: 10px;
     max-width: 47%;
 }
 
+/*for calendar view*/
+.main-content{
+    background: white !important;
+}
+
 /*.item-input .full-width{
 	padding: 0px;
 }*/

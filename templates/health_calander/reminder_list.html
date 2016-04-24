@@ -16,17 +16,7 @@
         </div>
         <!-- header section end here -->
 
-        <!--<div class="list card" >
-            <div class="item item-avatar " style="padding-top: 0px;">
-                <img src="img/profile-empty.jpg"/>
-                <h1 >Appointment</h1>
-                <h2>Mother India</h2>
-                <p>What ever description</p>
-            </div>
-            <div class="item padding-10" align="center">
-                <h2 class="theme_orange">Click To Book</h2>
-            </div>
-        </div>-->
+    
         <div class="list card" ng-repeat="item in array_list">
             <div class="item item-avatar ">
                 <img src="{{item.data.loved_one.profilePic ? item.data.loved_one.profilePic: 'img/profile-empty.jpg'}}" />
