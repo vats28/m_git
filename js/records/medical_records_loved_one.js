@@ -1,9 +1,24 @@
+
+
+
 angular.module('starter.mediRecLovedOne', [])
 
-    .controller('mediRecLovedOneCtrl', function ($scope, $timeout, $ionicModal, $cordovaMedia, $ionicLoading,
+    .controller('mediRecLovedOneCtrl', function($scope, $timeout, $ionicModal, $cordovaMedia, $ionicLoading,
         $ionicPopup, generic_http_post_service,
         date_picker, form_validator, fileTransfer, audio_service, generic_camera_service,
         native_play_audio) {
+
+
+        $scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
+        $scope.series = ['Series A', 'Series B'];
+        $scope.data = [
+            [65, 59, 80, 81, 56, 55, 40],
+            [28, 48, 40, 19, 86, 27, 90]
+        ];
+        $scope.onClick = function(points, evt) {
+            console.log(points, evt);
+        };
+
 
 
         $scope.recNatureIcons = Object.freeze({
@@ -13,32 +28,31 @@ angular.module('starter.mediRecLovedOne', [])
         });
 
 
+
         $scope.plusIconClicked = false;
         $scope.array_list = {};
 
 
-        $scope.init = function () {
-
-            //$scope.session_variables.isLoggedIn = true;
-            $scope.getUserData();
+        $scope.init = function() {
+            $scope.getUserData1();
         }
-
-        $scope.getUserData = function () {
+        
+        $scope.getUserData1 = function () {
             $scope.showLoader("Fetching details...");
-            // alert(JSON.stringify($scope.session_variables.login_data));
+            // alert(JSON.stringify($scope.session_variables.selected_lovedone));
             $scope.requestData = {};
             $scope.requestData.userId = $scope.session_variables.selected_lovedone.User_Id;
             generic_http_post_service.getDetails_httpget(generic_http_post_service.getServices().GET_PAT_DETAILS,
-                $scope.requestData, $scope.getUserData_callback);
+                $scope.requestData, $scope.getUserData1_callback);
         }
 
-        $scope.getUserData_callback = function (data) {
+        $scope.getUserData1_callback = function (data) {
             $scope.hideLoader();
             //alert(JSON.stringify(data));
             if (data.success == 1) {
                 $scope.array_list = data;
                 $scope.session_variables.selected_lovedone.name = data.name;
-                $scope.session_variables.selected_lovedone.mrno = data.mrno;
+                $scope.session_variables.login_data.mrno = data.mrno;
                 $scope.session_variables.selected_lovedone.patdemoid = data.patdemoid;
                 $scope.session_variables.selected_lovedone.dob = data.DOB;
 
@@ -58,18 +72,43 @@ angular.module('starter.mediRecLovedOne', [])
         }
 
 
+        $scope.getVital = function() {
+
+            $scope.getVital_main($scope.getVital_callback);
+        }//end
+        $scope.getVital_callback = function(data) {
+            if (data) {
+                $scope.session_variables.vitalList = data;
+            }
+        }//end
+
+        $scope.getVital_records = function() {
+            $scope.getVital_records_main($scope.getVital_records_callback);
+        }//end
+        $scope.getVital_records_callback = function(data) {
+            if (JSON.stringify(data).trim().length > 10) {
+                $scope.session_variables.vitalRecordList = data;
+            } else {
+                $scope.showAlertWindow_Titled("Error", "Vital records not available");
+            }
+        }//end
+
+
+
         /*
          * if given group is the selected group, deselect it
          * else, select the given group
          */
-        $scope.toggleGroup = function (group) {
+        $scope.toggleGroup = function(group) {
             if (!$scope.plusIconClicked) {
+                // alert('1');
+                
                 group.show = !group.show;
             } else {
                 $scope.plusIconClicked = false;
             }
         };
-        $scope.isGroupShown = function (group) {
+        $scope.isGroupShown = function(group) {
             if (group)
                 return group.show;
         };
@@ -78,36 +117,36 @@ angular.module('starter.mediRecLovedOne', [])
         // Create the login modal that we will use later
         $ionicModal.fromTemplateUrl('templates/medical_records/popovers/add_medical_records.html', {
             scope: $scope
-        }).then(function (modal) {
+        }).then(function(modal) {
             $scope.modal = modal;
         });
 
         // Open the login modal
-        $scope.showAddMedRecModel = function () {
+        $scope.showAddMedRecModel = function() {
             $scope.modal.show();
         };
 
         // Triggered in the login modal to close it
-        $scope.closeAddMedRecModel = function () {
+        $scope.closeAddMedRecModel = function() {
             $scope.modal.hide();
         };
 
 
         // Perform the login action when the user submits the login form
-        $scope.onAddRecSelect = function (index) {
+        $scope.onAddRecSelect = function(index) {
 
-            $timeout(function () {
+            $timeout(function() {
                 $scope.closeAddMedRecModel();
             }, 1000);
         };
 
 
         //this section for image-capture/pick-image
-        $scope.showUploadOption = function () {
+        $scope.showUploadOption = function() {
             $scope.showGenericImageUploadSheet($scope.showUploadOption_callback);
         }
 
-        $scope.showUploadOption_callback = function (data, err) {
+        $scope.showUploadOption_callback = function(data, err) {
             if (data == -1) {
                 $scope.showAlertWindow_Titled(null, err);
                 return;
@@ -118,11 +157,11 @@ angular.module('starter.mediRecLovedOne', [])
 
 
         //this section for gallery
-        $scope.openGallery = function () {
+        $scope.openGallery = function() {
             generic_camera_service.callGallery($scope.openGallery_callback);
         }
 
-        $scope.openGallery_callback = function (data, err) {
+        $scope.openGallery_callback = function(data, err) {
             if (data == -1) {
                 $scope.showAlertWindow_Titled(null, err);
                 return;
@@ -137,11 +176,11 @@ angular.module('starter.mediRecLovedOne', [])
 
         }
         //this section for camera
-        $scope.openCamera = function () {
-            generic_camera_service.callCamera($scope.openCamera_callback);
+        $scope.openCamera = function() {
+            generic_camera_service.callCamera($scope.openCamera_callback, 480, 640);
         }
 
-        $scope.openCamera_callback = function (data, err) {
+        $scope.openCamera_callback = function(data, err) {
             if (data == -1) {
                 $scope.showAlertWindow_Titled("oh ohh", err);
                 return;
@@ -155,11 +194,11 @@ angular.module('starter.mediRecLovedOne', [])
 
         }
         //this section for video-capture
-        $scope.openVideoCamera = function () {
+        $scope.openVideoCamera = function() {
             generic_camera_service.callVideo($scope.openVideoCamera_callback);
         }
 
-        $scope.openVideoCamera_callback = function (data, err) {
+        $scope.openVideoCamera_callback = function(data, err) {
 
             if (data == -1) {
                 $scope.showAlertWindow_Titled("Sorry", err.message);
@@ -168,8 +207,8 @@ angular.module('starter.mediRecLovedOne', [])
             //alert(JSON.stringify(data));
             var filePath = data[0].fullPath;
             var fileType = filePath.substr(filePath.lastIndexOf('.') + 1);
-            if (!fileType)
-                fileType = "mp4";
+           // if (!fileType)
+                fileType = "mov";
             var options = new FileUploadOptions();
             options.fileKey = "file";
             options.fileName = 'temp.' + fileType;//$scope.reg.profilePic.substr($scope.reg.profilePic.lastIndexOf('/') + 1);
@@ -181,11 +220,11 @@ angular.module('starter.mediRecLovedOne', [])
 
 
         //this section for video-capture
-        $scope.recordAudio = function () {
+        $scope.recordAudio = function() {
             audio_service.callAudioRecorder($scope.recordAudio_callback);
         }
 
-        $scope.recordAudio_callback = function (data, err) {
+        $scope.recordAudio_callback = function(data, err) {
             if (data == -1) {
                 $scope.showAlertWindow_Titled("Sorry", err.message);
                 return;
@@ -204,22 +243,27 @@ angular.module('starter.mediRecLovedOne', [])
 
         $scope.session_variables.my_rec_nature = "";
 
-        $scope.GetMedicalRecordNature = function () {
 
-            var array_rec_nature = null;
-            try {
-                array_rec_nature = JSON.parse($scope.GetInLocalStorage($scope.localStorageKeys.RECORD_NATURE_LIST));
-            } catch (error) { }
+        $scope.GetMedicalRecordNature = function() {
 
-            if (!array_rec_nature) {
-                $scope.GetMedicalRecordNature_main($scope.GetMedicalRecordNature_callback);
-            } else {
-                $scope.session_variables.array_rec_nature = array_rec_nature;
-                $scope.GetMedicalRecordNature_callback($scope.session_variables.array_rec_nature);
-            }
+            $scope.plusIconClicked = true;
+            $scope.showAddMedRecPopup();//
+            return;
+
+            // var array_rec_nature = null;
+            // try {
+            //     array_rec_nature = JSON.parse($scope.GetInLocalStorage($scope.localStorageKeys.RECORD_NATURE_LIST));
+            // } catch (error) { }
+
+            // if (!array_rec_nature) {
+            //     $scope.GetMedicalRecordNature_main($scope.GetMedicalRecordNature_callback);
+            // } else {
+            //     $scope.session_variables.array_rec_nature = array_rec_nature;
+            //     $scope.GetMedicalRecordNature_callback($scope.session_variables.array_rec_nature);
+            // }
         }
 
-        $scope.GetMedicalRecordNature_callback = function (data) {
+        $scope.GetMedicalRecordNature_callback = function(data) {
             $scope.hideLoader();
             if (data != null && data != []) {
                 $scope.session_variables.array_rec_nature = data;
@@ -230,90 +274,35 @@ angular.module('starter.mediRecLovedOne', [])
             }
         }
 
-        $scope.showAddMedRecPopup = function () {
+        $scope.showAddMedRecPopup = function() {
+            $scope.showModal('templates/popups/add_medical_record.html');
+        }
 
+        
 
-            $ionicPopup.show({
-                template: //'<div class="card list" >' +
-                '<div class="list">' +
-                '<select ng-model="session_variables.my_rec_nature" class="select-center-100"  >' +
-                '<option value="">-- select record nature --</option>' +
-                '<option ng-repeat="item in session_variables.array_rec_nature" value="{{item.RecNatureId}}">' +
-                '{{item.RecNatureProperty}}' +
-                '</option>' +
-                '</select>' +
-                '</div>' +
-                // '</div>' +
-                '<div class=" list popu" >' +
-
-                '<div class="item tabs tabs-secondary  stable-bg tabs-icon-top height-60">' +
-                '<a class="tab-item" ng-click="openCamera()" >' +
-                '<i class="icon ion-camera "></i> Capture Image' +
-
-                '</a>' +
-                '<a class="tab-item" ng-click="openVideoCamera()" >' +
-                '<i class="icon ion-ios-videocam " ></i> Capture Video' +
-
-                '</a>' +
-                '</div>' +
-                '</div>' +
-
-                '<div class=" list popu" >' +
-
-                '<div class="item tabs tabs-secondary  stable-bg tabs-icon-top height-60" >' +
-                '<a class="tab-item" >' +
-                '<i class="icon ion-aperture " ng-click="openGallery()"></i>Gallery' +
-
-                '</a>' +
-                '<a class="tab-item"  >' +
-                '<i class="icon ion-music-note " ng-click="recordAudio()"></i> Record Audio' +
-
-                '</a>' +
-                '</div>' +
-                '</div>' +
-
-                '<div class=" list popu" >' +
-
-                '<div class="item tabs tabs-secondary  stable-bg tabs-icon-top height-60">' +
-                '<a class="tab-item"  >' +
-                '<i class="icon ion-android-textsms " ng-click="writeText()"></i>Text Written' +
-
-                '</a>' +
-                '<a class="tab-item" >' +
-                '<i class="icon ion-bag " ng-click="uploadData()"></i>Data' +
-
-                '</a>' +
-                '</div>' +
-                '</div>',
-                /*   templateUrl: 'templates/medical_records/popovers/add_medical_records.html',*/
-                title: 'Add Medical Record',
-                scope: $scope,
-                buttons: [
-                    {
-                        text: 'Cancel',
-                        type: 'button-dark',
-                        onTap: function (e) {
-
-                            return false;
-                        }
-                    },
-                ]
-            }).then(function (res) {
-
-
-            });
-        }//end method
-
-
-        $scope.uploadData = function () {
+        $scope.uploadData = function() {
             $scope.showAlertWindow_Titled('Coming soon', 'Feature will be added in later version');
         }
-        $scope.uploadFile = function () {
+        $scope.uploadFile = function() {
             $scope.showAlertWindow_Titled('Coming soon', 'Feature will be added in later version');
         }
-        $scope.writeText = function () {
+        $scope.writeText = function() {
             $scope.showAlertWindow_Titled('Coming soon', 'Feature will be added in later version');
         }
+
+        $scope.$on('call_action', function(event, data) {
+            if (data == 1) {
+                $scope.openCamera();
+            } else if (data == 2) {
+                $scope.openGallery();
+            } else if (data == 3) {
+                $scope.recordAudio();
+            } else if (data == 4) {
+                $scope.writeText();
+            } else if (data == 5) {
+                $scope.openVideoCamera();
+            }
+        });
 
 
         $scope.medRec_temp = {};
@@ -322,7 +311,7 @@ angular.module('starter.mediRecLovedOne', [])
             ERROR: 'ion-asterisk assertive',
             OK: 'ion-checkmark balanced'/*'ion-thumbsdown energized'*/
         });
-        $scope.showAddVitalPopup = function () {
+        $scope.showAddVitalPopup = function() {
 
 
             $ionicPopup.show({
@@ -359,7 +348,7 @@ angular.module('starter.mediRecLovedOne', [])
                     {
                         text: 'Save',
                         type: 'color_green',
-                        onTap: function (e) {
+                        onTap: function(e) {
 
                             if (!$scope.medRec_temp.myvitals.reading) {
                                 //don't allow the user to close unless he enters all fields
@@ -374,14 +363,14 @@ angular.module('starter.mediRecLovedOne', [])
                     {
                         text: 'Cancel',
                         type: 'color_grey',
-                        onTap: function (e) {
+                        onTap: function(e) {
 
                             $scope.medRec_temp.myvitals = {};
                             return false;
                         }
                     },
                 ]
-            }).then(function (res) {
+            }).then(function(res) {
 
 
             });
@@ -391,12 +380,12 @@ angular.module('starter.mediRecLovedOne', [])
         $scope.medRec_temp.mycontacts = {};
 
 
-        $scope.GetRelation_showPopup = function () {
+        $scope.GetRelation_showPopup = function() {
             $scope.plusIconClicked = true;
             $scope.getRelation($scope.GetRelation_showPopup_callback);
         }
 
-        $scope.GetRelation_showPopup_callback = function (data) {
+        $scope.GetRelation_showPopup_callback = function(data) {
             $scope.hideLoader();
             //alert(JSON.stringify(data));
             if (data != null && data != []) {
@@ -408,7 +397,7 @@ angular.module('starter.mediRecLovedOne', [])
         }
 
         //save emergency contact
-        $scope.saveEmergencyContact = function () {
+        $scope.saveEmergencyContact = function() {
             $scope.showLoader('Please wait ...');
             //{"Name":"Sandeep","ContactNo":"9313808620", "ContactNo2":"0", "UserRoleID":"12",  "RelationshipID":"1"}
             $scope.requestData = {};
@@ -423,12 +412,12 @@ angular.module('starter.mediRecLovedOne', [])
 
         }
 
-        $scope.saveEmergencyContact_Callback = function (data) {
+        $scope.saveEmergencyContact_Callback = function(data) {
             $scope.hideLoader();
             try {
                 if (data.success == 1) {
-                    $scope.showAlertWindow_Titled("Success", data.msg, $scope.init, null);
-                    $scope.getUserData();
+                    $scope.showAlertWindow_Titled("Success", data.msg, $scope.getUserData12, null);
+                    $scope.getUserData1($scope.getUserData_callback);
                 } else {
                     $scope.showAlertWindow_Titled("Error", data.msg, null, null);
                 }
@@ -437,7 +426,7 @@ angular.module('starter.mediRecLovedOne', [])
             }
         }
 
-        $scope.showEmerContPopup = function () {
+        $scope.showEmerContPopup = function() {
 
 
             $ionicPopup.show({
@@ -476,7 +465,7 @@ angular.module('starter.mediRecLovedOne', [])
                     {
                         text: 'Save',
                         type: 'button-assertive',
-                        onTap: function (e) {
+                        onTap: function(e) {
                             //!form_validator.IsValidPhoneNumber($scope.reg.mobile)
                             if (!$scope.medRec_temp.mycontacts.relation_id) {
                                 //don't allow the user to close unless he enters all fields
@@ -502,14 +491,14 @@ angular.module('starter.mediRecLovedOne', [])
                     {
                         text: 'Cancel',
                         type: 'button-dark',
-                        onTap: function (e) {
+                        onTap: function(e) {
 
                             $scope.medRec_temp.mycontacts = {};
                             return false;
                         }
                     },
                 ]
-            }).then(function (res) {
+            }).then(function(res) {
 
 
             });
@@ -518,7 +507,7 @@ angular.module('starter.mediRecLovedOne', [])
 
         $scope.medRec_temp.myallergy = {};
 
-        $scope.GetAllergyType = function () {
+        $scope.GetAllergyType = function() {
             $scope.plusIconClicked = true;
             $scope.showLoader("Fetching data...");
             $scope.requestData = {};
@@ -527,7 +516,7 @@ angular.module('starter.mediRecLovedOne', [])
                 $scope.requestData, $scope.GetAllergyType_callback);
         }
 
-        $scope.GetAllergyType_callback = function (data) {
+        $scope.GetAllergyType_callback = function(data) {
             $scope.hideLoader();
             //alert(JSON.stringify(data));
             if (data != null && data != []) {
@@ -539,7 +528,7 @@ angular.module('starter.mediRecLovedOne', [])
         }
 
 
-        $scope.GetAllergy = function () {
+        $scope.GetAllergy = function() {
             $scope.showLoader("Fetching data...");
             $scope.requestData = {};
             $scope.requestData.UserRoleID = '' + $scope.session_variables.selected_lovedone.Lovedones_mcura_id;
@@ -549,7 +538,7 @@ angular.module('starter.mediRecLovedOne', [])
                 $scope.requestData, $scope.GetAllergy_callback);
         }
 
-        $scope.GetAllergy_callback = function (data) {
+        $scope.GetAllergy_callback = function(data) {
             $scope.hideLoader();
             // alert(JSON.stringify(data));
             if (data != null && data != []) {
@@ -561,7 +550,8 @@ angular.module('starter.mediRecLovedOne', [])
 
 
         //save allergy
-        $scope.saveAllergy = function (data) {
+        //$scope.medRec_temp.myallergy.exist_from = "2016-03-03"
+        $scope.saveAllergy = function(data) {
             $scope.showLoader('Please wait ...');
 
             //{"MRNO":"12","AllergyId":"1", "ExistsFrom":"12/12/2016", "UserRoleID":"12"}
@@ -570,17 +560,17 @@ angular.module('starter.mediRecLovedOne', [])
             $scope.requestData.AllergyId = '' + $scope.medRec_temp.myallergy.allergy_id;
             $scope.requestData.ExistsFrom = '' + $scope.medRec_temp.myallergy.exist_from;
             $scope.requestData.UserRoleID = '' + $scope.session_variables.selected_lovedone.Lovedones_mcura_id;
-            alert(JSON.stringify($scope.requestData));
+            //alert(JSON.stringify($scope.requestData));
             generic_http_post_service.getDetails(generic_http_post_service.getServices().POST_ALLERGY, $scope.requestData, $scope.saveAllergy_Callback);
 
         }
 
-        $scope.saveAllergy_Callback = function (data) {
+        $scope.saveAllergy_Callback = function(data) {
             $scope.hideLoader();
             try {
                 if (data.success == 1) {
-                    $scope.showAlertWindow_Titled("Success", data.msg, $scope.init, null);
-                    $scope.getUserData();
+                    $scope.showAlertWindow_Titled("Success", data.msg, $scope.getUserData12, null);
+                    $scope.getUserData1($scope.getUserData_callback);
                 } else {
                     $scope.showAlertWindow_Titled("Error", data.msg, null, null);
                 }
@@ -593,7 +583,7 @@ angular.module('starter.mediRecLovedOne', [])
 
 
 
-        $scope.showAddAllergy = function () {
+        $scope.showAddAllergy = function() {
 
 
             $ionicPopup.show({
@@ -636,7 +626,7 @@ angular.module('starter.mediRecLovedOne', [])
                     {
                         text: 'Save',
                         type: 'button-assertive',
-                        onTap: function (e) {
+                        onTap: function(e) {
                             //alert($scope.medRec_temp.myallergy.allergyType_id + ' ' + $scope.medRec_temp.myallergy.allergy_id + ' '+ $scope.medRec_temp.myallergy.exist_from );
                             if (!$scope.medRec_temp.myallergy.allergy_id || !$scope.medRec_temp.myallergy.allergyType_id
                                 || !$scope.medRec_temp.myallergy.exist_from) {
@@ -652,14 +642,14 @@ angular.module('starter.mediRecLovedOne', [])
                     {
                         text: 'Cancel',
                         type: 'button-dark',
-                        onTap: function (e) {
+                        onTap: function(e) {
 
                             $scope.medRec_temp.myallergy = {};
                             return false;
                         }
                     },
                 ]
-            }).then(function (res) {
+            }).then(function(res) {
 
 
             });
@@ -667,13 +657,13 @@ angular.module('starter.mediRecLovedOne', [])
 
         $scope.medRec_temp.myHealthCondition = {};
         // $scope.medRec_temp.myHealthCondition.exist_from = '2016-02-29';
-        $scope.fetchHealthConditions = function () {
+        $scope.fetchHealthConditions = function() {
             $scope.plusIconClicked = true;
             $scope.GetHealthConditionType();
             $scope.GetHealthHConditions();
         }
 
-        $scope.GetHealthConditionType = function () {
+        $scope.GetHealthConditionType = function() {
             $scope.showLoader("Fetching data...");
             $scope.requestData = {};
             $scope.requestData.UserRoleID = '' + $scope.session_variables.selected_lovedone.Lovedones_mcura_id;
@@ -682,7 +672,7 @@ angular.module('starter.mediRecLovedOne', [])
                 $scope.requestData, $scope.GetHealthConditionType_callback);
         }
 
-        $scope.GetHealthConditionType_callback = function (data) {
+        $scope.GetHealthConditionType_callback = function(data) {
             $scope.hideLoader();
             //alert(JSON.stringify(data));
             if (data != null && data != []) {
@@ -693,7 +683,7 @@ angular.module('starter.mediRecLovedOne', [])
         }
 
 
-        $scope.GetHealthHConditions = function () {
+        $scope.GetHealthHConditions = function() {
             $scope.showLoader("Fetching data...");
             $scope.requestData = {};
             $scope.requestData.UserRoleID = '' + $scope.session_variables.selected_lovedone.Lovedones_mcura_id;
@@ -702,7 +692,7 @@ angular.module('starter.mediRecLovedOne', [])
                 $scope.requestData, $scope.GetHealthHConditions_callback);
         }
 
-        $scope.GetHealthHConditions_callback = function (data) {
+        $scope.GetHealthHConditions_callback = function(data) {
             $scope.hideLoader();
             if (data != null && data != []) {
                 $scope.medRec_temp.myHealthCondition.array_hc = data;
@@ -714,8 +704,7 @@ angular.module('starter.mediRecLovedOne', [])
         }
 
         //save health condition
-        $scope.medRec_temp.myHealthCondition.exist_from = '2016-03-18';
-        $scope.saveHealthCondition = function () {
+        $scope.saveHealthCondition = function() {
             $scope.showLoader('Please wait ...');
             //{"MRNO":"12","HealthConditionTypeID":"1", "ExistsFrom":"12/12/2016", "UserRoleID":"12",  "HealthConditionID":"1"}
             $scope.requestData = {};
@@ -730,12 +719,12 @@ angular.module('starter.mediRecLovedOne', [])
 
         }
 
-        $scope.saveHealthCondition_Callback = function (data) {
+        $scope.saveHealthCondition_Callback = function(data) {
             $scope.hideLoader();
             try {
                 if (data.success == 1) {
-                    $scope.showAlertWindow_Titled("Success", data.msg, $scope.init, null);
-                    $scope.getUserData();
+                    $scope.showAlertWindow_Titled("Success", data.msg, $scope.getUserData12, null);
+                    $scope.getUserData1($scope.getUserData_callback);
                 } else {
                     $scope.showAlertWindow_Titled("Error", data.msg, null, null);
                 }
@@ -745,7 +734,7 @@ angular.module('starter.mediRecLovedOne', [])
         }
         //end save health condition
 
-        $scope.showAddHealthCondition = function () {
+        $scope.showAddHealthCondition = function() {
 
 
             $ionicPopup.show({
@@ -790,7 +779,7 @@ angular.module('starter.mediRecLovedOne', [])
                     {
                         text: 'Save',
                         type: 'button-assertive',
-                        onTap: function (e) {
+                        onTap: function(e) {
 
                             if (!$scope.medRec_temp.myHealthCondition.id || !$scope.medRec_temp.myHealthCondition.type_id
                                 || !$scope.medRec_temp.myHealthCondition.exist_from) {
@@ -807,14 +796,14 @@ angular.module('starter.mediRecLovedOne', [])
                     {
                         text: 'Cancel',
                         type: 'button-dark',
-                        onTap: function (e) {
+                        onTap: function(e) {
 
                             $scope.medRec_temp.myallergy = {};
                             return false;
                         }
                     },
                 ]
-            }).then(function (res) {
+            }).then(function(res) {
 
 
             });
@@ -823,27 +812,27 @@ angular.module('starter.mediRecLovedOne', [])
 
 
 
-            $scope.showImages = function (index) {
+            $scope.showImages = function(index) {
                 $scope.activeSlide = index;
                 $scope.showModal('templates/image-popover.html');
             }
 
-            $scope.playVideo = function () {
+            $scope.playVideo = function() {
                 $scope.showModal('templates/video-popover.html');
             }
 
-            $scope.showModal = function (templateUrl) {
+            $scope.showModal = function(templateUrl) {
                 $ionicModal.fromTemplateUrl(templateUrl, {
                     scope: $scope,
                     animation: 'slide-in-up'
-                }).then(function (modal) {
+                }).then(function(modal) {
                     $scope.modal = modal;
                     $scope.modal.show();
                 });
             }
 
             // Close the modal
-            $scope.closeModal = function () {
+            $scope.closeModal = function() {
                 $scope.modal.hide();
                 $scope.modal.remove()
             };
@@ -855,10 +844,7 @@ angular.module('starter.mediRecLovedOne', [])
         $scope.medRec_temp.myhistory = {};
 
 
-
-
-
-        $scope.saveMedicalHistory = function () {
+        $scope.saveMedicalHistory = function() {
             $scope.showLoader('Please wait ...');
             $scope.requestData = {};
             $scope.requestData.MRNO = '' + $scope.session_variables.login_data.mrno;
@@ -870,12 +856,12 @@ angular.module('starter.mediRecLovedOne', [])
 
         }
 
-        $scope.saveMedicalHistory_Callback = function (data) {
+        $scope.saveMedicalHistory_Callback = function(data) {
             $scope.hideLoader();
             try {
                 if (data.success == 1) {
-                    $scope.showAlertWindow_Titled("Success", data.msg, $scope.init, null);
-                    $scope.getUserData();
+                    $scope.showAlertWindow_Titled("Success", data.msg, $scope.getUserData12, null);
+                    $scope.getUserData1($scope.getUserData_callback);
                 } else {
                     $scope.showAlertWindow_Titled("Error", data.msg, null, null);
                 }
@@ -885,9 +871,9 @@ angular.module('starter.mediRecLovedOne', [])
         }
 
 
-        $scope.showHistoryPopup = function () {
+        $scope.showHistoryPopup = function() {
             $scope.plusIconClicked = true;
-
+            $scope.medRec_temp.myhistory.date = date_picker.convertDateToString(new Date(), 'yyyy-mm-dd');
             $ionicPopup.show({
                 template: '<div class="card list" >' +
                 '<div class="item item-icon-left" ng-click="pickDate(dateScopes.history)" >' +
@@ -914,7 +900,7 @@ angular.module('starter.mediRecLovedOne', [])
                     {
                         text: 'Save',
                         type: 'button-assertive',
-                        onTap: function (e) {
+                        onTap: function(e) {
                             if (!$scope.medRec_temp.myhistory.history || !$scope.medRec_temp.myhistory.date) {
                                 //don't allow the user to close unless he enters all fields
                                 //$scope.validateTextBoxes();
@@ -929,20 +915,20 @@ angular.module('starter.mediRecLovedOne', [])
                     {
                         text: 'Cancel',
                         type: 'button-dark',
-                        onTap: function (e) {
+                        onTap: function(e) {
 
                             $scope.medRec_temp.myhistory = {};
                             return false;
                         }
                     },
                 ]
-            }).then(function (res) {
+            }).then(function(res) {
 
 
             });
         }//end method
 
-        $scope.getDateWithMonthName = function (dateString) {
+        $scope.getDateWithMonthName = function(dateString) {
             // alert(date_picker.getDateWithMonthName(dateString));
             return date_picker.getDateWithMonthName(dateString);
         }
@@ -954,14 +940,14 @@ angular.module('starter.mediRecLovedOne', [])
         $scope.dateScopes.allergy = 'allergy';
         $scope.dateScopes.health = 'health';
         $scope.dateScopes.contact = 'contact';
-        $scope.pickDate = function (value) {
+        $scope.pickDate = function(value) {
             //alert(value);
             $scope.currDateScope = value;//'history', 'allergy', 'health', 'contact' ;
             var allowOld = true;
             var allowFuture = false;
             date_picker.getDate('date', $scope.pickdate_callback, allowOld, allowFuture);
         };
-        $scope.pickdate_callback = function (data) {
+        $scope.pickdate_callback = function(data) {
             var format = "dd/mm/yyyy";
             // alert(JSON.stringify(data));
             //$scope.reg.dob = date_picker.getDateInFormat(data.currDate, format);
@@ -981,7 +967,7 @@ angular.module('starter.mediRecLovedOne', [])
 
 
         //save medicTION
-        $scope.saveMedication = function (data) {
+        $scope.saveMedication = function(data) {
             $scope.showLoader('Please wait ...');
             $scope.requestData = {};
             $scope.requestData.MRNO = '' + $scope.session_variables.login_data.mrno;
@@ -993,12 +979,12 @@ angular.module('starter.mediRecLovedOne', [])
 
         }
 
-        $scope.saveMedication_Callback = function (data) {
+        $scope.saveMedication_Callback = function(data) {
             $scope.hideLoader();
             try {
                 if (data.success == 1) {
                     $scope.showAlertWindow_Titled("Success", data.msg, null, null);
-                    $scope.getUserData();
+                    $scope.getUserData1($scope.getUserData_callback);
                 } else {
                     $scope.showAlertWindow_Titled("Error", data.msg, null, null);
                 }
@@ -1015,7 +1001,7 @@ angular.module('starter.mediRecLovedOne', [])
 
         $scope.clipSrc = 'img/coffee.MOV';
         $scope.session_variables.allImages = [];
-        $scope.openMediaFile = function (item) {
+        $scope.openMediaFile = function(item) {
             try {
                 var filePath = '';
                 if (!item.image_path) {
@@ -1037,8 +1023,9 @@ angular.module('starter.mediRecLovedOne', [])
                     $scope.showImages(0);
                 } else if (fileType.toLowerCase() == 'mov' || fileType.toLowerCase() == 'mp4'
                     || fileType.toLowerCase() == 'wmv' || fileType.toLowerCase() == '3gp') {
-                    alert(filePath);
+                    console.log(filePath);
                     $scope.session_variables.clipSrc = filePath;
+                    //$scope.file_opener(filePath, 'application/mov');
                     $scope.playVideo();
                 } else if (fileType.toLowerCase() == 'mp3' || fileType.toLowerCase() == '3gpp') {
                     //  native_play_audio.playSimple(data);
@@ -1053,7 +1040,7 @@ angular.module('starter.mediRecLovedOne', [])
             }
         }
 
-        $scope.downloadAudioAndplay = function (data, error) {
+        $scope.downloadAudioAndplay = function(data, error) {
             alert(JSON.stringify(data))
             if (data == -1) {//means error
                 $scope.showAlertWindow_Titled('Sorry', error);
@@ -1067,7 +1054,7 @@ angular.module('starter.mediRecLovedOne', [])
         }
 
 
-        $scope.play = function (src) {
+        $scope.play = function(src) {
             try {
                 //alert('aa  ' + src);
                 var media = new Media(src, null, null, mediaStatusCallback);
@@ -1078,7 +1065,7 @@ angular.module('starter.mediRecLovedOne', [])
             }
         }
 
-        var mediaStatusCallback = function (status) {
+        var mediaStatusCallback = function(status) {
             if (status == 1) {
                 $ionicLoading.show({ template: 'Loading...' });
             } else {
@@ -1086,12 +1073,12 @@ angular.module('starter.mediRecLovedOne', [])
             }
         }
 
-        $scope.showImages = function (index) {
+        $scope.showImages = function(index) {
             $scope.activeSlide = index;
             $scope.showModal('templates/utils/image-popover.html');
         }
 
-        $scope.playVideo = function (filePath) {
+        $scope.playVideo = function(filePath) {
             $scope.showModal('templates/utils/video-popover.html');
             // var ref = window.open($scope.clipSrc, '_blank', 'location=no');
         }
@@ -1114,23 +1101,15 @@ angular.module('starter.mediRecLovedOne', [])
 
 
 
-        $scope.uploadMedicalRecord = function (options, filePath) {
+        $scope.uploadMedicalRecord = function(options, filePath) {
             $scope.showProgressLoader();
             try {
 
 
-                // var options = new FileUploadOptions();
-                // options.fileKey = "file";
-                // options.fileName = 'temp.jpeg';//$scope.reg.profilePic.substr($scope.reg.profilePic.lastIndexOf('/') + 1);
-                // options.mimeType = "image/jpeg";
-                // options.chunkedMode = true;
-
                 var params = {};
-                //params.MRNO = "12";
-                //params.UserRoleID = '' + $scope.session_variables.login_data.userroleid;
 
                 options.params = params;
-               // alert(JSON.stringify(options));
+                console.log(JSON.stringify(options));
                 fileTransfer.uploadFile($scope.fileupload_callback, generic_http_post_service.getServices().FILE_UPLOAD,
                     filePath, options);
 
@@ -1143,7 +1122,7 @@ angular.module('starter.mediRecLovedOne', [])
         }//end upload rec
 
 
-        $scope.fileupload_callback = function (data, subData) {
+        $scope.fileupload_callback = function(data, subData) {
 
             //data = data.response;
             //alert(JSON.stringify(data + ' ' + subData));
@@ -1151,12 +1130,12 @@ angular.module('starter.mediRecLovedOne', [])
 
 
                 if (data == -1) {
-                    $scope.showAlertWindow_Titled("Error", subData);
+                    $scope.showAlertWindow_Titled("Error", JSON.stringify(subData));
                     $scope.hideLoader();
                 }
                 else if (data == -2) {
                     //$scope.showAlertWindow_Titled("Progress ", subData + '%');
-                    $scope.session_variables.progressText = 'progress ' + subData + '%';
+                    $scope.showLoader('progress ' + (subData + '').substring(0, 2) + '%');
                     // $scope.hideLoader();
                 } else {
                     data.response = JSON.parse(data.response);
@@ -1169,31 +1148,29 @@ angular.module('starter.mediRecLovedOne', [])
         }//end fileupload callback
 
 
-        $scope.afterSuccessfullUpload = function (filepath) {
+        $scope.afterSuccessfullUpload = function(filepath) {
             $scope.showLoader("Uploading records");
             $scope.requestData = {};
             $scope.requestData.UserRoleID = '' + $scope.session_variables.selected_lovedone.Lovedones_mcura_id;
             $scope.requestData.RecNatureId = '' + $scope.session_variables.my_rec_nature;
             $scope.requestData.FilePath = '' + filepath;
-           // alert(JSON.stringify($scope.requestData));
+
+            console.log(JSON.stringify($scope.requestData));
             generic_http_post_service.getDetails(generic_http_post_service.getServices().PAT_MED_RECORD_INSERT,
                 $scope.requestData, $scope.afterSuccessfullUpload_callback);
 
 
         }
 
-        $scope.afterSuccessfullUpload_callback = function (data) {
+        $scope.afterSuccessfullUpload_callback = function(data) {
+            console.log(JSON.stringify(data));
             $scope.hideLoader();
             if (data.success == 1) {
                 $scope.showAlertWindow_Titled("Success", "File uploaded");
-
-                $scope.getUserData();
+                $scope.getUserData1($scope.getUserData_callback);
             } else {
                 $scope.showAlertWindow_Titled("Error", data.msg);
             }
         }//end
-
-
-
 
     });

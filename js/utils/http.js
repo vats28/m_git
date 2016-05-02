@@ -41,6 +41,7 @@ angular.module('utils.http_post', [])
             GET_SUBTENANT_SEARCH: server_host + server_api_path + 'GetSubTenantSearch',
             GET_VITAL: server_host + server_api_path + 'GetVital',
             GET_VITAL_RECORDS: server_host + server_api_path + 'GetPatVitalRecords',
+            POST_PATIENT_VITAL: server_host + server_api_path + 'PostPatientVital',
             //http://dev.mcura.com/ConsumerService.svc/Json/GetSubTenantSearch?areaId={AREAID}&subTenant={SUBTENANT}
             //AddActionReminder
             
@@ -108,7 +109,7 @@ angular.module('utils.http_post', [])
                 });
 
                 //alert(API);
-                $http.get(API, {timeout: 1000 * 10}).
+                $http.get(API, {timeout: 1000 * 30}).
                     success(function (data, status, headers, config) {
 
                         isTimedOut = false;

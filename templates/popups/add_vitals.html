@@ -1,0 +1,45 @@
+<ion-modal-view ng-controller="addVitalCtrl">
+
+    <ion-header-bar class="stable-bg" align="center">
+        <div class="title title-center header-item">
+            Add Vitals
+        </div>
+
+        <button ng-click="closeModal1()" class="animated fadeInUpBig fab-button-new t-20 r-20 size-48 light-bg ">
+            <i class="icon ion ion-close"></i></button>
+    </ion-header-bar>
+    <fab-button target-id="" class="animated zoomInDown b-20 r-20" ng-click="addVitals()">
+        <i class="icon ion ion-plus "></i>
+    </fab-button>
+
+    <ion-content class="has-header" ng-init="init()">
+
+        <div class="list">
+            <div style="height:30px;background-color:white;"></div>
+            <label class="item item-input item-select" style="border-top:0px;">
+                <div class="input-label">
+                    Vital
+                </div>
+                <select style="direction:rtl;" ng-model="temp.VitalNatureId">
+                    <option value="">-select-</option>
+                    <option ng-repeat="item in session_variables.vitalList" value="{{item.VitalNatureId}}">{{item.VitalName}}</option>
+                </select>
+            </label>
+
+            <label class="item item-input">
+                <span class="input-label">Reading</span>
+                <input type="tel" ng-model="temp.VitalReading" placeholder="eg : 50">
+                <i class=" {{validationClass.ERROR}}  input_icon_right"></i>
+            </label>
+            <label class="item item-input">
+                <span class="input-label" ng-model="temp.VitalRemarks">Remarks</span>
+                <input type="text" placeholder="enter remarks">
+            </label>
+            <label class="item item-input">
+                <span class="input-label" ng-model="temp.VitalOtherInfo">Other Info</span>
+                <input type="tel" placeholder="enter other info">
+            </label>
+        </div>
+    </ion-content>
+
+</ion-modal-view>

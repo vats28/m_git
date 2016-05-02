@@ -22,7 +22,7 @@
         </ion-nav-bar>
         <ion-nav-view name="menuContent">
 
-            <button ng-if="headerButton.showVitalChart" class="animated zoomInDown fab-button-new size-48 t-20 r-20  energized" ng-click="jumpTo('app.vital_chart')">
+            <button ng-if="headerButton.showVitalChart && session_variables.isVitalDataAvailable" class="animated zoomInDown fab-button-new size-48 t-20 r-20  energized" ng-click="jumpTo('app.vital_chart')">
                 <i class="icon ion ion-stats-bars"></i>
             </button>
         </ion-nav-view>

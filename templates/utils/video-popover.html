@@ -1,3 +1,4 @@
 <div class="modal transparent fullscreen-player" ng-click="closeModal()">
-    <video ng-src="{{session_variables.clipSrc}}" class="centerme" controls="controls" autoplay></video>
+    
+    <video ng-src="{{trustSrc(session_variables.clipSrc)}}" class="centerme" controls="controls" autoplay></video>
 </div>

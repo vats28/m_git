@@ -3,18 +3,15 @@ angular.module('starter.mediRec', [])
     .controller('mediRecCtrl', function($scope, $timeout, $ionicModal, $cordovaMedia, $ionicLoading,
         $ionicPopup, generic_http_post_service,
         date_picker, form_validator, fileTransfer, audio_service, generic_camera_service,
-        native_play_audio, local_json) {
+        native_play_audio) {
 
 
-        // $scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
-        // $scope.series = ['Series A', 'Series B'];
-        // $scope.data = [
-        //     [65, 59, 80, 81, 56, 55, 40],
-        //     [28, 48, 40, 19, 86, 27, 90]
-        // ];
-       
-
-        $scope.temp = {};
+        $scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
+        $scope.series = ['Series A', 'Series B'];
+        $scope.data = [
+            [65, 59, 80, 81, 56, 55, 40],
+            [28, 48, 40, 19, 86, 27, 90]
+        ];
         $scope.onClick = function(points, evt) {
             console.log(points, evt);
         };
@@ -36,11 +33,8 @@ angular.module('starter.mediRec', [])
         $scope.init = function() {
 
             //$scope.session_variables.isLoggedIn = true;
-            $scope.session_variables.isVitalDataAvailable = false;
             $scope.getUserData();
-            $timeout(function() {
-                $scope.getVital_records();
-            }, 2000);
+            $scope.getVital();
         }
 
 
@@ -106,7 +100,7 @@ angular.module('starter.mediRec', [])
                 $scope.userData.gender_str = data.gender;
 
                 //now get vitalRecords
-                // $scope.getVital_records();
+                $scope.getVital_records();
 
             } else {
                 $scope.showAlertWindow_Titled("Error", data.msg, null, null);
@@ -116,8 +110,7 @@ angular.module('starter.mediRec', [])
 
         $scope.getVital = function() {
 
-            //$scope.getVital_main($scope.getVital_callback);
-            $scope.getVital_callback(local_json.getVital());
+            $scope.getVital_main($scope.getVital_callback);
         }//end
         $scope.getVital_callback = function(data) {
             if (data) {
@@ -129,24 +122,8 @@ angular.module('starter.mediRec', [])
             $scope.getVital_records_main($scope.getVital_records_callback);
         }//end
         $scope.getVital_records_callback = function(data) {
-            console.log(JSON.stringify(data));
-            if(data.success == 0){                
-                $scope.showToast("Error in fetching vital records");
-                return;
-                
-            }
             if (JSON.stringify(data).trim().length > 10) {
-                $scope.session_variables.isVitalDataAvailable = true;
                 $scope.session_variables.vitalRecordList = data;
-                try {
-                    //alert($scope.session_variables.vitalRecordList[0].VitalNatureId);
-                    $timeout(function() {
-                        $scope.create_graph1($scope.session_variables.vitalRecordList[0].VitalNatureId);
-                        $scope.create_graph2($scope.session_variables.vitalRecordList[1].VitalNatureId);
-                    }, 200);
-                } catch (error) {
-                    alert("getVital_records_callback : " + error);
-                }
             } else {
                 $scope.showAlertWindow_Titled("Error", "Vital records not available");
             }
@@ -161,7 +138,7 @@ angular.module('starter.mediRec', [])
         $scope.toggleGroup = function(group) {
             if (!$scope.plusIconClicked) {
                 // alert('1');
-
+                
                 group.show = !group.show;
             } else {
                 $scope.plusIconClicked = false;
@@ -266,8 +243,8 @@ angular.module('starter.mediRec', [])
             //alert(JSON.stringify(data));
             var filePath = data[0].fullPath;
             var fileType = filePath.substr(filePath.lastIndexOf('.') + 1);
-            // if (!fileType)
-            fileType = "mov";
+           // if (!fileType)
+                fileType = "mov";
             var options = new FileUploadOptions();
             options.fileKey = "file";
             options.fileName = 'temp.' + fileType;//$scope.reg.profilePic.substr($scope.reg.profilePic.lastIndexOf('/') + 1);
@@ -337,6 +314,79 @@ angular.module('starter.mediRec', [])
             $scope.showModal('templates/popups/add_medical_record.html');
         }
 
+        $scope.showAddMedRecPopup_old = function() {
+
+
+            $ionicPopup.show({
+                template: //'<div class="card list" >' +
+                '<div class="list">' +
+                '<select ng-model="session_variables.my_rec_nature" class="select-center-100"  >' +
+                '<option value="">-- select record nature --</option>' +
+                '<option ng-repeat="item in session_variables.array_rec_nature" value="{{item.RecNatureId}}">' +
+                '{{item.RecNatureProperty}}' +
+                '</option>' +
+                '</select>' +
+                '</div>' +
+                // '</div>' +
+                '<div class=" list popu" >' +
+
+                '<div class="item tabs tabs-secondary  stable-bg tabs-icon-top height-60">' +
+                '<a class="tab-item" ng-click="openCamera()" >' +
+                '<i class="icon ion-camera "></i> Capture Image' +
+
+                '</a>' +
+                '<a class="tab-item" ng-click="openVideoCamera()" >' +
+                '<i class="icon ion-ios-videocam " ></i> Capture Video' +
+
+                '</a>' +
+                '</div>' +
+                '</div>' +
+
+                '<div class=" list popu" >' +
+
+                '<div class="item tabs tabs-secondary  stable-bg tabs-icon-top height-60" >' +
+                '<a class="tab-item" >' +
+                '<i class="icon ion-aperture " ng-click="openGallery()"></i>Gallery' +
+
+                '</a>' +
+                '<a class="tab-item"  >' +
+                '<i class="icon ion-music-note " ng-click="recordAudio()"></i> Record Audio' +
+
+                '</a>' +
+                '</div>' +
+                '</div>' +
+
+                '<div class=" list popu" >' +
+
+                '<div class="item tabs tabs-secondary  stable-bg tabs-icon-top height-60">' +
+                '<a class="tab-item"  >' +
+                '<i class="icon ion-android-textsms " ng-click="writeText()"></i>Text Written' +
+
+                '</a>' +
+                '<a class="tab-item" >' +
+                '<i class="icon ion-bag " ng-click="uploadData()"></i>Data' +
+
+                '</a>' +
+                '</div>' +
+                '</div>',
+                /*   templateUrl: 'templates/medical_records/popovers/add_medical_records.html',*/
+                title: 'Add Medical Record',
+                scope: $scope,
+                buttons: [
+                    {
+                        text: 'Cancel',
+                        type: 'button-dark',
+                        onTap: function(e) {
+
+                            return false;
+                        }
+                    },
+                ]
+            }).then(function(res) {
+
+
+            });
+        }//end method
 
 
         $scope.uploadData = function() {
@@ -366,7 +416,10 @@ angular.module('starter.mediRec', [])
 
         $scope.medRec_temp = {};
         $scope.medRec_temp.myvitals = {};
-      
+        $scope.validationClass = Object.freeze({
+            ERROR: 'ion-asterisk assertive',
+            OK: 'ion-checkmark balanced'/*'ion-thumbsdown energized'*/
+        });
         $scope.showAddVitalPopup = function() {
 
 
@@ -1228,87 +1281,5 @@ angular.module('starter.mediRec', [])
                 $scope.showAlertWindow_Titled("Error", data.msg);
             }
         }//end
-
-
-        $scope.onVitalChange1 = function() {
-            //alert($scope.temp.VitalNatureId1);
-            $scope.create_graph1($scope.temp.VitalNatureId1);
-        }
-
-        $scope.onVitalChange2 = function() {
-            //alert($scope.temp.VitalNatureId1);
-            $scope.create_graph2($scope.temp.VitalNatureId2);
-        }
-
-        $scope.create_graph1 = function(VitalNatureId) {
-
-            try {
-                //$scope.temp.VitalNatureId1 = VitalNatureId;
-
-                $scope.lineChartData = {};
-                $scope.lineChartData.labels = [];
-                $scope.lineChartData.datasets = [];
-                //$scope.lineChartData.datasets.data = {};
-
-                var x = {};
-                x.data = [];
-
-                $scope.lineChartData.labels.push("0");
-                x.data.push(0);
-                var count = 1
-                angular.forEach($scope.session_variables.vitalRecordList, function(value, key) {
-
-                    if (value["VitalNatureId"] == VitalNatureId) {
-                        // var date = new Date(value["Date"]);
-                        // alert(date);
-                        // var dateStr = date_picker.convertDateToString(value["Date"], "dd/mm/yyyy");
-                        $scope.lineChartData.labels.push(count++);
-                        x.data.push(value["Readings"]);
-                    }
-                });
-                $scope.lineChartData.datasets.push(x);
-
-                //alert(JSON.stringify($scope.lineChartData));
-
-                $scope.activeData = $scope.lineChartData;
-            } catch (error) {
-                alert(error);
-            }
-        }//end 
-        $scope.create_graph2 = function(VitalNatureId) {
-            try {
-
-                //$scope.temp.VitalNatureId2 = VitalNatureId;
-
-                $scope.lineChartData = {};
-                $scope.lineChartData.labels = [];
-                $scope.lineChartData.datasets = [];
-                //$scope.lineChartData.datasets.data = {};
-
-                var x = {};
-                x.data = [];
-
-                $scope.lineChartData.labels.push("0");
-                x.data.push(0);
-                var count = 1
-                angular.forEach($scope.session_variables.vitalRecordList, function(value, key) {
-
-                    if (value["VitalNatureId"] == VitalNatureId) {
-                        // var date = new Date(value["Date"]);
-                        // alert(date);
-                        // var dateStr = date_picker.convertDateToString(value["Date"], "dd/mm/yyyy");
-                        $scope.lineChartData.labels.push(count++);
-                        x.data.push(value["Readings"]);
-                    }
-                });
-                $scope.lineChartData.datasets.push(x);
-
-                //alert(JSON.stringify($scope.lineChartData));
-
-                $scope.activeData2 = $scope.lineChartData;
-            } catch (error) {
-                alert(error);
-            }
-        }//end 
 
     });

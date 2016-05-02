@@ -21,6 +21,10 @@ angular.module('starter.reminderList', [])
             $scope.getReminderList();
             //2. make recent reminder in first row
         }
+        
+        $scope.$on('refreshReminderList', function(event, data){
+            $scope.getReminderList();
+        });
 
 
 

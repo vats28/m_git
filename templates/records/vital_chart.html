@@ -1,6 +1,40 @@
-<ion-view cache-view="false" view-title="Vital Chart" hide-nav-bar="false">
+<ion-view cache-view="false" view-title="Vital Chart" ng-controller="vitalCtrl" hide-nav-bar="false">
+    <fab-button target-id="" class="animated zoomInDown b-20 r-20" ng-click="addVitals()">
+        <i class="icon ion ion-plus "></i>
+    </fab-button>
+    <ion-content class="has-header"  ng-init="init()">
+        <div class="item padding-5" style="margin:0px;padding:0px;" ng-show="session_variables.isVitalDataAvailable">
+            <div class="row" style="height:30%; " ng-show="session_variables.isVitalDataAvailable">
+                <div class="col-80 " style="margin: 0px auto;">
+                    <div class="item item-input item-select full-width padding-0">
+                        <select style="width:100%; direction:rtl; right:30px;" ng-change="create_graph(temp.VitalNatureId)" ng-model="temp.VitalNatureId">
 
-    <ion-content class="has-header has-footer" ng-controller="vitalCtrl" ng-init="init()">
+                            <option value="">-select-</option>
+                            <option ng-repeat="item in session_variables.vitalRecordList | unique:'VitalNatureId'" ng-selected="$index==0" value="{{item.VitalNatureId}}">{{item.VitalName}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="height:30%" ng-show="session_variables.isVitalDataAvailable">
+                <div class="col-80 " style="margin: 0px auto;">
+                    <cjs-line dataset="activeData" responsive="true"></cjs-line>
+                </div>
+            </div>
 
+
+        </div>
+        <div class="item" ng-show="!session_variables.isVitalDataAvailable">
+            <h2 class="assertive">No data available</h2>
+            <p>You can add by clicking add button below</p>
+        </div>
+        
+        <div class="list">
+            <div class="item" ng-repeat="item in session_variables.vitalRecordList" ng-if="item.VitalNatureId == temp.VitalNatureId">
+                <h2 ng-bind="item.VitalName" class="theme_orange"></h2>
+                <p ng-bind="'Reading: ' + item.Readings+ ', Unit: ' + item.Units"></p>
+                <p ng-bind="'Remarks: '+item.Remarks"></p>
+                <h3 ng-bind="'Otherinfo: ' + item.Otherinfo"></h3>
+            </div>
+        </div>
     </ion-content>
 </ion-view>

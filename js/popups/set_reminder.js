@@ -1,6 +1,6 @@
 angular.module('starter.setReminder', [])
 
-    .controller('setReminderCtrl', function($scope, date_picker, generic_http_post_service) {
+    .controller('setReminderCtrl', function($scope, $rootScope, date_picker, generic_http_post_service) {
 
         $scope.temp = {};
         $scope.temp.purpose_list = [
@@ -94,6 +94,7 @@ angular.module('starter.setReminder', [])
         };
         $scope.pickTime = function(value) {
             //alert(value);
+
             $scope.currDateScope = value;//'history', 'allergy', 'health', 'contact' ;
             var allowOld = false;
             var allowFuture = true;
@@ -101,7 +102,8 @@ angular.module('starter.setReminder', [])
         };
         $scope.pickdate_callback = function(data) {
             var format = "dd/mm/yyyy";
-            alert(JSON.stringify(data));
+            document.activeElement.blur();
+            ///alert(JSON.stringify(data));
             //$scope.reg.dob = date_picker.getDateInFormat(data.currDate, format);
             if ($scope.currDateScope == 1) {
                 $scope.temp.from_date = data.currDate;
@@ -133,11 +135,11 @@ angular.module('starter.setReminder', [])
                 $scope.data.id = Math.floor((Math.random() * 100000) + 1000);;//new Date().getMilliseconds();
                 $scope.data.title = $scope.getValueInJson($scope.temp.purpose_list, $scope.temp.purpose_id, "purpose_id", "purpose");//'Doctor Visit';
                 $scope.data.text = $scope.temp.event_description;//+  '<br/>At ' + $scope.temp.from_date + ' ' + $scope.temp.from_time;;
-                
+
                 var time = date_picker.convertTo24HourFormat($scope.temp.from_time);
                 var time2 = date_picker.convertTo24HourFormat($scope.temp.to_time);
-                $scope.data.at = $scope.parseDate($scope.temp.to_date, time2);//new Date(2016, 3, 13, 0, 30, 0, 0);//
-                
+                $scope.data.at = $scope.parseDate($scope.temp.to_date, time);//new Date(2016, 3, 13, 0, 30, 0, 0);//
+
                 $scope.data.data = {
                     id: $scope.data.id,
                     place: $scope.temp.place,
@@ -149,7 +151,7 @@ angular.module('starter.setReminder', [])
 
                 $scope.data.every = $scope.temp.repetition_id == 0 ? undefined : $scope.temp.repetition_id;
 
-               // alert(JSON.stringify($scope.data));
+                // alert(JSON.stringify($scope.data));
 
                 //save it in local storage
                 var local_notification_list = JSON.parse($scope.GetInLocalStorage($scope.localStorageKeys.LOCAL_NOTIFICATIONS));
@@ -162,8 +164,8 @@ angular.module('starter.setReminder', [])
                 $scope.SaveInLocalStorage($scope.localStorageKeys.LOCAL_NOTIFICATIONS, JSON.stringify(local_notification_list));
 
                 //schdule it
-                //$scope.schedule_notification($scope.data);
-
+                $scope.schedule_notification($scope.data);
+                $rootScope.$broadcast('refreshReminderList', null);
                 $scope.showAlertWindow_Titled("Success", "Reminder scheduled", $scope.closeModal);
             } catch (error) {
                 alert("Error in scheduling : " + error);

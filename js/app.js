@@ -10,8 +10,9 @@ angular.module('starter', ['ionic', 'ngCordova', 'ngCordovaOauth', 'ionicLazyLoa
     'starter.vital', 'starter.mediRecLovedOne', 'starter.shareRecords', 'starter.familyCalander',
     'starter.healthStatus', 'starter.addHealthProvider', 'starter.billList', 'starter.setReminder',
     'starter.reminderList', 'starter.addMedicalRecord', 'starter.newFamilyCalander',
-    'chartjs', 'ui.rCalendar',
-    'utils.date_picker', 'utils.http_post', 'utils.validations', 'ion-fab-button',
+    'starter.fileManager', 'starter.addVital',
+    'chartjs', 'ui.rCalendar', 
+    'utils.date_picker', 'utils.http_post', 'utils.validations', 'ion-fab-button', 'utils.local_json',
     'utils.camera', 'utils.fileTransfer', 'utils.audio', 'utils.native_play_audio', 'ionic.contrib.ui.hscrollcards'])
 
     .run(function($ionicPlatform, $http, $cordovaPush, $rootScope, $timeout) {
@@ -247,6 +248,15 @@ angular.module('starter', ['ionic', 'ngCordova', 'ngCordovaOauth', 'ionicLazyLoa
                 }
             })
 
+            .state('app.file_manager', {
+                url: '/file_manager',
+                views: {
+                    'menuContent': {
+                        templateUrl: 'templates/utils/file_manager.html'
+                    }
+                }
+            })
+
             .state('app.logout', {
                 url: '/logout',
                 views: {
@@ -275,6 +285,62 @@ angular.module('starter', ['ionic', 'ngCordova', 'ngCordovaOauth', 'ionicLazyLoa
             });
             return output;
         };
+    })
+
+    .factory("$fileFactory", function($q) {
+
+        var File = function() { };
+
+        File.prototype = {
+
+            getParentDirectory: function(path) {
+                var deferred = $q.defer();
+                window.resolveLocalFileSystemURI(path, function(fileSystem) {
+                    fileSystem.getParent(function(result) {
+                        deferred.resolve(result);
+                    }, function(error) {
+                        deferred.reject(error);
+                    });
+                }, function(error) {
+                    deferred.reject(error);
+                });
+                return deferred.promise;
+            },
+
+            getEntriesAtRoot: function() {
+                var deferred = $q.defer();
+                window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSystem) {
+                    var directoryReader = fileSystem.root.createReader();
+                    directoryReader.readEntries(function(entries) {
+                        deferred.resolve(entries);
+                    }, function(error) {
+                        deferred.reject(error);
+                    });
+                }, function(error) {
+                    deferred.reject(error);
+                });
+                return deferred.promise;
+            },
+
+            getEntries: function(path) {
+                var deferred = $q.defer();
+                window.resolveLocalFileSystemURI(path, function(fileSystem) {
+                    var directoryReader = fileSystem.createReader();
+                    directoryReader.readEntries(function(entries) {
+                        deferred.resolve(entries);
+                    }, function(error) {
+                        deferred.reject(error);
+                    });
+                }, function(error) {
+                    deferred.reject(error);
+                });
+                return deferred.promise;
+            }
+
+        };
+
+        return File;
+
     });
 
 

@@ -10,63 +10,45 @@
             <p ng-bind="userData.email">1MedKey</p>
             <!--<i class="ion icon ion-android-more-vertical header-menu-icon" ng-click="showModal('templates/popups/additional_profile.html')"></i>-->
         </div>
-
-
-        <!--<div class="item tabs tabs-secondary  sub-header-strip tabs-icon-top">
-            <a class="tab-item" ng-click="jumpTo('app.family_calander')">
-                <i class="icon ion-calendar assertive"></i> Calender
-            </a>
-            <a class="tab-item" ng-click="jumpTo('app.list_loved_ones')">
-                <i class="icon ion-heart assertive"></i> Loved ones
-            </a>
-            <a class="tab-item" ng-click="jumpTo('app.health_status')">
-                <i class="icon ion-ios-bell assertive"></i> Reminder
-            </a>
-            <a class="tab-item" ng-click="jumpTo('app.bill_list')">
-                <i class="icon icon-inr assertive"></i> Bills
-            </a>
-        </div>-->
         <!-- header section end here -->
-        <div class="item padding-5" style="margin:0px;padding:0px;">
+        <div class="item padding-5" style="margin:0px;padding:0px;" ng-show="session_variables.isVitalDataAvailable">
 
-            <div class="row" style="height:30%; ">
-                <div class="col-47 " style="margin: 0px auto;" >
+            <div class="row" style="height:30%; " ng-show="session_variables.isVitalDataAvailable">
+                <div class="col-47 " style="margin: 0px auto;">
                     <div class="item item-input item-select full-width padding-0">
-                        <select style="width:100%; direction:rtl; right:30px;" ng-change="onVitalChange()" ng-model="temp.loved_one_id">
-                            <option value="" selected="selected">SPO2</option>
-                            <option value="">Pulse</option>
-                            <option value="">BP</option>
+                        <select style="width:100%; direction:rtl; right:30px;" ng-change="onVitalChange1()" ng-model="temp.VitalNatureId1">
 
-                            <!--<option ng-repeat="item in temp.lovedone_list | unique:'Lovedones_Name'" value="{{item.Lovedones_mcura_id +'_'+$index}}">{{item.Lovedones_Name}}</option>-->
+                            <option value="">-select-</option>
+                            <option ng-repeat="item in session_variables.vitalRecordList | unique:'VitalNatureId'" ng-selected="$index==0" value="{{item.VitalNatureId}}">{{item.VitalName}}</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-47 " style="margin: 0px auto;">
                     <div class="item item-input item-select full-width padding-0">
-                        <select style="width:100%; direction:rtl; right:30px;" ng-change="onVitalChange()" ng-model="temp.loved_one_id">
-                            <option value="" selected="selected">SPO2</option>
-                            <option value="">Pulse</option>
-                            <option value="">BP</option>
+                        <select style="width:100%; direction:rtl; right:30px;" ng-change="onVitalChange2()" ng-model="temp.VitalNatureId2">
 
-                            <!--<option ng-repeat="item in temp.lovedone_list | unique:'Lovedones_Name'" value="{{item.Lovedones_mcura_id +'_'+$index}}">{{item.Lovedones_Name}}</option>-->
+                            <option value="">-select-</option>
+                            <option ng-repeat="item in session_variables.vitalRecordList | unique:'VitalNatureId'" ng-selected="$index==1" value="{{item.VitalNatureId}}">{{item.VitalName}}</option>
                         </select>
                     </div>
                 </div>
             </div>
-            <div class="row" style="height:30%">
-                <div class="col-47 " style="margin: 0px auto;" ><!--<div class="col-50  ">-->
-
+            <div class="row" style="height:30%" ng-show="session_variables.isVitalDataAvailable">
+                <div class="col-47 " style="margin: 0px auto;">
                     <cjs-line dataset="activeData" responsive="true"></cjs-line>
                 </div>
-                <div class="col-47 " style="margin: 0px auto;" ><!--<div class="col-50 ">-->
-
+                <div class="col-47 " style="margin: 0px auto;">
                     <cjs-line dataset="activeData2" responsive="true"></cjs-line>
                 </div>
             </div>
         </div>
 
         <div class="heading_orange">Medical Records</div>
-        <div class="card list no-box-shadow">
+
+
+        <div class="card list">
+
+
             <div class="item item-divider item-icon-left item-icon-right dark-bg light" ng-click="toggleGroup(array_list.PatMedRecords) "
             ng-class="{active_acc: isGroupShown(array_list.PatMedRecords)}">
                 <i ng-click="toggleGroup(array_list.PatMedRecords)" class="icon icon-left " ng-class="isGroupShown(array_list.PatMedRecords) ? 'ion-ios-arrow-down' : 'ion-ios-arrow-up'"></i>
@@ -75,18 +57,6 @@
                 <span>Medical Records</span>
                 <i class="icon ion-plus " ng-click="GetMedicalRecordNature() "></i>
             </div>
-            <!--<a class="item  item-text-wrap item-accordion " ng-show="isGroupShown(array_list.PatMedRecords) " ng-repeat="item in array_list.PatMedRecords "
-            item="item ">
-                <i ng-class="{ 'icon  {{ recNatureIcons.LAB }}' : item.rec_nature_id==1 ,
-                'icon {{ recNatureIcons.NOTE }}' : item.rec_nature_id==2 , 'icon {{ recNatureIcons.LAB }}' : item.rec_nature_id> 3, 'icon
-                {{ recNatureIcons.IMAGE }}' : item.rec_nature_id == 3}"></i>
-
-                <p>Doctor: <span ng-bind="item.docName"></span></p>
-
-                <p>Date: <span ng-bind="item.date"></span></p>
-                <i class="icon ion-android-open positive" ng-click="openMediaFile(item)"></i>     
-            </a>-->
-
             <div class="item padding-0" ng-show="isGroupShown(array_list.PatMedRecords) ">
                 <div class="row">
                     <div class="col col-30  bold r-border">Date</div>
@@ -95,7 +65,7 @@
                     <div class="col col-20  bold">Action</div>
                 </div>
             </div>
-            <div class="item padding-0 item-text-wrap" ng-show="isGroupShown(array_list.PatMedRecords) " ng-repeat="item in array_list.PatMedRecords ">
+            <div class="item padding-0 item-text-wrap" ng-show="isGroupShown(array_list.PatMedRecords) && $index < 11 " ng-repeat="item in array_list.PatMedRecords ">
                 <div class="row">
                     <div class="col col-30 r-border" ng-bind="item.date">16-02-16/4:15 PM</div>
                     <div class="col col-30 r-border" ng-bind="item.docName"></div>
@@ -118,17 +88,6 @@
                 <span>History</span>
                 <i class="icon ion-plus " ng-click="showHistoryPopup() "></i>
             </div>
-            <!--<a class="item item-icon-left item-text-wrap item-accordion " ng-show="isGroupShown(array_list.PatMedHistory)
-                    " ng-repeat="item in array_list.PatMedHistory " item="item ">
-                <i class="icon ion-ios-paper-outline "></i>
-
-                <p>Date: <span ng-bind="item.date "></span></p>
-
-                <p>Doctor: <span ng-bind="item.docName "></span></p>
-
-                <p>Brief: <span ng-bind="item.txtContent "></span></p>
-
-            </a>-->
 
             <div class="item padding-0" ng-show="isGroupShown(array_list.PatMedHistory) ">
                 <div class="row">

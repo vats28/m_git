@@ -1,6 +1,6 @@
 angular.module('starter.addMedicalRecord', [])
 
-    .controller('addMedicalRecordCtrl', function($scope, $rootScope, date_picker, generic_http_post_service) {
+    .controller('addMedicalRecordCtrl', function($scope, $rootScope, $ionicActionSheet, date_picker, generic_http_post_service) {
 
         $scope.array_list = [
             {
@@ -36,7 +36,42 @@ angular.module('starter.addMedicalRecord', [])
         }//end 
 
         $scope.dataAction = function(action) {
-            $rootScope.$broadcast('call_action', action);
-            $scope.closeModal();
+            if (action == 1) {
+                 $scope.select_cam_option(); 
+            } else {
+                $rootScope.$broadcast('call_action', action);
+                $scope.closeModal();
+            }
         }
+
+
+        $scope.select_cam_option = function() {
+            var hideSheet = $ionicActionSheet.show({
+                buttons: [
+                    { text: 'Click Picture' },
+                    { text: 'Record Video' },
+                ],
+                titleText: 'Option',
+                cancelText: 'Cancel',
+                cancel: function() {
+                    // add cancel code..
+                },
+                buttonClicked: function(index) {
+                    if (index == 0) {
+                        $rootScope.$broadcast('call_action', 1);
+                        $scope.closeModal();
+                    }
+                    else if (index == 1) {
+                        $rootScope.$broadcast('call_action', 5);
+                        $scope.closeModal();
+                    }
+                     $timeout(function() {
+                        hideSheet();
+                    }, 200);
+                    
+                }
+            });
+        }//edn 
+
+
     });

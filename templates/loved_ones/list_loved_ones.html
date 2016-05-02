@@ -52,8 +52,8 @@
 
         </div>
 
-        <div class="card border-radius no-box-shadow" ng-repeat="item in temp.lovedone_list " item="item" style="background-color:transparent; ">
-            <div class="item item-avatar item-text-wrap " style="background-color:transparent; box-shadow:none">
+        <div class="card border-radius" ng-repeat="item in temp.lovedone_list " item="item" >
+            <div class="item item-avatar item-text-wrap " >
                 <img ng-src="{{item.profilePic}}" ng-if="item.profilePic" ng-click="openMedicalRecord(item)" style="height: 120px; width: 120px">
                 <img src="img/profile-empty.jpg" ng-if="!item.profilePic" ng-click="openMedicalRecord(item)" style="height: 120px; width: 120px">
 
@@ -62,6 +62,7 @@
                 <p ng-if="item.LastVisit" ng-bind="'Last Visit: '+ item.LastVisit + ', Doctor: '+ item.DoctorName"></p>
                 <p ng-if="item.NextVisit" ng-bind="'Next Visit: '+ item.NextVisit"></p>
                 <button class="button button-clear button-assertive  icon ion-android-share-alt absolute_round_button" ng-click="showShareModal(item)"
+                ng-show="item.Loved_ones__access_type_id > 1 || item.IsDependent == 1"
                 style="bottom:5px; right:70px;"></button>
                 <button class="button button-clear button-dark  icon ion-android-call absolute_round_button" ng-click="call(item.LovedonesMobile)"
                 style="bottom:5px; right:0px;"></button>
@@ -70,7 +71,8 @@
             </div>
 
 
-            <div class="item  item-text-wrap  stable-bg tabs-icon-top sub-header-strip padding-0" style="background-color:transparent; border-top:0px; border-bottom:1px #ccc solid;">
+            <div class="item  item-text-wrap  stable-bg tabs-icon-top sub-header-strip padding-0" 
+            style="border-top:0px; border-bottom:1px #ccc solid;">
                 <!--<div style="float: left">
                     <button ng-click="showMedicalChart()" class=" fab-button-new btn_med_chart dark-bg ">
                         <i class="icon ion ion-ios-paper light"></i>

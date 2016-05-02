@@ -37,18 +37,6 @@
                 <span>Medical Records</span>
                 <i class="icon ion-plus-circled " ng-click="GetMedicalRecordNature() "></i>
             </div>
-            <!--<a class="item  item-text-wrap item-accordion " ng-show="isGroupShown(array_list.PatMedRecords) " ng-repeat="item in array_list.PatMedRecords "
-            item="item ">
-                <i ng-class="{ 'icon  {{ recNatureIcons.LAB }}' : item.rec_nature_id==1 ,
-                'icon {{ recNatureIcons.NOTE }}' : item.rec_nature_id==2 , 'icon {{ recNatureIcons.LAB }}' : item.rec_nature_id> 3, 'icon
-                {{ recNatureIcons.IMAGE }}' : item.rec_nature_id == 3}"></i>
-
-                <p>Doctor: <span ng-bind="item.docName"></span></p>
-
-                <p>Date: <span ng-bind="item.date"></span></p>
-                <i class="icon ion-android-open positive" ng-click="openMediaFile(item)"></i>     
-            </a>-->
-
             <div class="item padding-0" ng-show="isGroupShown(array_list.PatMedRecords) ">
                 <div class="row">
                     <div class="col col-30  bold r-border">Date</div>

@@ -1,13 +1,13 @@
-<ion-view ng-cloak ng-controller="addLovedCtrl">
+<ion-view ng-cloak view-title="Add Loved Ones"  ng-controller="addLovedCtrl">
 
 
     <fab-button target-id="" class="animated zoomInDown b-20 r-20" ng-click="addLovedOnes()">
         <i class="icon ion ion-plus "></i>
     </fab-button>
-    <ion-content class="has-header has-footer" class="" ng-init="init()">
+    <ion-content class="has-header" class="" ng-init="init()">
 
         <!-- header section start here -->
-            <div class="item item-avatar header-section">
+        <div class="item item-avatar header-section">
             <img ng-src="{{ userData.profFilePath }}" ng-if="userData.profFilePath" ng-click="openImagesPopup(userData.profFilePath)">
             <img src="img/profile-empty.jpg" ng-if="!userData.profFilePath">
             <h2 ng-bind="userData.name">Ravi</h2>
@@ -15,60 +15,44 @@
             <p ng-bind="userData.email">1MedKey</p>
             <!--<i class="ion icon ion-android-more-vertical header-menu-icon" ng-click="showModal('templates/popups/additional_profile.html')"></i>-->
         </div>
-
-        <!--<div class="item tabs tabs-secondary  sub-header-strip tabs-icon-top">
-            <a class="tab-item" ng-click="jumpTo('app.family_calander')">
-                <i class="icon ion-calendar assertive"></i> Calender
-            </a>
-            <a class="tab-item" ng-click="jumpTo('app.list_loved_ones')">
-                <i class="icon ion-heart assertive"></i> Loved ones
-            </a>
-            <a class="tab-item" ng-click="jumpTo('app.health_status')">
-                <i class="icon ion-ios-bell assertive"></i> Reminder
-            </a>
-            <a class="tab-item" ng-click="jumpTo('app.bill_list')">
-                <i class="icon icon-inr assertive"></i> Bills
-            </a>
-        </div>-->
-        <!-- header section end here -->
-<div class="heading_orange">Add Loved Ones</div>
-<div class="card list border-radius no-box-shadow">
-   <label class="item item-input item-stacked-label">
+        <div class="heading_orange">Add Loved Ones</div>
+        <div class="card list border-radius no-box-shadow">
+            <label class="item item-input item-stacked-label">
                 <!--ng-keypress="isNumberKey($event)"-->
                 <input type="text" ng-model="temp.name" placeholder="Enter your loved ones name">
             </label>
-</div>
+        </div>
 
- <div class="card list border-radius no-box-shadow">
- <label class="item item-input item-stacked-label" ng-click="pickDob()">
+        <div class="card list border-radius no-box-shadow">
+            <label class="item item-input item-stacked-label" ng-click="pickDob()">
                 <span class="input-label">DOB</span>
                 <p style="line-height:2;" ng-bind=" getDateWithMonthName(temp.dob)">23 oct, 2015</p>
                 <p style="line-height:2;" ng-if="!temp.dob">--Select--</p>
             </label>
- </div>
+        </div>
 
-  <div class="card  border-radius no-box-shadow">
+        <div class="card  border-radius no-box-shadow">
 
-                <div class="button-bar">
-                    <button ng-class="{'button button-small button-assertive' : temp.gender == 1,
+            <div class="button-bar">
+                <button ng-class="{'button button-small button-assertive' : temp.gender == 1,
                             'button button-small button-assertive button-outline' : temp.gender != 1}" ng-click="setGender(1)">Male</button>
-                    <button ng-class="{'button button-small button-assertive' : temp.gender == 2,
+                <button ng-class="{'button button-small button-assertive' : temp.gender == 2,
                             'button button-small button-assertive button-outline' : temp.gender != 2}" ng-click="setGender(2)">Female</button>
-                    <button ng-class="{'button button-small button-assertive' : temp.gender == 3,
+                <button ng-class="{'button button-small button-assertive' : temp.gender == 3,
                             'button button-small button-assertive button-outline' : temp.gender != 3}" ng-click="setGender(3)">Transgender</button>
-                </div>
-       
-  </div>
-  
-  
-   <div class=" border-radius no-box-shadow">
-   <div class="padding-0">
-        <div class="row">
-        <div class="col r-border date-col" style="padding-top: 10px;">
-            <select ng-model="temp.relation_id" ng-model="temp.relation">
-        <option value="">Relationship</option>
-        <option ng-repeat="item in temp.relation_list" value="{{item.Relationship_id}}">{{item.Name}}</option>
-        </select>
+            </div>
+
+        </div>
+
+
+        <div class=" border-radius no-box-shadow">
+            <div class="padding-0">
+                <div class="row">
+                    <div class="col r-border date-col" style="padding-top: 10px;">
+                        <select ng-model="temp.relation_id" ng-model="temp.relation">
+                            <option value="">Relationship</option>
+                            <option ng-repeat="item in temp.relation_list" value="{{item.Relationship_id}}">{{item.Name}}</option>
+                        </select>
 
                     </div>
                     <div class="col date-col">
@@ -81,64 +65,56 @@
                     </div>
                 </div>
             </div>
-   </div>
-  
-   <div class="card list border-radius no-box-shadow"><label class="item item-input item-stacked-label">
-                            <input type="email" ng-model="temp.email" placeholder="Enter email">
-            </label></div>
-            
-      <div class="card list border-radius no-box-shadow"> <label class="item item-input item-stacked-label">
-                          <input type="tel" ng-model="temp.mobile" maxlength="10" placeholder="Enter mobile/phone">
-            </label></div>
-     
-        <div class="card list">  
+        </div>
+
+        <div class="card list border-radius no-box-shadow">
+            <label class="item item-input item-stacked-label">
+                <input type="email" ng-model="temp.email" placeholder="Enter email">
+            </label>
+        </div>
+
+        <div class="card list border-radius no-box-shadow">
+            <label class="item item-input item-stacked-label">
+                <input type="tel" ng-model="temp.mobile" maxlength="10" placeholder="Enter mobile/phone">
+            </label>
+        </div>
+
+        <div class="card list">
             <div class="item  headtext_orange">
                 Access Authentication
             </div>
             <li class="item item-checkbox checkbox-positive">
                 <label class="checkbox">
-                    <input ng-model="temp.access_type_id" type="radio" value="1"> 
+                    <input ng-model="temp.access_type_id" type="radio" value="1">
                 </label>
-                                <p>Read/Monitor clinical information</p>
+                <p>Read/Monitor clinical information</p>
             </li>
 
             <li class="item item-checkbox checkbox-positive">
                 <label class="checkbox">
                     <input ng-model="temp.access_type_id" type="radio" value="2">
                 </label>
-            <p>Read/Monitor clinical information</p>
-             </li>
+                <p>Read/Monitor clinical information</p>
+            </li>
 
             <li class="item item-checkbox checkbox-positive">
                 <label class="checkbox">
                     <input ng-model="temp.access_type_id" type="radio" value="3">
                 </label>
-               <p>Share/Update medical information</p>
+                <p>Share/Update medical information</p>
             </li>
 
             <li class="item item-checkbox checkbox-positive">
                 <label class="checkbox">
                     <input ng-model="temp.access_type_id" type="radio" value="4">
                 </label>
-               <p>Bill payment</p>
+                <p>Bill payment</p>
             </li>
 
         </div>
-        <div class="list"></div>
+        <br/>
+        <br/>
+        <br/>
     </ion-content>
-    <!--section footer   -->
-    <div class="tabs  tabs-icon-top sub-header-strip">
-        <a class="tab-item" ng-click="jumpTo('app.family_calander')">
-          <img src="icons/calander.png" /> </br> Calender
-        </a>
-        <a class="tab-item" ng-click="jumpTo('app.list_loved_ones')">
-           <img src="icons/loves_one.png" /> </br> Loved ones
-        </a>
-        <a class="tab-item" ng-click="jumpTo('app.reminder_list')">
-            <img src="icons/reminder.png" /> </br> Reminder
-        </a>
-        <a class="tab-item" ng-click="jumpTo('app.bill_list')">
-          <img src="icons/money.png" /> </br> Bills
-        </a>
-    </div>
+
 </ion-view>

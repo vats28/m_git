@@ -10,7 +10,7 @@ angular.module('starter.listLoved', [])
         }//edn
         
         $rootScope.$on('lovedOneAdded', function(event, data) { 
-            alert('here');
+            //alert('here');
             $scope.getLovedOneList_main($scope.getLovedOneList_callback);
         });
         
@@ -95,6 +95,7 @@ angular.module('starter.listLoved', [])
         }
 
         $scope.openMedicalRecord = function (item) {
+            console.log(JSON.stringify(item));
             $scope.session_variables.selected_lovedone = item;
             $scope.jumpTo('app.medical_records_loved_one');
         }//ned 

@@ -1,7 +1,7 @@
 angular.module('starter.controllers', [])
 
-    .controller('AppCtrl', function($scope, $state, $ionicModal, $ionicPopup,
-        $ionicHistory, $ionicScrollDelegate, $ionicLoading, $ionicSideMenuDelegate, generic_http_post_service,
+    .controller('AppCtrl', function($scope, $state, $sce, $ionicModal, $ionicPopup, $ionicPopover, $cordovaFileOpener2,
+        $ionicHistory, $ionicScrollDelegate, $ionicLoading, $ionicSideMenuDelegate, $ionicPlatform, generic_http_post_service,
         $timeout, date_picker, $rootScope) {
 
         // With the new view caching in Ionic, Controllers are only called
@@ -27,39 +27,40 @@ angular.module('starter.controllers', [])
         });
 
 
+        $ionicPlatform.registerBackButtonAction(function(event) {
+            var stateId = $ionicHistory.currentView().stateId;
+
+            if (stateId == "app.medical_records") {
+                //do nothing
+                backAsHome.trigger(function() {
+                    //console.log("Success");
+                }, function() {
+                    //console.log("Error");
+                })
+            } else {
+                $scope.goBackScreen();
+            }
+
+        }, 100);
+
+
+
+
         $scope.lineChartData = {
-            labels: [
-                'Jan',
-                'Feb',
-                'Mar'
-            ],
-            datasets: [
-                {
-                    data: [0, 5, 10, 15, 20, 25]
-                },
-                {
-                    data: [3, 6, 9, 12, 15, 18]
-                }
-            ]
-        };
-
-        $scope.lineChartData2 = {
-            labels: [
-                'Apr',
-                'May',
-                'Jun',
-                'Jul',
-                'Aug',
-            ],
-            datasets: [
-                {
-                    data: [1, 70, 5, 34, 10, 90]
-                }
-            ]
-        };
-
+            "labels": [],
+            "datasets": [{ "data": [] }]
+        }
         $scope.activeData = $scope.lineChartData;
+        $scope.lineChartData2 = {
+            "labels": [],
+            "datasets": [{ "data": [] }]
+        };
+
         $scope.activeData2 = $scope.lineChartData2;
+
+
+
+
 
 
         $scope.header_title = "";
@@ -91,6 +92,10 @@ angular.module('starter.controllers', [])
             LOCAL_NOTIFICATIONS: 'local_notifications'
         });
 
+        $scope.validationClass = Object.freeze({
+            ERROR: 'ion-asterisk assertive',
+            OK: 'ion-checkmark balanced'/*'ion-thumbsdown energized'*/
+        });
 
         $scope.menu = {};
 
@@ -107,7 +112,12 @@ angular.module('starter.controllers', [])
         }
 
         $scope.schedule_notification = function(data) {
-            cordova.plugins.notification.local.schedule(data);
+            //alert(JSON.stringify(data));
+            try {
+                cordova.plugins.notification.local.schedule(data);
+            } catch (error) {
+                alert("schedule_notification error : " + error);
+            }
         }
 
         $scope.update_notification = function(data) {
@@ -118,7 +128,7 @@ angular.module('starter.controllers', [])
         }
 
         $scope.cancel_notification = function(ids) {
-            //ids = [1, 2];
+
             cordova.plugins.notification.local.cancel(ids, function() {
                 // Notifications were cancelled
                 $scope.showToast("This notification will be removed as time expired");
@@ -370,14 +380,16 @@ angular.module('starter.controllers', [])
 
         $scope.$on('local_notification', function(event, data) {
             //  $scope.showAlertWindow_Titled(data.title, data.text);
-            //alert("again : "+data);
+            // console.log("again : " + JSON.stringify(data));
+            var event_data = JSON.parse(data.data);
+            // console.log("again.data : " + data.data);
             try {
 
                 $scope.jumpTo('app.reminder_list');
                 $scope.session_variables.currentNotification = data;
 
                 //check if time expired to cancel this notification
-                if ($scope.isNoticationExpired(data.data)) {
+                if ($scope.isNoticationExpired(event_data.to_time)) {
                     $scope.cancel_notification([data.id]);
                 }
 
@@ -388,9 +400,16 @@ angular.module('starter.controllers', [])
 
         $scope.isNoticationExpired = function(to_time) {
 
-            //match date_picker
-            //alert("data : " + to_time);
-            console.log("to_time : " + to_time.to_time);
+            console.log("to_time : " + to_time);
+            var retval = false;
+            try {
+                if (new Date() > to_time) {
+                    retval = true;
+                }
+            } catch (error) {
+                console.log("isNoticationExpired : " + error);
+            }
+
         }//edn 
 
         $scope.SaveLoginCredential = function(data) {
@@ -418,6 +437,12 @@ angular.module('starter.controllers', [])
              name: "Vital/ clinical Parameters",
              icon: "ion-stats-bars"
              },*/
+            {
+                id: 17,
+                name: "File Manager",
+                icon: "ion-clipboard",
+                target: "app.file_manager"
+            },
             {
                 id: 3,
                 name: "Medical records",
@@ -514,12 +539,66 @@ angular.module('starter.controllers', [])
             });
         }
 
+        $scope.file_opener = function(path, appType) {
+            $cordovaFileOpener2.open(
+                path,//'/sdcard/Download/starwars.pdf',
+                appType//'application/pdf'
+            ).then(function() {
+                // file opened successfully
+                console.log('file open successfully');
+            }, function(err) {
+                console.log(err);
+                // An error occurred. Show a message to the user
+            });
+        }//end 
+        $scope.showPopover = function(templateUrl, $event) {
+            // $ionicBackdrop.retain();
+
+            // $ionicPopover.fromTemplateUrl(templateUrl, {
+            //     scope: $scope,
+            //     // animation: 'slide-in-up'
+            // }).then(function(popover) {
+            //     $scope.popover = popover;
+            //     $scope.popover.show($event);
+            // });
+
+            // .fromTemplateUrl() method
+            $ionicPopover.fromTemplateUrl(templateUrl, {
+                scope: $scope
+            }).then(function(popover) {
+                $scope.popover = popover;
+            });
+
+            $timeout(function() {
+                $scope.popover.show($event);
+            }, 100)
+        }
+
         // Close the modal
         $scope.closeModal = function() {
             // $ionicBackdrop.release();
             $scope.modal.hide();
             $scope.modal.remove()
         };
+
+        $scope.$on('modal.removed', function() {
+            // Execute action
+            if ($scope.session_variables.vital_modal_removed) {
+                alert('1');
+                $scope.session_variables.vital_modal_removed = false;
+                $rootScope.$broadcast('refresh_pat_vital', null);
+            }
+        });
+
+        $scope.closePopover = function() {
+            $scope.popover.hide();
+            $scope.popover.remove();
+        };
+
+        //to trust videopath for html player
+        $scope.trustSrc = function(src) {
+            return $sce.trustAsResourceUrl(src);
+        }
 
 
         $scope.getRelation = function(callback) {
