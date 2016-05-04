@@ -436,13 +436,13 @@ angular.module('starter.controllers', [])
              id: 2,
              name: "Vital/ clinical Parameters",
              icon: "ion-stats-bars"
-             },*/
+             },
             {
                 id: 17,
                 name: "File Manager",
                 icon: "ion-clipboard",
                 target: "app.file_manager"
-            },
+            },*/
             {
                 id: 3,
                 name: "Medical records",
@@ -460,6 +460,13 @@ angular.module('starter.controllers', [])
                 name: "Reminders",
                 icon: "ion-android-notifications",
                 target: "app.reminder_list",
+            },
+            {
+                id: 18,
+                name: "Extended Profile",
+                icon: "ion-person",
+                target: "templates/popups/additional_profile.html",
+                type:"popup"
             },
             {
                 id: 15,
